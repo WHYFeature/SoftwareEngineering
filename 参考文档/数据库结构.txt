@@ -1,0 +1,46 @@
+User:{
+    uid:int,
+    username:varchar(255),
+    password:varchar(255),
+    level :int,//权限
+    sex :int,
+}
+
+UserCollect：{
+    uid:int,
+    bid:int,
+}
+
+UserAddress:{
+    uid:int,
+    address :varchar(255),
+    receiver_name VARCHAR(50),
+    phone VARCHAR(20)
+    is_default TINYINT DEFAULT 0 COMMENT '是否默认地址：0-否，1-是',
+}
+
+Book:{
+    bid:int,
+    bookname:varchar(255),
+    author:varchar(255),
+    type:varchar(255),//分类
+    version:varchar(255),//标注电子书
+    number:int,
+    price:int;
+    content:varchar(255),
+    publisher:varchar(255),
+}
+
+OrderForm:{
+    oid :int,
+    uid:int,
+    status:int,
+    time:TIME;
+    address:varchar(255),
+}
+
+OrderDetails:{
+    oid:int,
+    bid:int,
+    number:int,
+    price：DECIMAL(10,2)int
