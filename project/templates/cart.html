@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}购物车{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">我的购物车</h2>
+    
+    {% if cart %}
+    <form method="POST" action="{{ url_for('update_cart') }}">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>图书名称</th>
+                        <th>单价</th>
+                        <th>数量</th>
+                        <th>小计</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for book_id, item in cart.items() %}
+                    <tr>
+                        <td>{{ item.title }}</td>
+                        <td>¥{{ "%.2f"|format(item.price) }}</td>
+                        <td>
+                            <input type="number" name="quantity_{{ book_id }}" 
+                                   value="{{ item.quantity }}" min="1" 
+                                   class="form-control" style="width: 80px;">
+                        </td>
+                        <td>¥{{ "%.2f"|format(item.price * item.quantity) }}</td>
+                        <td>
+                            <a href="{{ url_for('remove_from_cart', book_id=book_id) }}" 
+                               class="btn btn-danger btn-sm">移除</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 offset-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">订单总计</h5>
+                        <p class="fs-4">¥{{ "%.2f"|format(total) }}</p>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">更新购物车</button>
+                            <a href="#" class="btn btn-success">立即结算</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    {% else %}
+    <div class="alert alert-info">
+        购物车是空的，快去<a href="{{ url_for('book_list') }}" class="alert-link">选购图书</a>吧！
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
