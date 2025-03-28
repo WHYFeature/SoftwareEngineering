@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}留言板{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">留言板</h2>
+    
+    <!-- 留言表单 -->
+    {% if 'username' in session %}
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">发表留言</h5>
+            <form method="POST">
+                <div class="mb-3">
+                    <textarea name="content" class="form-control" rows="3" 
+                              placeholder="请输入您的留言（至少5个字符）" required></textarea>
+                </div>
+                {% if error %}
+                <div class="alert alert-danger">{{ error }}</div>
+                {% endif %}
+                <button type="submit" class="btn btn-primary">提交留言</button>
+            </form>
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        需要<a href="{{ url_for('login') }}" class="alert-link">登录</a>后才能留言
+    </div>
+    {% endif %}
+
+    <!-- 留言列表 -->
+    <div class="list-group">
+        {% for msg in messages %}
+        <div class="list-group-item mb-3">
+            <div class="d-flex justify-content-between mb-2">
+                <div>
+                    <strong>{{ msg.username }}</strong>
+                    <small class="text-muted ms-2">{{ msg.timestamp.strftime('%Y-%m-%d %H:%M') }}</small>
+                </div>
+                {% if is_admin %}
+                <a href="#" class="btn btn-sm btn-outline-secondary">回复</a>
+                {% endif %}
+            </div>
+            <p class="mb-1">{{ msg.content }}</p>
+            {% if msg.reply %}
+            <div class="alert alert-secondary mt-2">
+                <strong>店主回复：</strong>
+                {{ msg.reply }}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
