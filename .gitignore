@@ -1,0 +1,5 @@
+.idea/
+.vscode/
+
+/project/config.py
+/project/__pycache__/
