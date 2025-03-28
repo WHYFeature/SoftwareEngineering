@@ -109,9 +109,9 @@ CREATE TABLE `useraddress` (
   `uaid` int NOT NULL AUTO_INCREMENT,
   `uid` int NOT NULL,
   `address` varchar(255) NOT NULL,
-  `receiver_name` varchar(50) DEFAULT NULL,
+  `receiver` varchar(50) DEFAULT NULL,
   `phone` varchar(20) DEFAULT NULL,
-  `is_default` tinyint DEFAULT '0' COMMENT '是否默认地址：0-否，1-是',
+  `is_default` int DEFAULT '0' COMMENT '是否默认地址：0-否，1-是',
   PRIMARY KEY (`uaid`),
   KEY `idx_uid` (`uid`),
   CONSTRAINT `useraddress_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `user` (`uid`) ON DELETE CASCADE
@@ -151,4 +151,4 @@ CREATE TABLE `usercollect` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-28 15:43:55
+-- Dump completed on 2025-03-28 16:37:32
