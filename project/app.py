@@ -1,6 +1,7 @@
 # app.py
 from flask import Flask, render_template, request, redirect, url_for, session
 
+from exts import db
 app = Flask(__name__)
 #app.secret_key = 'your_secret_key_here'  # 用于session加密
 
