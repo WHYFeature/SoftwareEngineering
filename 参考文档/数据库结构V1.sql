@@ -26,7 +26,7 @@ CREATE TABLE `book` (
   `bid` int NOT NULL,
   `bookname` varchar(255) NOT NULL,
   `author` varchar(255) DEFAULT NULL,
-  `type` varchar(255) DEFAULT NULL COMMENT '分类',
+  `type_` varchar(255) DEFAULT NULL COMMENT '分类',
   `version` varchar(255) DEFAULT NULL COMMENT '标注电子书',
   `number` int DEFAULT NULL,
   `price` int DEFAULT NULL,
@@ -151,4 +151,4 @@ CREATE TABLE `usercollect` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-28 16:37:32
+-- Dump completed on 2025-03-28 16:51:57
