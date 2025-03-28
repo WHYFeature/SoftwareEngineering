@@ -1,0 +1,21 @@
+<!-- templates/books.html -->
+{% extends "base.html" %}
+
+{% block title %}图书列表{% endblock %}
+
+{% block content %}
+<h2>图书列表</h2>
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for book in books %}
+    <div class="col">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ book.title }}</h5>
+                <p class="card-text">价格：¥{{ book.price }}</p>
+                <button class="btn btn-primary">加入购物车</button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

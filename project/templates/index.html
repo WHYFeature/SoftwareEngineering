@@ -1,0 +1,23 @@
+<!-- templates/index.html -->
+{% extends "base.html" %}
+
+{% block title %}首页{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <h2>欢迎来到网上书店</h2>
+        <p>我们提供最新最全的图书资源，涵盖编程、文学、历史等多个领域...</p>
+    </div>
+    <div class="col-md-4">
+        <h4>热门图书</h4>
+        <ul class="list-group">
+            {% for book in books[:3] %}
+            <li class="list-group-item">
+                {{ book.title }} - ¥{{ book.price }}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
