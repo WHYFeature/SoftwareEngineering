@@ -19,8 +19,8 @@
                     <span class="navbar-text me-3">欢迎，{{ session.username + session.level}}</span>
                     <a href="/logout" class="btn btn-outline-light">退出</a>
                 {% else %}
-                    <a href="/login" class="btn btn-outline-light me-2">登录</a>
-                    <a href="/register" class="btn btn-light">注册</a>
+                    <a href="/user/login" class="btn btn-outline-light me-2">登录</a>
+                    <a href="/user/register" class="btn btn-light">注册</a>
                 {% endif %}
             </div>
         </div>
@@ -31,9 +31,3 @@
     </div>
 </body>
 </html>
-<!-- 在base.html底部添加 -->
-{% if config.DEBUG %}
-<div class="debug-info">
-    <small>当前用户: {{ session.username|default('未登录') }}</small>
-</div>
-{% endif %}

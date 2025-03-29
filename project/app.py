@@ -6,7 +6,7 @@ import config
 from blueprints import Book
 
 app = Flask(__name__)
-#app.secret_key = 'your_secret_key_here'  # 用于session加密
+app.secret_key = 'your_secret_key_here'  # 用于session加密
 
 app.config['SQLALCHEMY_DATABASE_URI'] = config.SQLALCHEMY_DATABASE_URI
 db.init_app(app)
@@ -27,13 +27,13 @@ def index():
 
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/user/login', methods=['GET', 'POST'])
 def login():
     """登录页面"""
     if request.method == 'POST':
         username = request.form['username']
         session['username'] = username  # 简单模拟登录
-        return redirect(url_for('index'))
+        return redirect(url_for("index"))
     return render_template('login.html')
 
 @app.route('/logout')
@@ -49,7 +49,7 @@ def cart():
         return redirect(url_for('login'))
     return render_template('cart.html')
 
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/user/register', methods=['GET', 'POST'])
 def register():
     """注册页面"""
     if request.method == 'POST':
