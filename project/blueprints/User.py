@@ -7,9 +7,8 @@ from flask import url_for
 
 from models import User
 from models import db
-
 from sqlalchemy import func
-
+from blueprints import Book as bookpy
 bp = Blueprint("User", __name__, url_prefix="/user")
 
 
@@ -34,7 +33,7 @@ def login():
             session['username'] = data.username
             session['uid'] = data.uid
             session['level'] = data.level
-            return render_template('index.html')
+            return render_template('index.html', books=bookpy.GetHotBook())
         else:
             session['status'] = 'ERROR'
 
