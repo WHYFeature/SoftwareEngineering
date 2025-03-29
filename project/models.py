@@ -2,7 +2,7 @@ from exts import db
 from datetime import datetime
 
 
-class user(db.Model):
+class User(db.Model):
     __tablename__ = "user"
     uid = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255), nullable=False)

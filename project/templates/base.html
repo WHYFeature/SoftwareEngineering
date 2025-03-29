@@ -16,7 +16,7 @@
                     <li class="nav-item"><a class="nav-link" href="/message">留言板</a></li>
                 </ul>
                 {% if 'username' in session %}
-                    <span class="navbar-text me-3">欢迎，{{ session.username + session.level}}</span>
+                    <span class="navbar-text me-3">欢迎，{{ session.username}}</span>
                     <a href="/logout" class="btn btn-outline-light">退出</a>
                 {% else %}
                     <a href="/user/login" class="btn btn-outline-light me-2">登录</a>

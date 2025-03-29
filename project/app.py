@@ -3,7 +3,8 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from exts import db
 import config
 
-from blueprints import Book
+from blueprints import Book as BookPy
+from blueprints import User
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'  # 用于session加密
@@ -11,30 +12,15 @@ app.secret_key = 'your_secret_key_here'  # 用于session加密
 app.config['SQLALCHEMY_DATABASE_URI'] = config.SQLALCHEMY_DATABASE_URI
 db.init_app(app)
 
-app.register_blueprint(Book.bp)
-
-# 模拟数据
-books = [
-    {"id": 1, "title": "Python编程从入门到实践", "price": 89.00, "category": "编程"},
-    {"id": 2, "title": "三体全集", "price": 128.00, "category": "科幻"},
-    {"id": 3, "title": "人类简史", "price": 68.00, "category": "历史"}
-]
+app.register_blueprint(BookPy.bp)
+app.register_blueprint(User.bp)
 
 @app.route('/')
 def index():
+    
+    books = BookPy.GetHotBook()
     """首页：展示书店简介和图书分类"""
     return render_template('index.html', books=books)
-
-
-
-@app.route('/user/login', methods=['GET', 'POST'])
-def login():
-    """登录页面"""
-    if request.method == 'POST':
-        username = request.form['username']
-        session['username'] = username  # 简单模拟登录
-        return redirect(url_for("index"))
-    return render_template('login.html')
 
 @app.route('/logout')
 def logout():

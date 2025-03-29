@@ -7,6 +7,23 @@ from models import db
 
 from sqlalchemy import func
 
+def GetHotBook():
+    datas = Book.query.all()
+
+    books = []
+    for data in datas:
+        if len(books) == 10 :
+            break
+        book_ = {}
+        book_["id"]=data.bid
+        book_["title"]=data.bookname
+        book_["author"]=data.author
+        book_["price"]=data.price
+        book_["category"]=data.type_
+        books.append(book_)
+        
+    return books
+
 bp = Blueprint("Book", __name__, url_prefix="/books")
 
 @bp.route('/')
