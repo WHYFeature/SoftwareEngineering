@@ -3,8 +3,15 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from exts import db
 import config
 
+from blueprints import Book
+
 app = Flask(__name__)
 #app.secret_key = 'your_secret_key_here'  # 用于session加密
+
+app.config['SQLALCHEMY_DATABASE_URI'] = config.SQLALCHEMY_DATABASE_URI
+db.init_app(app)
+
+app.register_blueprint(Book.bp)
 
 # 模拟数据
 books = [
@@ -18,12 +25,7 @@ def index():
     """首页：展示书店简介和图书分类"""
     return render_template('index.html', books=books)
 
-@app.route('/books')
-def book_list():
-    """图书列表页"""
-    category = request.args.get('category')
-    filtered_books = [b for b in books if not category or b['category'] == category]
-    return render_template('books.html', books=filtered_books)
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
