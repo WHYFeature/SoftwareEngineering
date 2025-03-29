@@ -16,7 +16,7 @@
                     <li class="nav-item"><a class="nav-link" href="/message">留言板</a></li>
                 </ul>
                 {% if 'username' in session %}
-                    <span class="navbar-text me-3">欢迎，{{ session.username }}</span>
+                    <span class="navbar-text me-3">欢迎，{{ session.username + session.level}}</span>
                     <a href="/logout" class="btn btn-outline-light">退出</a>
                 {% else %}
                     <a href="/login" class="btn btn-outline-light me-2">登录</a>
@@ -31,3 +31,9 @@
     </div>
 </body>
 </html>
+<!-- 在base.html底部添加 -->
+{% if config.DEBUG %}
+<div class="debug-info">
+    <small>当前用户: {{ session.username|default('未登录') }}</small>
+</div>
+{% endif %}
