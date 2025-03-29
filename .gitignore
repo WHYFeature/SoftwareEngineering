@@ -1,5 +1,5 @@
 .idea/
 .vscode/
-
+/project/.idea/
 /project/config.py
 /project/__pycache__/

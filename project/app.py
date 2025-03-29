@@ -32,7 +32,7 @@ def logout():
 def cart():
     """购物车页面（需要登录）"""
     if 'username' not in session:
-        return redirect(url_for('login'))
+        return render_template('login.html')
     return render_template('cart.html')
 
 @app.route('/user/register', methods=['GET', 'POST'])
