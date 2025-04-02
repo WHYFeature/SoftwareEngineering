@@ -32,7 +32,7 @@ def _profile():
     addresses = getAllAddress(uid)
     print(addresses)
 
-    return render_template('profile.html', address=addresses)
+    return render_template('profile.html', addresses=addresses)
 
 
 @bp.route('/update_profile', methods=["GET", "POST"])

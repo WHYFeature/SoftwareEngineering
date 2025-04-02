@@ -4,6 +4,8 @@ from flask import render_template
 from flask import session
 from flask import redirect
 from flask import url_for
+from werkzeug.security import generate_password_hash
+from werkzeug.security import check_password_hash
 
 from models import User
 from models import db
@@ -43,7 +45,7 @@ def register():
         uid = (db.session.query(func.max(User.uid)
                                 ).group_by("uid").all())[-1][-1]+1
         newUser = User(uid=uid, username=username,
-                       sex=sex, level=0, password=password)
+                       sex=sex, level=0, password=generate_password_hash(password))
         print(newUser.password)
         db.session.add(newUser)
         db.session.commit()
@@ -61,7 +63,7 @@ def login():
         username = request.form['username']
         password = request.form['password']
         data = User.query.filter(User.username == username).first()
-        if data.password == password:
+        if check_password_hash(data.password, password):
             session['status'] = 'SUCCESS'
             session['username'] = data.username
             session['uid'] = data.uid
