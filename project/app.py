@@ -6,7 +6,7 @@ import config
 from blueprints import Book as BookPy
 from blueprints import User
 from blueprints import root
-from blueprints import  Profile
+from blueprints import Profile
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'  # 用于session加密

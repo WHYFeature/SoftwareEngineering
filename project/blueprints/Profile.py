@@ -5,10 +5,15 @@ from flask import session
 from flask import redirect
 from flask import url_for
 
+from werkzeug.security import generate_password_hash
+from werkzeug.security import check_password_hash
+
 from models import User
 from models import UserAddress
 from models import db
 from sqlalchemy import func
+
+from blueprints import User as _User
 
 bp = Blueprint("Profile", __name__, url_prefix="/profile")
 
@@ -24,13 +29,14 @@ def getAllAddress(uid):
         addresses.append(address)
     return addresses
 
+
 @bp.route('/', methods=["GET", "POST"])
 def _profile():
     uid = session['uid']
 
     addresses = []
     addresses = getAllAddress(uid)
-    print(addresses)
+    # sprint(addresses)
 
     return render_template('profile.html', addresses=addresses)
 
@@ -58,6 +64,26 @@ def add_address():
         address = getAllAddress(uid)
         return redirect(url_for('Profile._profile'))
 
+
 @bp.route('/change_password', methods=["GET", "POST"])
 def change_password():
-    return 0
+    if request.method == "POST":
+        old_password = request.form['old_password']
+        new_password = request.form['new_password']
+        uid = session['uid']
+        data = User.query.filter(User.uid == uid).first()
+
+        if _User.VerifyPassword(new_password):
+            session['status'] = 1  # 密码格式错误
+            return redirect(url_for('Profile._profile'))
+
+        if not check_password_hash(data.password, old_password):
+            session['status'] = 2  # 旧密码错误
+            return redirect(url_for('Profile._profile'))
+
+        data.password = generate_password_hash(new_password)
+        db.session.commit()
+        session['status'] = 0  # 成功
+        return redirect(url_for('Profile._profile'))
+
+    return redirect(url_for('Profile._profile'))
