@@ -10,12 +10,6 @@
         <div class="col-md-3">
             <div class="card">
                 <div class="card-body text-center">
-                    <div class="mb-3">
-                        <div class="d-flex align-items-center justify-content-center bg-light rounded-circle mb-2"
-                             style="width: 150px; height: 150px; margin: 0 auto;">
-                            <i class="fas fa-user fa-4x text-secondary"></i>
-                        </div>
-                    </div>
                     <h5>{{ session.username }}</h5>
                 </div>
                 <ul class="list-group list-group-flush">
@@ -176,6 +170,36 @@
         </div>
     </div>
 </div>
-
+<!-- 修改密码模态框 -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" action="{{ url_for('Profile.change_password') }}">
+                <div class="modal-header">
+                    <h5 class="modal-title">修改密码</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">旧密码</label>
+                        <input type="password" name="old_password" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">新密码</label>
+                        <input type="password" name="new_password" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">确认新密码</label>
+                        <input type="password" name="confirm_password" class="form-control" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-primary">修改密码</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <!-- JavaScript（保持原样） -->
 {% endblock %}
