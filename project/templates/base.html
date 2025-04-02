@@ -17,58 +17,57 @@
                 </ul>
                 {% if 'username' in session %}
                     <!-- 用户信息下拉菜单 -->
-<div class="dropdown">
-    <!-- 触发按钮 -->
-    <button class="btn btn-outline-light dropdown-toggle"
-            type="button"
-            id="userMenu"
-            data-bs-toggle="dropdown"
-            aria-expanded="false">
-        <i class="bi bi-person-circle me-2"></i>
-        {{ session.username }}
-    </button>
+        <div class="dropdown">
+            <!-- 触发按钮 -->
+            <button class="btn btn-outline-light dropdown-toggle"
+                    type="button"
+                    id="userMenu"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                <i class="bi bi-person-circle me-2"></i>
+                {{ session.username }}
+            </button>
 
-    <!-- 下拉菜单内容 -->
-    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
-        <!-- 用户信息区块 -->
-        <li>
-            <div class="dropdown-header text-muted small">
-                用户ID：{{ session.uid }}
-            </div>
-        </li>
-        <li>
-            {% if session.level == 1 %}
-             <div class="dropdown-header text-muted small">
-                权限等级：管理员
-            </div>
-             {% elif session.level == 0%}
-            <div class="dropdown-header text-muted small">
+            <!-- 下拉菜单内容 -->
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                <!-- 用户信息区块 -->
+                <li>
+                    <div class="dropdown-header text-muted small">
+                        用户ID：{{ session.uid }}
+                    </div>
+                </li>
+                <li>
+                    {% if session.level == 1 %}
+                     <div class="dropdown-header text-muted small">
+                        权限等级：管理员
+                    </div>
+                     {% elif session.level == 0%}
+                    <div class="dropdown-header text-muted small">
+                        权限等级：普通用户
+                    </div>
+                    {% endif %}
+                </li>
 
-                权限等级：普通用户
-            </div>
-            {% endif %}
-        </li>
+                <!-- 分隔线 -->
+                <li><hr class="dropdown-divider"></li>
 
-        <!-- 分隔线 -->
-        <li><hr class="dropdown-divider"></li>
-
-        <!-- 功能操作 -->
-        <li>
-            <a class="dropdown-item" href="/profile">
-                <i class="bi bi-person-gear me-2"></i>
-                个人中心
-            </a>
-        </li>
-        <li>
-            <form method="post" action="/logout">
-                <button type="submit" class="dropdown-item text-danger">
-                    <i class="bi bi-box-arrow-right me-2"></i>
-                    退出登录
-                </button>
-            </form>
-        </li>
-    </ul>
-</div>
+                <!-- 功能操作 -->
+                <li>
+                    <a class="dropdown-item" href="/profile">
+                        <i class="bi bi-person-gear me-2"></i>
+                        个人中心
+                    </a>
+                </li>
+                <li>
+                    <form method="post" action="/logout">
+                        <button type="submit" class="dropdown-item text-danger">
+                            <i class="bi bi-box-arrow-right me-2"></i>
+                            退出登录
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
                 {% else %}
                     <a href="/user/login" class="btn btn-outline-light me-2">登录</a>
                     <a href="/user/register" class="btn btn-light">注册</a>

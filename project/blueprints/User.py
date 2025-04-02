@@ -28,8 +28,8 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        # sex = request.form['sex']  # 1男 2女
-        sex = 1  # 测试用例
+        sex = request.form['sex']  # 1男 2女
+        # sex = 1  # 测试用例
 
         data = User.query.filter(User.username == username).all()
         if data != []:
