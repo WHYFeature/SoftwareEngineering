@@ -17,12 +17,6 @@ app.register_blueprint(BookPy.bp)
 app.register_blueprint(User.bp)
 app.register_blueprint(root.bp)
 
-@app.route('/logout')
-def logout():
-    """退出登录"""
-    session.pop('username', None)
-    return redirect(url_for('index'))
-
 @app.route('/cart')
 def cart():
     """购物车页面（需要登录）"""
