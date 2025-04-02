@@ -18,7 +18,7 @@ class UserAddress(db.Model):
     address = db.Column(db.String(255), nullable=False)
     receiver = db.Column(db.String(50), nullable=False)
     phone = db.Column(db.String(20))
-    is_defailt = db.Column(db.Integer)
+    is_default = db.Column(db.Integer)
 
 
 class Book(db.Model):
