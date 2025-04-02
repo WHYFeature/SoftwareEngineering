@@ -5,6 +5,7 @@ import config
 
 from blueprints import Book as BookPy
 from blueprints import User
+from blueprints import root
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'  # 用于session加密
@@ -14,13 +15,7 @@ db.init_app(app)
 
 app.register_blueprint(BookPy.bp)
 app.register_blueprint(User.bp)
-
-@app.route('/')
-def index():
-    
-    books = BookPy.GetHotBook()
-    """首页：展示书店简介和图书分类"""
-    return render_template('index.html', books=books)
+app.register_blueprint(root.bp)
 
 @app.route('/logout')
 def logout():
