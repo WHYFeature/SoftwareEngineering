@@ -12,12 +12,12 @@
             <div class="card-body">
                 <h5 class="card-title">
                   <!-- 使用Flask的url_for生成URL -->
-                <a href="{{ url_for('Book.BookDetails', bid=book.bid) }}" class="text-decoration-none text-dark">
+                <a class="text-decoration-none text-dark">
                   {{ book.title }}
                 </a>
                 </h5>
                 <p class="card-text">价格：¥{{ book.price }}</p>
-                <button class="btn btn-primary">加入购物车</button>
+                <a href="{{ url_for('Book.BookDetails', bid=book.bid) }}" class="btn btn-primary">查看详情</a>
             </div>
         </div>
     </div>

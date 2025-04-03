@@ -51,20 +51,23 @@
                             <div class="col-12 col-md-3">
                                 <label for="quantity" class="form-label">数量</label>
                                 <input type="number"
-                                       class="form-control"
-                                       id="quantity"
-                                       name="quantity"
-                                       min="1"
-                                       max="{{ book.number }}"
-                                       value="1"
-                                       required
-                                       >
+                                   class="form-control"
+                                   id="quantity"
+                                   name="quantity"
+                                   min="1"
+                                   max="{{ book.number }}"
+                                   value="1"
+                                   required
+                                   step="1">
+                                 <div class="invalid-feedback" id="quantityFeedback">
+                请输入1至{{ book.number }}之间的有效数量。
+                                </div>
                             </div>
 
-                            <div class="col-12 col-md-9 d-grid">
+                             <div class="col-12 col-md-9 d-grid">
                                 <button type="submit"
                                         class="btn btn-primary btn-lg"
-                                        >
+                                        {% if book.number == 0 %}disabled{% endif %}>
                                     <i class="bi bi-cart-plus"></i>
                                     加入购物车
                                 </button>
