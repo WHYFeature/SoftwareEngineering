@@ -7,6 +7,8 @@ from blueprints import Book as BookPy
 from blueprints import User
 from blueprints import root
 from blueprints import Profile
+from blueprints import Cart
+from blueprints import Collect
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'  # 用于session加密
@@ -18,6 +20,8 @@ app.register_blueprint(BookPy.bp)
 app.register_blueprint(User.bp)
 app.register_blueprint(root.bp)
 app.register_blueprint(Profile.bp)
+app.register_blueprint(Cart.bp)
+app.register_blueprint(Collect.bp)
 
 @app.route('/cart')
 def cart():
