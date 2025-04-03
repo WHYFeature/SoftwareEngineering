@@ -1,13 +1,12 @@
 <!-- templates/book_detail.html -->
 {% extends "base.html" %}
-{% load humanize %}
 
 {% block title %}{{ book.bookname }} - 书籍详情{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
     <!-- 返回按钮 -->
-    <a href="{% url 'Book.book_list' %}" class="btn btn-outline-secondary mb-4">
+    <a href="{{ url_for('Book.book_list')}}" class="btn btn-outline-secondary mb-4">
         &larr; 返回书单
     </a>
 
@@ -28,10 +27,10 @@
                     <!-- 元信息 -->
                     <dl class="row">
                         <dt class="col-sm-3">作者</dt>
-                        <dd class="col-sm-9">{{ book.author|default:"未知作者" }}</dd>
+                        <dd class="col-sm-9">{{book.author}}</dd>
 
                         <dt class="col-sm-3">出版社</dt>
-                        <dd class="col-sm-9">{{ book.publisher|default:"未知出版社" }}</dd>
+                        <dd class="col-sm-9">{{ book.publisher}}</dd>
 
                     </dl>
 
