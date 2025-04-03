@@ -2,6 +2,7 @@ from flask import Blueprint
 from flask import request
 from flask import render_template
 from flask import session
+from flask import redirect,url_for
 
 from sqlalchemy import func
 
@@ -34,11 +35,11 @@ def getAllCollect(uid):
 bp = Blueprint("Collect", __name__, url_prefix="/collect")
 
 @bp.route('/addCollect',methods = ["POST"])
-def addCart():
+def addCollect():
     bid = request.form["bid"]
     uid = session["uid"]
     
     newCollect = UserCollect(uid = uid,bid=bid)
     db.session.add(newCollect)
     db.session.commit()
-    return 0
+    return redirect(url_for('Book.BookDetails', bid=bid))
