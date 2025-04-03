@@ -45,7 +45,12 @@ def _profile():
 def update_profile():
     if request.method == "POST":
         username = request.form['username']
-
+        uid = session['uid']
+        user = User.query.filter(User.uid == uid).first()
+        user.username = username
+        db.session.commit()
+        session['username'] = user.username
+        
     return redirect(url_for('Profile._profile'))
 
 
