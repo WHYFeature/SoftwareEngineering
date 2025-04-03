@@ -38,13 +38,13 @@
                     <div class="bg-light p-3 rounded-3 mb-4">
                         <div class="d-flex justify-content-between align-items-center">
                             <h3 class="text-danger mb-0">
-                                ¥{{ book.price|floatformat:2|intcomma }}
+                                ¥{{ book.price}}
                             </h3>
                         </div>
                     </div>
 
                     <!-- 操作表单 -->
-                    <form action="{% url 'add_to_cart' %}" method="post" class="needs-validation" novalidate>
+                    <form action="{{ url_for('Cart.addCart')}}" method="post" class="needs-validation" novalidate>
                         <input type="hidden" name="book_bid" value="{{ book.bid }}">
 
                         <div class="row g-3">
@@ -84,7 +84,7 @@
         <div class="card-body">
             <h5 class="card-subtitle mb-3">内容简介</h5>
             <div class="text-muted lh-base">
-                {{ book.content|default:"暂无内容简介"|linebreaks }}
+                {{ book.content}}
             </div>
         </div>
     </div>
