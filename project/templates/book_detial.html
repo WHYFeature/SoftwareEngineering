@@ -2,26 +2,18 @@
 {% extends "base.html" %}
 {% load humanize %}
 
-{% block title %}{{ book.title }} - 书籍详情{% endblock %}
+{% block title %}{{ book.bookname }} - 书籍详情{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
     <!-- 返回按钮 -->
-    <a href="{% url 'book_list' %}" class="btn btn-outline-secondary mb-4">
+    <a href="{% url 'Book.book_list' %}" class="btn btn-outline-secondary mb-4">
         &larr; 返回书单
     </a>
 
     <!-- 书籍主体信息 -->
     <div class="row g-4">
         <!-- 封面图片列 -->
-        <div class="col-md-4">
-            <div class="card shadow-sm h-100">
-                <img src="{{ book.cover_url|default:'/static/default-cover.jpg' }}"
-                     class="card-img-top p-3"
-                     alt="{{ book.title }}"
-                     style="max-height: 400px; object-fit: contain;">
-            </div>
-        </div>
 
         <!-- 详细信息列 -->
         <div class="col-md-8">
@@ -41,8 +33,6 @@
                         <dt class="col-sm-3">出版社</dt>
                         <dd class="col-sm-9">{{ book.publisher|default:"未知出版社" }}</dd>
 
-                        <dt class="col-sm-3">简介</dt>
-                        <dd class="col-sm-9">{{ book.content|default:"-" }}</dd>
                     </dl>
 
                     <!-- 价格区块 -->
@@ -56,8 +46,7 @@
 
                     <!-- 操作表单 -->
                     <form action="{% url 'add_to_cart' %}" method="post" class="needs-validation" novalidate>
-                        {% csrf_token %}
-                        <input type="hidden" name="book_id" value="{{ book.id }}">
+                        <input type="hidden" name="book_bid" value="{{ book.bid }}">
 
                         <div class="row g-3">
                             <div class="col-12 col-md-3">
@@ -67,22 +56,25 @@
                                        id="quantity"
                                        name="quantity"
                                        min="1"
-                                       max="{{ book.stock }}"
+                                       max="{{ book.number }}"
                                        value="1"
                                        required
-                                       {{ book.stock|yesno:",disabled" }}>
+                                       >
                             </div>
 
                             <div class="col-12 col-md-9 d-grid">
                                 <button type="submit"
                                         class="btn btn-primary btn-lg"
-                                        {{ book.stock|yesno:",disabled" }}>
+                                        >
                                     <i class="bi bi-cart-plus"></i>
-                                    {{ book.stock|yesno:"加入购物车,暂时缺货" }}
+                                    加入购物车
                                 </button>
                             </div>
+
                         </div>
                     </form>
+
+
                 </div>
             </div>
         </div>
@@ -93,7 +85,7 @@
         <div class="card-body">
             <h5 class="card-subtitle mb-3">内容简介</h5>
             <div class="text-muted lh-base">
-                {{ book.description|default:"暂无内容简介"|linebreaks }}
+                {{ book.content|default:"暂无内容简介"|linebreaks }}
             </div>
         </div>
     </div>
