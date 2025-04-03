@@ -184,14 +184,43 @@
                         <label class="form-label">旧密码</label>
                         <input type="password" name="old_password" class="form-control" required>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">新密码</label>
-                        <input type="password" name="new_password" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">确认新密码</label>
-                        <input type="password" name="confirm_password" class="form-control" required>
-                    </div>
+                     <div class="mb-3">
+                <label class="form-label">新密码</label>
+                <input type="password" name="new_password" class="form-control" id="password"
+                       required minlength="8" maxlength="20"
+                       oninput="validatePassword()">
+                <div class="form-text">仅允许纯数字和英文字母，8-20个字符</div>
+            </div>
+             <!-- 确认密码 -->
+            <div class="mb-3">
+            <label class="form-label">确认密码</label>
+            <input type="password" name="confirm_password" id="confirm_password"
+                   class="form-control" required
+                   oninput="validatePassword()">
+            <div id="passwordError" class="text-danger form-text"></div>
+            </div>
+                      <script>
+            function validatePassword() {
+                const password = document.getElementById('new_password').value;
+                const confirmPassword = document.getElementById('confirm_password').value;
+                const errorElement = document.getElementById('passwordError');
+                if (password !== confirmPassword) {
+                    errorElement.textContent = "两次输入的密码不一致";
+                    return false;
+                } else {
+                errorElement.textContent = "";
+                return true;
+                }
+            }
+
+            // 表单提交时最终检查
+            document.querySelector('form').addEventListener('submit', function(e) {
+                if (!validatePassword()) {
+                    e.preventDefault(); // 阻止表单提交
+                }
+            });
+            </script>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
