@@ -47,8 +47,7 @@ class OrderForm(db.Model):
     uid = uid = db.Column(db.Integer, db.ForeignKey("user.uid"))
     status = db.Column(db.Integer, nullable=False)
     time = db.Column(db.TIMESTAMP, nullable=False, default=datetime.now)
-    uaid = db.Column(db.Integer, db.ForeignKey(
-        "useraddress.uaid"), nullable=False)
+    uaid = db.Column(db.Integer, db.ForeignKey("useraddress.uaid"))
 
 
 class OrderDetails(db.Model):

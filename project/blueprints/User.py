@@ -43,11 +43,9 @@ def register():
             return render_template('register.html')
 
         uid = 0
-        if User.query.count() == 0:
-            uid = 1
-        else:
-            uid = (db.session.query(func.max(User.uid)
-                                    ).group_by("uid").all())[-1][-1]+1
+        
+        uid = db.session.query(func.max(User.uid)).scalar() or 0
+        uid+=1
         newUser = User(uid=uid, username=username,
                        sex=sex, level=0, password=generate_password_hash(password))
         print(newUser.password)
