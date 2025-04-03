@@ -23,21 +23,6 @@ app.register_blueprint(Profile.bp)
 app.register_blueprint(Cart.bp)
 app.register_blueprint(Collect.bp)
 
-@app.route('/cart')
-def cart():
-    """购物车页面（需要登录）"""
-    if 'username' not in session:
-        return render_template('login.html')
-    return render_template('cart.html')
-
-@app.route('/user/register', methods=['GET', 'POST'])
-def register():
-    """注册页面"""
-    if request.method == 'POST':
-        # 实际开发中需要验证数据并存储到数据库
-        return redirect(url_for('login'))
-    return render_template('register.html')
-
 @app.route('/message', methods=['GET', 'POST'])
 def message_board():
     """留言板页面"""

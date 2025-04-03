@@ -33,7 +33,7 @@ def book_list():
     books = []
     for data in datas:
         book_ = {}
-        book_["id"]=data.bid
+        book_["bid"]=data.bid
         book_["title"]=data.bookname
         book_["author"]=data.author
         book_["price"]=data.price
@@ -48,9 +48,9 @@ def book_list():
 @bp.route('/details')
 def BookDetails():
     bid = request.args.get('bid')
-
+    print(bid)
     data = Book.query.filter(Book.bid == bid).first()
-    book =[]
+    book ={}
     book["bookname"]= data.bookname
     book["author"]= data.author
     book["type_"]=data.type_
