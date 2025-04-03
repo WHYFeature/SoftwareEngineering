@@ -42,8 +42,12 @@ def register():
             session['status'] = 2  # 错误，密码格式错误
             return render_template('register.html')
 
-        uid = (db.session.query(func.max(User.uid)
-                                ).group_by("uid").all())[-1][-1]+1
+        uid = 0
+        if User.query.count() == 0:
+            uid = 1
+        else:
+            uid = (db.session.query(func.max(User.uid)
+                                    ).group_by("uid").all())[-1][-1]+1
         newUser = User(uid=uid, username=username,
                        sex=sex, level=0, password=generate_password_hash(password))
         print(newUser.password)
