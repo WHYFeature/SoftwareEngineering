@@ -38,12 +38,12 @@
                     <button class="btn btn-sm btn-outline-secondary" id="editProfileBtn">编辑信息</button>
                 </div>
                 <div class="card-body">
-                    <form id="profileForm" method="POST" action="{{ url_for('Profile._profile') }}">
+                    <form id="profileForm" method="POST" action="{{ url_for('Profile.update_profile') }}">
 
                         <div class="row mb-3">
                             <label class="col-sm-3 col-form-label">用户名</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control"
+                                <input type="text" class="form-control" name = "username"
                                        value="{{ session.username }}" readonly>
                             </div>
                         </div>
@@ -56,30 +56,30 @@
                     </form>
                 </div>
                 <script>
-document.getElementById('editProfileBtn').addEventListener('click', function() {
-    // 移除所有输入框的只读属性
-    document.querySelectorAll('#profileForm input').forEach(input => {
-        input.removeAttribute('readonly');
-    });
-    // 显示保存和取消按钮
-    document.getElementById('saveProfileBtn').classList.remove('d-none');
-    document.getElementById('cancelEditBtn').classList.remove('d-none');
-    // 隐藏编辑按钮
-    this.classList.add('d-none');
-});
+                document.getElementById('editProfileBtn').addEventListener('click', function() {
+                    // 移除所有输入框的只读属性
+                    document.querySelectorAll('#profileForm input').forEach(input => {
+                        input.removeAttribute('readonly');
+                    });
+                    // 显示保存和取消按钮
+                    document.getElementById('saveProfileBtn').classList.remove('d-none');
+                    document.getElementById('cancelEditBtn').classList.remove('d-none');
+                    // 隐藏编辑按钮
+                    this.classList.add('d-none');
+                });
 
-document.getElementById('cancelEditBtn').addEventListener('click', function() {
-    // 恢复只读属性并重置值（如有需要可重新从服务器获取）
-    document.querySelectorAll('#profileForm input').forEach(input => {
-        input.setAttribute('readonly', true);
-    });
-    // 隐藏保存和取消按钮
-    document.getElementById('saveProfileBtn').classList.add('d-none');
-    this.classList.add('d-none');
-    // 显示编辑按钮
-    document.getElementById('editProfileBtn').classList.remove('d-none');
-});
-</script>
+                document.getElementById('cancelEditBtn').addEventListener('click', function() {
+                    // 恢复只读属性并重置值（如有需要可重新从服务器获取）
+                    document.querySelectorAll('#profileForm input').forEach(input => {
+                        input.setAttribute('readonly', true);
+                    });
+                    // 隐藏保存和取消按钮
+                    document.getElementById('saveProfileBtn').classList.add('d-none');
+                    this.classList.add('d-none');
+                    // 显示编辑按钮
+                    document.getElementById('editProfileBtn').classList.remove('d-none');
+                });
+                </script>
             </div>
 
             <!-- 安全中心 -->

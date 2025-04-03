@@ -73,9 +73,48 @@
                                 </button>
                             </div>
 
-
                         </div>
                     </form>
+
+                    <form action="{{ url_for('Collect.addCollect') }}" method="post" class="favorite-form">
+                        <input type="hidden" name="bid" value="{{ book.bid }}">
+                        <button type="submit"
+                                class="btn btn-outline-danger {% if is_favorited %}active{% endif %}"
+                                aria-pressed="{{ is_favorited|lower }}">
+                        <i class="bi {% if is_favorited %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
+                        <span class="ms-2">
+                            {% if is_favorited %}已收藏{% else %}加入收藏{% endif %}
+                        </span>
+                    </button>
+                    </form>
+                    <style>
+                        .favorite-form button {
+                            transition: all 0.3s ease;
+                            position: relative;
+                            overflow: hidden;
+                        }
+                        .favorite-form button:not(.active):hover {
+                            transform: scale(1.05);
+                            box-shadow: 0 0 15px rgba(255, 59, 48, 0.3);
+                        }
+                        .favorite-form button.active {
+                            background: #ff3b30;
+                            color: white !important;
+                        }
+                        .favorite-form button:active {
+                            transform: scale(0.95);
+                        }
+                    </style>
+                    <script>
+                        document.querySelectorAll('.favorite-form').forEach(form => {
+                            form.addEventListener('submit', function(e) {
+                                const btn = this.querySelector('button');
+                                btn.innerHTML = `<div class="spinner-border spinner-border-sm" role="status">
+                                                 <span class="visually-hidden">Loading...</span></div> 处理中...`;
+                                btn.disabled = true;
+                            });
+                        });
+                    </script>
                 </div>
             </div>
         </div>
