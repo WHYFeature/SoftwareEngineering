@@ -68,6 +68,6 @@ def BookDetails():
         #print(uid)
         collect = UserCollect.query.filter(UserCollect.uid == uid).first()
         if collect is not None:
-            book["inCollect"] = 1 #已收藏S
+            book["inCollect"] = 1 #已收藏
 
     return render_template('book_detail.html', book=book)
