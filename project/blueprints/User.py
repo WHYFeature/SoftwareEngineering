@@ -62,17 +62,26 @@ def register():
 def login():
     """登录页面"""
     if request.method == 'POST':
+        session['status'] = 0
         username = request.form['username']
         password = request.form['password']
         data = User.query.filter(User.username == username).first()
         if check_password_hash(data.password, password):
-            session['status'] = 'SUCCESS'
             session['username'] = data.username
             session['uid'] = data.uid
             session['level'] = data.level
             # return render_template('index.html', books=bookpy.GetHotBook())
             return redirect(url_for('root.index'))
         else:
-            session['status'] = 'ERROR'
+            session['status'] = 1
 
     return render_template('login.html')
+
+@bp.route('/logout')
+def logout():
+    session.pop("uid",None)
+
+    response = redirect(url_for('root.index'))
+    response.delete_cookie('session')
+
+    return response

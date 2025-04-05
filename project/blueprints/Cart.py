@@ -28,6 +28,11 @@ def verifyQuantity(bid, quantity):
 def addCart():
     quantity = int(request.form["quantity"])
     bid = request.form["bid"]
+
+    if "uid" not in session:
+        session["status"] =  100
+        return redirect(url_for('Book.BookDetails', bid=bid))
+
     uid = session["uid"]
     session["status"] = 0
 

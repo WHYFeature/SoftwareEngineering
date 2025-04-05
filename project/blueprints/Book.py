@@ -1,9 +1,10 @@
 from flask import Blueprint
 from flask import request
-from flask import render_template
+from flask import render_template,session
 
 from models import Book
 from models import db
+from models import UserCollect
 
 from sqlalchemy import func
 
@@ -60,5 +61,13 @@ def BookDetails():
     book["price"]=data.price
     book["content"]=data.content
     book["publisher"]=data.publisher
+
+    book["inCollect"] = 0
+    if "uid" in session:
+        uid = session["uid"]
+        #print(uid)
+        collect = UserCollect.query.filter(UserCollect.uid == uid).first()
+        if collect is not None:
+            book["inCollect"] = 1 #已收藏S
 
     return render_template('book_detail.html', book=book)
