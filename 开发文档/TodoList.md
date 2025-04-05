@@ -1,5 +1,9 @@
 # TodoList
 
+* [ ] 添加了退出函数用来注销用户登录状态，url：/user/logout
+* [ ] 获取图书详情页面BookDetails函数添加了返回数据中属性“inCollect”，标记是否已收藏
+
+  ![1743842274753](image/TodoList/1743842274753.png)
 * [X] 登录后，跳转index.html不能正常获取books
 
 - [X] 登录后购物车正常链接的问题，没有提供book_list的信息，需要添加
