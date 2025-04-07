@@ -59,7 +59,7 @@
                     </a>
                 </li>
                 <li>
-                    <form method="post" action="/logout">
+                    <form method="post" action="{{ url_for('User.logout')}}">
                         <button type="submit" class="dropdown-item text-danger">
                             <i class="bi bi-box-arrow-right me-2"></i>
                             退出登录

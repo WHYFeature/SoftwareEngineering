@@ -79,11 +79,11 @@
                     <form action="{{ url_for('Collect.addCollect') }}" method="post" class="favorite-form">
                         <input type="hidden" name="bid" value="{{ book.bid }}">
                         <button type="submit"
-                                class="btn btn-outline-danger {% if is_favorited %}active{% endif %}"
-                                aria-pressed="{{ is_favorited|lower }}">
-                        <i class="bi {% if is_favorited %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
+                                class="btn btn-outline-danger {% if inCollect %}active{% endif %}"
+                                aria-pressed="{{ inCollect|lower }}">
+                        <i class="bi {% if inCollect %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
                         <span class="ms-2">
-                            {% if is_favorited %}已收藏{% else %}加入收藏{% endif %}
+                            {% if inCollect %}已收藏{% else %}加入收藏{% endif %}
                         </span>
                     </button>
                     </form>
