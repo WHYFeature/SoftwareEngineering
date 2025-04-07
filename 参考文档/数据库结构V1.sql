@@ -39,6 +39,14 @@ CREATE TABLE `book` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `book`
+--
+
+/*!40000 ALTER TABLE `book` DISABLE KEYS */;
+INSERT INTO `book` VALUES (1,'Python编程从入门到实践','蟒蛇制作组','编程','电子书',991,89,'Python初学者的必读书目。','蟒蛇发行商'),(2,'三体','刘慈欣','科幻','实体书',80,128,'大刘的科幻力作。','新华书店'),(3,'数据库测试样例','WHYFeather','测试','实体书',0,99999,'某小丑添加的测试样例','B2325');
+/*!40000 ALTER TABLE `book` ENABLE KEYS */;
+
+--
 -- Table structure for table `orderdetails`
 --
 
@@ -56,8 +64,16 @@ CREATE TABLE `orderdetails` (
   KEY `bid` (`bid`),
   CONSTRAINT `orderdetails_ibfk_1` FOREIGN KEY (`oid`) REFERENCES `orderform` (`oid`) ON DELETE CASCADE,
   CONSTRAINT `orderdetails_ibfk_2` FOREIGN KEY (`bid`) REFERENCES `book` (`bid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `orderdetails`
+--
+
+/*!40000 ALTER TABLE `orderdetails` DISABLE KEYS */;
+INSERT INTO `orderdetails` VALUES (1,1,1,8,89.00);
+/*!40000 ALTER TABLE `orderdetails` ENABLE KEYS */;
 
 --
 -- Table structure for table `orderform`
@@ -69,9 +85,9 @@ DROP TABLE IF EXISTS `orderform`;
 CREATE TABLE `orderform` (
   `oid` int NOT NULL,
   `uid` int NOT NULL,
-  `status` int NOT NULL DEFAULT '0' COMMENT '订单状态',
+  `status` int NOT NULL DEFAULT '0' COMMENT '订单状态：0=购物车，1=已付费',
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '订单时间',
-  `uaid` int NOT NULL COMMENT '用户选择的收货地址',
+  `uaid` int DEFAULT NULL COMMENT '用户选择的收货地址',
   PRIMARY KEY (`oid`),
   KEY `idx_uid` (`uid`),
   KEY `idx_time` (`time`),
@@ -80,6 +96,14 @@ CREATE TABLE `orderform` (
   CONSTRAINT `orderform_ibfk_2` FOREIGN KEY (`uaid`) REFERENCES `useraddress` (`uaid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `orderform`
+--
+
+/*!40000 ALTER TABLE `orderform` DISABLE KEYS */;
+INSERT INTO `orderform` VALUES (1,1,0,'2025-04-03 14:07:06',NULL);
+/*!40000 ALTER TABLE `orderform` ENABLE KEYS */;
 
 --
 -- Table structure for table `user`
@@ -99,6 +123,14 @@ CREATE TABLE `user` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `user`
+--
+
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (1,'user','scrypt:32768:8:1$zsfUy53syHFGPl1g$b5324342c14f77d04e345b3e64ec1f2c54900f7b51ad4ba1432809b7479bf1b3354429a1d440fdb7317a826f18180a42a77f8f9fe30d136ebc4ee8cf44c1e3f9',0,1);
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+
+--
 -- Table structure for table `useraddress`
 --
 
@@ -115,8 +147,15 @@ CREATE TABLE `useraddress` (
   PRIMARY KEY (`uaid`),
   KEY `idx_uid` (`uid`),
   CONSTRAINT `useraddress_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `user` (`uid`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `useraddress`
+--
+
+/*!40000 ALTER TABLE `useraddress` DISABLE KEYS */;
+/*!40000 ALTER TABLE `useraddress` ENABLE KEYS */;
 
 --
 -- Table structure for table `usercollect`
@@ -135,8 +174,16 @@ CREATE TABLE `usercollect` (
   KEY `bid` (`bid`),
   CONSTRAINT `usercollect_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `user` (`uid`) ON DELETE CASCADE,
   CONSTRAINT `usercollect_ibfk_2` FOREIGN KEY (`bid`) REFERENCES `book` (`bid`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `usercollect`
+--
+
+/*!40000 ALTER TABLE `usercollect` DISABLE KEYS */;
+INSERT INTO `usercollect` VALUES (1,1,1,'2025-04-05 08:08:22'),(4,1,2,'2025-04-05 08:24:39');
+/*!40000 ALTER TABLE `usercollect` ENABLE KEYS */;
 
 --
 -- Dumping routines for database 'bookshop'
@@ -151,4 +198,4 @@ CREATE TABLE `usercollect` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-28 16:51:57
+-- Dump completed on 2025-04-07 16:13:25

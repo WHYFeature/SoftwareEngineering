@@ -43,9 +43,9 @@ def register():
             return render_template('register.html')
 
         uid = 0
-        
+
         uid = db.session.query(func.max(User.uid)).scalar() or 0
-        uid+=1
+        uid += 1
         newUser = User(uid=uid, username=username,
                        sex=sex, level=0, password=generate_password_hash(password))
         print(newUser.password)
@@ -77,9 +77,10 @@ def login():
 
     return render_template('login.html')
 
-@bp.route('/logout')
+
+@bp.route('/logout', methods=["GET", "POST"])
 def logout():
-    session.pop("uid",None)
+    session.pop("uid", None)
 
     response = redirect(url_for('root.index'))
     response.delete_cookie('session')
