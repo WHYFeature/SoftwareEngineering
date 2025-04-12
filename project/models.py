@@ -1,3 +1,8 @@
+"""
+本文件为各数据库表建立了对应的ORM映射
+对各表的控制按对应类对象的操作方式操作
+"""
+
 from exts import db
 from datetime import datetime
 

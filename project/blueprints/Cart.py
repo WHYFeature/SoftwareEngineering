@@ -15,7 +15,11 @@ from models import OrderDetails
 
 bp = Blueprint("Cart", __name__, url_prefix="/cart")
 
-
+"""
+verifyQuantity函数检查编号为bid的书籍
+检查其数量是否满足quantity
+满足则返回False,否则返回True
+"""
 def verifyQuantity(bid, quantity):
     data = Book.query.filter(Book.bid == bid).first()
     if data.number >= quantity:
@@ -23,12 +27,16 @@ def verifyQuantity(bid, quantity):
     else:
         return True
 
-
+"""
+url=/cart/addCart
+仅支持POST方式,提供bid和quantity
+"""
 @bp.route('/addCart', methods=["POST"])
 def addCart():
     quantity = int(request.form["quantity"])
     bid = request.form["bid"]
-
+    
+    #检查登录状态
     if "uid" not in session:
         session["status"] =  100
         return redirect(url_for('Book.BookDetails', bid=bid))
@@ -36,10 +44,12 @@ def addCart():
     uid = session["uid"]
     session["status"] = 0
 
+    #检查数量合法性
     if verifyQuantity(bid=bid, quantity=quantity):
         session["status"] = 1  # 库存数量不足
         return redirect(url_for('Book.BookDetails', bid=bid))
-    print(f"quantity = {quantity}")
+    #print(f"quantity = {quantity}")
+    #检查用户是否有购物车订单，如果没有则建立新订单
     forms = OrderForm.query.filter(
         OrderForm.uid == uid, OrderForm.status == 0).all()
     if forms == []:
@@ -52,6 +62,7 @@ def addCart():
     form = OrderForm.query.filter(
         OrderForm.uid == uid, OrderForm.status == 0).first()
 
+    #检查订单中是否具有相同图书，如果有则添加数量，否则建立新detail
     detail = OrderDetails.query.filter(
         OrderDetails.oid == form.oid, OrderDetails.bid == bid).first()
     book = Book.query.filter(Book.bid == bid).first()

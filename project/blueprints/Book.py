@@ -8,6 +8,10 @@ from models import UserCollect
 
 from sqlalchemy import func
 
+"""
+GetHotBook获取了热度前十的书目录
+返回各书的详细信息的列表
+"""
 def GetHotBook():
     datas = Book.query.all()
 
@@ -27,6 +31,11 @@ def GetHotBook():
 
 bp = Blueprint("Book", __name__, url_prefix="/books")
 
+"""
+url=/books/
+仅允许GET方法
+获取全部书籍数据放入books返回
+"""
 @bp.route('/')
 def book_list():
     datas = Book.query.all()
@@ -46,6 +55,11 @@ def book_list():
     filtered_books = [b for b in books if not category or b['category'] == category]
     return render_template('books.html', books=filtered_books)
 
+"""
+url=/book/details
+使用带参数bid的GET方法
+获取编号为bid的书籍的详细信息
+"""
 @bp.route('/details')
 def BookDetails():
     bid = request.args.get('bid')

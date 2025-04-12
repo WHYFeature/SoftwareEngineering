@@ -17,7 +17,9 @@ from blueprints import User as _User
 
 bp = Blueprint("Profile", __name__, url_prefix="/profile")
 
-
+"""
+getAllAddress函数获取参数uid对应的用户数据
+"""
 def getAllAddress(uid):
     datas = UserAddress.query.filter(UserAddress.uid == uid).all()
     addresses = []
@@ -29,7 +31,10 @@ def getAllAddress(uid):
         addresses.append(address)
     return addresses
 
-
+"""
+url = /profile
+用户个人中心界面,GET用来获取个人信息,POST未定义
+"""
 @bp.route('/', methods=["GET", "POST"])
 def _profile():
     uid = session['uid']
@@ -40,7 +45,10 @@ def _profile():
 
     return render_template('profile.html', addresses=addresses)
 
-
+"""
+url = /profile/update_profile
+GET方法返回个人中心界面,POST修改用户名
+"""
 @bp.route('/update_profile', methods=["GET", "POST"])
 def update_profile():
     if request.method == "POST":
@@ -53,7 +61,11 @@ def update_profile():
         
     return redirect(url_for('Profile._profile'))
 
-
+"""
+url = /profile/add_address
+POST表单提供用户名name、用户电话phone、用户详细地址full_address
+通过session中保存的uid添加地址
+"""
 @bp.route('/add_address', methods=["GET", "POST"])
 def add_address():
     if request.method == "POST":
@@ -69,7 +81,10 @@ def add_address():
         address = getAllAddress(uid)
         return redirect(url_for('Profile._profile'))
 
-
+"""
+url = /profile/change_password
+POST表单传入旧密码old_password、新密码new_password
+"""
 @bp.route('/change_password', methods=["GET", "POST"])
 def change_password():
     if request.method == "POST":
@@ -78,14 +93,17 @@ def change_password():
         uid = session['uid']
         data = User.query.filter(User.uid == uid).first()
 
+        # 检查新密码是否符合密码格式
         if _User.VerifyPassword(new_password):
             session['status'] = 1  # 密码格式错误
             return redirect(url_for('Profile._profile'))
 
+        # 检查旧密码正确性
         if not check_password_hash(data.password, old_password):
             session['status'] = 2  # 旧密码错误
             return redirect(url_for('Profile._profile'))
 
+        # 修改密码
         data.password = generate_password_hash(new_password)
         db.session.commit()
         session['status'] = 0  # 成功

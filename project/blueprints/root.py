@@ -12,15 +12,26 @@ from sqlalchemy import func
 
 bp = Blueprint("root", __name__, url_prefix="/")
 
+"""
+url = /
+GET方法调用函数获取排行榜前十图书
+"""
 @bp.route('/')
 def index():
     
     books = BookPy.GetHotBook()
-    """首页：展示书店简介和图书分类"""
+
     return render_template('index.html', books=books)
 
+"""
+url = /logout
+GET方法清除session
+"""
 @bp.route('/logout',methods = ["GET","POST"])
 def logout():
-    """退出登录"""
+    
     session.pop('username', None)
-    return redirect(url_for('root.index'))
+    response = redirect(url_for('root.index'))
+    response.delete_cookie('session')
+
+    return response
