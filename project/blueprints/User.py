@@ -99,8 +99,9 @@ def login():
 @bp.route('/logout', methods=["GET", "POST"])
 def logout():
     session.pop("uid", None)
-
+    session.clear()
     response = redirect(url_for('root.index'))
-    response.delete_cookie('session')
+    response.delete_cookie('session')  
+    #删除cookie可能存在session未删除干净的问题，可能需要clear
 
     return response
