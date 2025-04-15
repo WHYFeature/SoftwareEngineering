@@ -30,7 +30,7 @@ GET方法清除session
 @bp.route('/logout',methods = ["GET","POST"])
 def logout():
     
-    session.pop('username', None)
+    session.pop('uid', None)
     response = redirect(url_for('root.index'))
     response.delete_cookie('session')
 

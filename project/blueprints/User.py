@@ -10,7 +10,11 @@ from werkzeug.security import check_password_hash
 from models import User
 from models import db
 from sqlalchemy import func
+"""
+将blueprints包中导入Book模块，blueprints为自定义目录下的包
+"""
 from blueprints import Book as bookpy
+
 bp = Blueprint("User", __name__, url_prefix="/user")
 
 """

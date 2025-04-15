@@ -77,7 +77,7 @@ def BookDetails():
     book["publisher"]=data.publisher
 
     book["inCollect"] = 0
-    if "uid" in session:
+    if "uid" in session:        #检查是否处于登录状态，若处于登录状态则检查是否已收藏
         uid = session["uid"]
         #print(uid)
         collect = UserCollect.query.filter(UserCollect.uid == uid).first()
