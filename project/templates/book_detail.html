@@ -80,10 +80,10 @@
                         <input type="hidden" name="bid" value="{{ book.bid }}">
                         <button type="submit"
                                 class="btn btn-outline-danger {% if inCollect %}active{% endif %}"
-                                aria-pressed="{{ inCollect|lower }}">
+                                aria-pressed="{{ book.inCollect|lower }}">
                         <i class="bi {% if inCollect %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
                         <span class="ms-2">
-                            {% if inCollect %}已收藏{% else %}加入收藏{% endif %}
+                            {% if book.inCollect %}已收藏{% else %}加入收藏{% endif %}
                         </span>
                     </button>
                     </form>

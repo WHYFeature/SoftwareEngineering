@@ -14,6 +14,7 @@ from models import db
 from sqlalchemy import func
 
 from blueprints import User as _User
+from blueprints import Collect as _Collect
 
 bp = Blueprint("Profile", __name__, url_prefix="/profile")
 
@@ -48,7 +49,11 @@ def _profile():
     addresses = getAllAddress(uid)
     # sprint(addresses)
 
-    return render_template('profile.html', addresses=addresses)
+    collects = []
+    collects = _Collect.getAllCollect(uid)
+    print(collects)
+
+    return render_template('profile.html', addresses=addresses, collects=collects)
 
 
 """
