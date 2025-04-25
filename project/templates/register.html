@@ -4,8 +4,19 @@
 {% block title %}用户注册{% endblock %}
 
 {% block content %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <div class="row justify-content-center">
     <div class="col-md-6">
+        {% if session.status %}
+          <script>
+            Swal.fire({
+              icon: 'error',
+              title: '用户名重复',
+              text: '请更换其他用户名！',
+              confirmButtonText: '确定'
+            });
+          </script>
+        {% endif %}
         <h2 class="mb-4">用户注册</h2>
         <form method="POST">
             <div class="mb-3">
