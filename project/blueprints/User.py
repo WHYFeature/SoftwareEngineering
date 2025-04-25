@@ -84,6 +84,11 @@ def login():
         
         # check_password_hash函数检查密码正确性 
         data = User.query.filter(User.username == username).first()
+
+        if data is None:
+            session['status'] = 2 #用户名错误
+            return render_template('login.html')
+
         if check_password_hash(data.password, password):
             session['username'] = data.username
             session['uid'] = data.uid
@@ -91,7 +96,7 @@ def login():
             # return render_template('index.html', books=bookpy.GetHotBook())
             return redirect(url_for('root.index'))
         else:
-            session['status'] = 1
+            session['status'] = 1 #密码错误
 
     return render_template('login.html')
 

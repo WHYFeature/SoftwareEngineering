@@ -20,6 +20,8 @@ bp = Blueprint("Profile", __name__, url_prefix="/profile")
 """
 getAllAddress函数获取参数uid对应的用户数据
 """
+
+
 def getAllAddress(uid):
     datas = UserAddress.query.filter(UserAddress.uid == uid).all()
     addresses = []
@@ -31,10 +33,13 @@ def getAllAddress(uid):
         addresses.append(address)
     return addresses
 
+
 """
 url = /profile
 用户个人中心界面,GET用来获取个人信息,POST未定义
 """
+
+
 @bp.route('/', methods=["GET", "POST"])
 def _profile():
     uid = session['uid']
@@ -45,27 +50,40 @@ def _profile():
 
     return render_template('profile.html', addresses=addresses)
 
+
 """
 url = /profile/update_profile
 GET方法返回个人中心界面,POST修改用户名
 """
+
+
 @bp.route('/update_profile', methods=["GET", "POST"])
 def update_profile():
     if request.method == "POST":
         username = request.form['username']
         uid = session['uid']
+
+        person = User.query.filter(User.username == username).first()
+        if person is not None:
+            session['status'] = 1  # 重复的用户名
+            return redirect(url_for('Profile._profile'))
+
         user = User.query.filter(User.uid == uid).first()
+
         user.username = username
         db.session.commit()
         session['username'] = user.username
-        
+
     return redirect(url_for('Profile._profile'))
+
 
 """
 url = /profile/add_address
 POST表单提供用户名name、用户电话phone、用户详细地址full_address
 通过session中保存的uid添加地址
 """
+
+
 @bp.route('/add_address', methods=["GET", "POST"])
 def add_address():
     if request.method == "POST":
@@ -81,10 +99,13 @@ def add_address():
         address = getAllAddress(uid)
         return redirect(url_for('Profile._profile'))
 
+
 """
 url = /profile/change_password
 POST表单传入旧密码old_password、新密码new_password
 """
+
+
 @bp.route('/change_password', methods=["GET", "POST"])
 def change_password():
     if request.method == "POST":
