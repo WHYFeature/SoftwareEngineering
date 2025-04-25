@@ -38,22 +38,28 @@ url=/books/
 """
 @bp.route('/')
 def book_list():
-    datas = Book.query.all()
+    # 获取搜索关键字
+    keyword = request.args.get('q', '').strip()
 
+    # 使用SQLAlchemy进行过滤查询，如有关键字则按书名模糊匹配
+    if keyword:
+        # 注意：这里使用 ilike 实现大小写不敏感搜索，数据库需支持
+        datas = Book.query.filter(Book.bookname.ilike(f"%{keyword}%")).all()
+    else:
+        datas = Book.query.all()
+
+    # 构建前端需要的字典列表
     books = []
     for data in datas:
-        book_ = {}
-        book_["bid"]=data.bid
-        book_["title"]=data.bookname
-        book_["author"]=data.author
-        book_["price"]=data.price
-        book_["category"]=data.type_
-        books.append(book_)
+        books.append({
+            'bid': data.bid,
+            'title': data.bookname,
+            'author': data.author,
+            'price': data.price,
+            'category': data.type_
+        })
 
-    """图书列表页"""
-    category = request.args.get('category')
-    filtered_books = [b for b in books if not category or b['category'] == category]
-    return render_template('books.html', books=filtered_books)
+    return render_template('books.html', books=books)
 
 """
 url=/book/details

@@ -5,22 +5,31 @@
 
 {% block content %}
 <h2>图书列表</h2>
+
+<!-- 搜索表单 -->
+<form method="get" action="{{ url_for('Book.book_list') }}" class="mb-4">
+  <div class="input-group">
+    <input type="text" name="q" class="form-control" placeholder="搜索书名..." value="{{ request.args.get('q', '') }}">
+    <button class="btn btn-outline-secondary" type="submit">搜索</button>
+  </div>
+</form>
+
 <div class="row row-cols-1 row-cols-md-3 g-4">
     {% for book in books %}
     <div class="col">
         <div class="card h-100">
             <div class="card-body">
                 <h5 class="card-title">
-                  <!-- 使用Flask的url_for生成URL -->
-                <a class="text-decoration-none text-dark">
-                  {{ book.title }}
-                </a>
+                  <a href="{{ url_for('Book.BookDetails', bid=book.bid) }}" class="text-decoration-none text-dark">
+                    {{ book.title }}
+                  </a>
                 </h5>
                 <p class="card-text">价格：¥{{ book.price }}</p>
-                <a href="{{ url_for('Book.BookDetails', bid=book.bid) }}" class="btn btn-primary">查看详情</a>
             </div>
         </div>
     </div>
+    {% else %}
+    <p>未找到匹配的书籍。</p>
     {% endfor %}
 </div>
 {% endblock %}
