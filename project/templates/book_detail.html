@@ -44,7 +44,7 @@
                     </div>
 
                     <!-- 操作表单 -->
-                    <form action="{{ url_for('Cart.addCart')}}" method="post" class="needs-validation" novalidate>
+                    <form action="{{ url_for('Cart.add_to_cart')}}" method="post" class="needs-validation" novalidate>
                         <input type="hidden" name="bid" value="{{ book.bid }}">
 
                         <div class="row g-3">

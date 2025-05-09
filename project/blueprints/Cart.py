@@ -1,117 +1,134 @@
-from flask import Blueprint
-from flask import request
-from flask import session
-from flask import render_template
-from flask import redirect, url_for
-
+from flask import Blueprint, request, session, render_template, redirect, url_for, flash
 from sqlalchemy import func
+from datetime import datetime
 
-from models import User
-from models import db
-from models import UserAddress
-from models import Book
-from models import OrderForm
-from models import OrderDetails
+from models import db, User, UserAddress, Book, OrderForm, OrderDetails
 
 bp = Blueprint("Cart", __name__, url_prefix="/cart")
 
-"""
-verifyQuantity函数检查编号为bid的书籍
-检查其数量是否满足quantity
-满足则返回False,否则返回True
-"""
-
-
-def verifyQuantity(bid, quantity):
-    data = Book.query.filter(Book.bid == bid).first()
-    if data.number >= quantity:
-        return False
-    else:
+# Helper: 检查库存，若库存不足则返回 True
+def is_stock_insufficient(bid, change_qty):
+    book = Book.query.get(bid)
+    if not book:
         return True
+    return book.number < change_qty
 
+@bp.route('/', methods=["GET"])
+def view_cart():
+    """ 显示当前用户购物车 """
+    if 'uid' not in session:
+        flash("请先登录再查看购物车。", "warning")
+        return redirect(url_for('Book.book_list'))
 
-"""
-getUSerCart函数返回uid用户的购物车订单
-购物车订单根据购物逻辑，仅会有一个订单status = False
-"""
+    uid = session['uid']
+    # 获取未完成订单
+    order = OrderForm.query.filter_by(uid=uid, status=0).first()
+    cart = {}
+    total = 0
 
+    if order:
+        details = OrderDetails.query.filter_by(oid=order.oid).all()
+        for item in details:
+            book = Book.query.get(item.bid)
+            if not book:
+                continue
+            subtotal = float(item.price) * item.number
+            cart[item.bid] = {
+                'title': book.bookname,
+                'price': float(item.price),
+                'quantity': item.number,
+                'subtotal': subtotal
+            }
+            total += subtotal
 
-def getUserCart(uid):
-    orderform = OrderForm.query(
-        OrderForm.uid == uid, OrderForm.status == False).first()
-    cartDetails = []
-    datas = OrderDetails.query(OrderDetails.oid == orderform.oid).all()
-    for data in datas:
-        book = Book.query(Book.bid == data.bid).first()
-        cartDetails.append({
-            "bid": data.bid,
-            "name": book.bookname,
-            "author": book.author,
-            "type_": book.type_,
-            "version": book.version,
-            "publiser": book.publiser,
-            "number": data.number,
-            "price": data.price
-        })
-    return cartDetails
+    return render_template('cart.html', cart=cart, total=total)
 
+@bp.route('/add', methods=["POST"])
+def add_to_cart():
+    """ 添加图书到购物车 """
+    if 'uid' not in session:
+        flash("请先登录后再添加购物车。", "warning")
+        return redirect(request.referrer or url_for('Book.book_list'))
 
-"""
-url=/cart/addCart
-仅支持POST方式,提供bid和quantity
-"""
+    uid = session['uid']
+    bid = int(request.form.get('bid', 0))
+    qty = int(request.form.get('quantity', 1))
 
+    if is_stock_insufficient(bid, qty):
+        flash("库存不足，无法添加。", "danger")
+        return redirect(request.referrer or url_for('Book.book_list'))
 
-@bp.route('/addCart', methods=["POST"])
-def addCart():
-    quantity = int(request.form["quantity"])
-    bid = request.form["bid"]
-
-    # 检查登录状态
-    if "uid" not in session:
-        session["status"] = 100
-        return redirect(url_for('Book.BookDetails', bid=bid))
-
-    uid = session["uid"]
-    session["status"] = 0
-
-    # 检查数量合法性
-    if verifyQuantity(bid=bid, quantity=quantity):
-        session["status"] = 1  # 库存数量不足
-        return redirect(url_for('Book.BookDetails', bid=bid))
-    # print(f"quantity = {quantity}")
-    # 检查用户是否有购物车订单，如果没有则建立新订单
-    forms = OrderForm.query.filter(
-        OrderForm.uid == uid, OrderForm.status == 0).all()
-    if forms == []:
-        oid = db.session.query(func.max(OrderForm.oid)).scalar() or 0
-        oid += 1
-        form = OrderForm(oid=oid, uid=uid, status=0)
-        db.session.add(form)
+    # 获取或创建购物车订单
+    order = OrderForm.query.filter_by(uid=uid, status=0).first()
+    if not order:
+        next_oid = db.session.query(func.max(OrderForm.oid)).scalar() or 0
+        order = OrderForm(oid=next_oid + 1, uid=uid, status=0, time=datetime.now())
+        db.session.add(order)
         db.session.commit()
 
-    form = OrderForm.query.filter(
-        OrderForm.uid == uid, OrderForm.status == 0).first()
-
-    # 检查订单中是否具有相同图书，如果有则添加数量，否则建立新detail
-    detail = OrderDetails.query.filter(
-        OrderDetails.oid == form.oid, OrderDetails.bid == bid).first()
-    book = Book.query.filter(Book.bid == bid).first()
-    if detail is None:
-        detail = OrderDetails(oid=form.oid, bid=bid,
-                              number=quantity, price=book.price)
-        db.session.add(detail)
-    else:
-        detail.number = detail.number+quantity
+    # 添加或更新详情
+    detail = OrderDetails.query.filter_by(oid=order.oid, bid=bid).first()
+    book = Book.query.get(bid)
+    if detail:
+        detail.number += qty
         detail.price = book.price
-    book.number = book.number - quantity
+    else:
+        detail = OrderDetails(oid=order.oid, bid=bid, number=qty, price=book.price)
+        db.session.add(detail)
+    # 减少库存
+    book.number -= qty
 
     db.session.commit()
-    return redirect(url_for('Book.BookDetails', bid=bid))
+    flash("已添加到购物车。", "success")
+    return redirect(request.referrer or url_for('Cart.view_cart'))
 
+@bp.route('/update', methods=["POST"])
+def update_cart():
+    """ 更新购物车商品数量 """
+    if 'uid' not in session:
+        flash("请先登录。", "warning")
+        return redirect(url_for('Book.book_list'))
 
-@bp.route('/')
-def UserCart():
     uid = session['uid']
-    cartdata = getUserCart(uid)
-    return render_template('cart.html', items = cartdata)
+    order = OrderForm.query.filter_by(uid=uid, status=0).first()
+    if not order:
+        flash("购物车为空。", "info")
+        return redirect(url_for('Cart.view_cart'))
+
+    for key, value in request.form.items():
+        if key.startswith('quantity_'):
+            bid = int(key.split('_', 1)[1])
+            new_qty = int(value)
+            detail = OrderDetails.query.filter_by(oid=order.oid, bid=bid).first()
+            if detail:
+                diff = new_qty - detail.number
+                if is_stock_insufficient(bid, diff if diff > 0 else 0):
+                    flash(f"库存不足，无法更新书籍 {bid}。", "danger")
+                    continue
+                # 修改库存和数量
+                book = Book.query.get(bid)
+                book.number -= diff
+                detail.number = new_qty
+    db.session.commit()
+    flash("购物车更新完成。", "success")
+    return redirect(url_for('Cart.view_cart'))
+
+@bp.route('/remove/<int:bid>', methods=["GET"])
+def remove_from_cart(bid):
+    """ 从购物车移除商品 """
+    if 'uid' not in session:
+        flash("请先登录。", "warning")
+        return redirect(url_for('Book.book_list'))
+
+    uid = session['uid']
+    order = OrderForm.query.filter_by(uid=uid, status=0).first()
+    if order:
+        detail = OrderDetails.query.filter_by(oid=order.oid, bid=bid).first()
+        if detail:
+            # 恢复库存
+            book = Book.query.get(bid)
+            book.number += detail.number
+            db.session.delete(detail)
+            db.session.commit()
+            flash("已从购物车移除。", "success")
+    return redirect(url_for('Cart.view_cart'))

@@ -7,7 +7,7 @@
     <h2 class="mb-4">我的购物车</h2>
     
     {% if cart %}
-    <form method="POST" action="{{ url_for('update_cart') }}">
+    <form method="POST" action="{{ url_for('Cart.update_cart') }}">
         <div class="table-responsive">
             <table class="table">
                 <thead>
@@ -31,8 +31,7 @@
                         </td>
                         <td>¥{{ "%.2f"|format(item.price * item.quantity) }}</td>
                         <td>
-                            <a href="{{ url_for('remove_from_cart', book_id=book_id) }}" 
-                               class="btn btn-danger btn-sm">移除</a>
+                            <a href="{{ url_for('Cart.remove_from_cart', bid=book_id) }}" class="btn btn-danger btn-sm">移除</a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -57,7 +56,7 @@
     </form>
     {% else %}
     <div class="alert alert-info">
-        购物车是空的，快去<a href="{{ url_for('book_list') }}" class="alert-link">选购图书</a>吧！
+        购物车是空的，快去<a href="{{ url_for('Book.book_list') }}" class="alert-link">选购图书</a>吧！
     </div>
     {% endif %}
 </div>
