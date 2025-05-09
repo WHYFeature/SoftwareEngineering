@@ -42,7 +42,6 @@ POST方法传入用户名username、密码password、性别sex
 
 @bp.route('/register', methods=["GET", "POST"])
 def register():
-    session["status"] = 0
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -86,7 +85,6 @@ POST方法传入用户名username、密码password
 @bp.route('/login', methods=["GET", "POST"])
 def login():
     """登录页面"""
-    session['status'] = 0
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -96,7 +94,7 @@ def login():
 
         if data is None:
             session['status'] = 2  # 用户名错误
-            return render_template('login.html')
+            return redirect(url_for('User.login'))
 
         if check_password_hash(data.password, password):
             session['username'] = data.username
@@ -106,6 +104,7 @@ def login():
             return redirect(url_for('root.index'))
         else:
             session['status'] = 1  # 密码错误
+            return redirect(url_for('User.login'))
 
     return render_template('login.html')
 
@@ -119,3 +118,7 @@ def logout():
     # 删除cookie可能存在session未删除干净的问题，可能需要clear
 
     return response
+@bp.route('/clear_status')
+def clear_status():
+    session.pop('status', None)
+    return '', 204
