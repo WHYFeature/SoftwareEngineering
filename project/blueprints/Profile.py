@@ -51,7 +51,7 @@ def _profile():
 
     collects = []
     collects = _Collect.getAllCollect(uid)
-    print(collects)
+    # print(collects)
 
     return render_template('profile.html', addresses=addresses, collects=collects)
 
