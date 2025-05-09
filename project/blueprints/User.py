@@ -21,6 +21,8 @@ bp = Blueprint("User", __name__, url_prefix="/user")
 VerifyPossword函数检查密码正确性:
 长度大于8、仅包含字母和数字
 """
+
+
 def VerifyPassword(password):
     if len(password) < 8:
         return True
@@ -31,25 +33,29 @@ def VerifyPassword(password):
                     return True
     return False
 
+
 """
 url = /user/register
 POST方法传入用户名username、密码password、性别sex
 """
+
+
 @bp.route('/register', methods=["GET", "POST"])
 def register():
+    session["status"] = 0
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         sex = request.form['sex']  # 1男 2女
         # sex = 1  # 测试用例
 
-        #检查用户名重复
+        # 检查用户名重复
         data = User.query.filter(User.username == username).all()
         if data != []:
             session['status'] = 1  # 错误，重复用户名
             return render_template('register.html')
-        
-        #检查密码格式
+
+        # 检查密码格式
         if (VerifyPassword(password)):
             session['status'] = 2  # 错误，密码格式错误
             return render_template('register.html')
@@ -70,23 +76,26 @@ def register():
         return redirect(url_for('User.login'))
     return render_template('register.html')
 
+
 """
 url = /user/login
 POST方法传入用户名username、密码password
 """
+
+
 @bp.route('/login', methods=["GET", "POST"])
 def login():
     """登录页面"""
+    session['status'] = 0
     if request.method == 'POST':
-        session['status'] = 0
         username = request.form['username']
         password = request.form['password']
-        
-        # check_password_hash函数检查密码正确性 
+
+        # check_password_hash函数检查密码正确性
         data = User.query.filter(User.username == username).first()
 
         if data is None:
-            session['status'] = 2 #用户名错误
+            session['status'] = 2  # 用户名错误
             return render_template('login.html')
 
         if check_password_hash(data.password, password):
@@ -96,7 +105,7 @@ def login():
             # return render_template('index.html', books=bookpy.GetHotBook())
             return redirect(url_for('root.index'))
         else:
-            session['status'] = 1 #密码错误
+            session['status'] = 1  # 密码错误
 
     return render_template('login.html')
 
@@ -106,7 +115,7 @@ def logout():
     session.pop("uid", None)
     session.clear()
     response = redirect(url_for('root.index'))
-    response.delete_cookie('session')  
-    #删除cookie可能存在session未删除干净的问题，可能需要clear
+    response.delete_cookie('session')
+    # 删除cookie可能存在session未删除干净的问题，可能需要clear
 
     return response
