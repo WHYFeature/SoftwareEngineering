@@ -141,14 +141,17 @@
                     <h5>我的收藏</h5>
                 </div>
                 <div class="card-body">
-                    {% if favorites %}
+                    {% if collects %}
                     <div class="row row-cols-1 row-cols-md-3 g-4">
-                        {% for item in favorites %}
+                        {% for item in collects %}
                         <div class="col">
                             <div class="card h-100">
                                 <div class="card-body">
-                                    <h6 class="card-title">{{ item.name }}</h6>
-                                    <p class="text-muted">收藏时间：{{ item.favorited_at }}</p>
+                                    <h6 class="card-title">{{ item.bid }}</h6>
+                                    <p class="text-muted">书名：{{ item.name }}</p>
+                                    <p class="text-muted">收藏时间：{{ item.collect_time }}</p>
+                                    <p class="text-muted">作者：{{ item.author }}</p>
+                                    <p class="text-muted">出版商：{{ item.publisher }}</p>
                                 </div>
                             </div>
                         </div>

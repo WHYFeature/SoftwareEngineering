@@ -27,6 +27,7 @@ def getAllCollect(uid):
             collect["bid"] = data.bid
             collect["collect_time"] = data.collect_time
             book = Book.query.filter(Book.bid == data.bid).first()
+            collect["name"]=book.bookname
             collect["author"] = book.author
             collect["publisher"] = book.publisher
             collects.append(collect)
