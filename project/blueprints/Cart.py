@@ -95,6 +95,7 @@ def update_cart():
         flash("购物车为空。", "info")
         return redirect(url_for('Cart.view_cart'))
 
+    successNum = 0
     for key, value in request.form.items():
         if key.startswith('quantity_'):
             bid = int(key.split('_', 1)[1])
@@ -103,14 +104,19 @@ def update_cart():
             if detail:
                 diff = new_qty - detail.number
                 if is_stock_insufficient(bid, diff if diff > 0 else 0):
-                    flash(f"库存不足，无法更新书籍 {bid}。", "danger")
+                    data = Book.query.filter(Book.bid == bid).first()
+                    flash(f"《{data.bookname}》库存不足。", "danger")
                     continue
                 # 修改库存和数量
+                if diff is 0:
+                    continue
                 book = Book.query.get(bid)
                 book.number -= diff
                 detail.number = new_qty
+                successNum = successNum +1
     db.session.commit()
-    flash("购物车更新完成。", "success")
+    if successNum:
+        flash("购物车更新完成。", "success")
     return redirect(url_for('Cart.view_cart'))
 
 @bp.route('/remove/<int:bid>', methods=["GET"])

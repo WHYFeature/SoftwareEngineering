@@ -51,12 +51,12 @@ def register():
         # 检查用户名重复
         data = User.query.filter(User.username == username).all()
         if data != []:
-            session['status'] = 1  # 错误，重复用户名
+            session['status'] = SessionStatus.ERROR_REPEATED_USER_NAME.value  # 错误，重复用户名
             return render_template('register.html')
 
         # 检查密码格式
         if (VerifyPassword(password)):
-            session['status'] = 2  # 错误，密码格式错误
+            session['status'] = SessionStatus.ERROR_INCORRECT_PASSWORD_FORMAT.value  # 错误，密码格式错误
             return render_template('register.html')
 
         uid = 0
