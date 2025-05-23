@@ -4,6 +4,7 @@ from flask import render_template
 from flask import session
 from flask import redirect
 from flask import url_for
+from flask import flash
 
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
@@ -28,6 +29,7 @@ def getAllAddress(uid):
     addresses = []
     for data in datas:
         address = {}
+        address['uaid'] = data.uaid
         address['name'] = data.receiver
         address['phone'] = data.phone
         address['full_address'] = data.address
@@ -102,7 +104,53 @@ def add_address():
         db.session.add(newUserAddress)
         db.session.commit()
         address = getAllAddress(uid)
+        flash("地址添加成功", "success")
         return redirect(url_for('Profile._profile'))
+
+
+"""
+delete_address处理逻辑：
+在之前获取的地址数据中包含地址数据的唯一序列号uaid，
+调用接口回传uaid删除对应条目
+"""
+
+
+@bp.route('/delete_address', methods=['POST'])
+def deleteAddress():
+    uaid = request.form['uaid']
+    DeletedAddress = UserAddress.query.filter(UserAddress.uaid == uaid).first()
+    if DeletedAddress is None:
+        print("ADDRESS WRONG")
+        return redirect(url_for('Profile._profile'))
+    db.session.delete(DeletedAddress)
+    db.session.commit()
+    flash("地址删除成功", "success")
+    return redirect(url_for('Profile._profile'))
+
+
+"""
+changeAddress处理逻辑：
+通过POST传递uaid作为索引数据 phone name full_address项作为新数据
+系统定位到uaid对应数据条目修改其余三项
+"""
+
+
+@bp.route('/change_address', methods=["POST"])
+def changeAddress():
+    uaid = request.files['uaid']
+    phone = request.form['phone']
+    receiver = request.form['name']
+    address = request.form['full_address']
+    changedAddress = UserAddress.query.filter(UserAddress.uaid == uaid).first()
+    if changedAddress is None:
+        print("ADDRESS WRONG")
+        return redirect(url_for('Profile._profile'))
+    changedAddress.phone = phone
+    changedAddress.receiver = receiver
+    changedAddress.address = address
+    db.session.commit()
+    flash("地址修改成功", "success")
+    return redirect(url_for('Profile._profile'))
 
 
 """

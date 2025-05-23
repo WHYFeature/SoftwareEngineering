@@ -4,6 +4,7 @@ from flask import render_template
 from flask import session
 from flask import redirect
 from flask import url_for
+from flask import flash
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 
@@ -51,12 +52,12 @@ def register():
         # 检查用户名重复
         data = User.query.filter(User.username == username).all()
         if data != []:
-            session['status'] = SessionStatus.ERROR_REPEATED_USER_NAME.value  # 错误，重复用户名
+            flash("重复的用户名", "danger")
             return render_template('register.html')
 
         # 检查密码格式
         if (VerifyPassword(password)):
-            session['status'] = SessionStatus.ERROR_INCORRECT_PASSWORD_FORMAT.value  # 错误，密码格式错误
+            flash("密码格式错误", "danger")
             return render_template('register.html')
 
         uid = 0
@@ -70,6 +71,7 @@ def register():
         db.session.add(newUser)
         db.session.commit()
 
+        flash("注册成功", "success")
         session['status'] = 0  # 成功
 
         return redirect(url_for('User.login'))
@@ -93,7 +95,7 @@ def login():
         data = User.query.filter(User.username == username).first()
 
         if data is None:
-            session['status'] = 2  # 用户名错误
+            flash("用户名错误", "danger")
             return redirect(url_for('User.login'))
 
         if check_password_hash(data.password, password):
@@ -101,9 +103,10 @@ def login():
             session['uid'] = data.uid
             session['level'] = data.level
             # return render_template('index.html', books=bookpy.GetHotBook())
+            flash("登录成功", "success")
             return redirect(url_for('root.index'))
         else:
-            session['status'] = 1  # 密码错误
+            flash("密码错误", "danger")
             return redirect(url_for('User.login'))
 
     return render_template('login.html')
@@ -118,6 +121,8 @@ def logout():
     # 删除cookie可能存在session未删除干净的问题，可能需要clear
 
     return response
+
+
 @bp.route('/clear_status')
 def clear_status():
     session.pop('status', None)
