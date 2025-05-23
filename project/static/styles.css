@@ -1,0 +1,135 @@
+/* 全局样式 */
+body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.7;
+    background: #de0abb;
+    color: #333;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* 导航栏样式 */
+.navbar {
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    padding: 1.2rem 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+
+.navbar-brand {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #ffffff !important;
+    letter-spacing: 0.5px;
+    text-shadow: none;
+}
+
+.nav-link {
+    color: #ffffff !important;
+    margin: 0 0.8rem;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    position: relative;
+    text-shadow: none;
+}
+
+.nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #ffffff;
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.nav-link:hover {
+    color: #ffffff !important;
+}
+
+.dropdown-menu {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    background-color: #fff;
+}
+
+.dropdown-item {
+    padding: 0.8rem 1.5rem;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.dropdown-item:hover {
+    background-color: #f3f4f6;
+    color: #667eea;
+}
+
+/* 登录和注册按钮样式 */
+.btn-login-register {
+    /* 设置背景颜色 */
+    background-color: #007BFF; 
+    /* 设置文字颜色 */
+    color: #22c635 !important; 
+    border: 2px solid #1d2630; 
+    border-radius: 25px;
+    padding: 0.3rem 1rem; 
+    font-weight: 600;
+    margin-left: 0.5rem; 
+    /* 确保按钮正常显示 */
+    display: inline-block; 
+    /* 确保按钮可见 */
+    visibility: visible; 
+    /* 确保按钮不透明 */
+    opacity: 1; 
+    transition: all 0.3s ease;
+}
+
+.btn-login-register:hover {
+    /* 悬停时背景透明 */
+    background-color: transparent; 
+    /* 悬停时文字变为按钮边框颜色 */
+    color: #007BFF !important; 
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+
+/* 调整 dropdown 按钮样式 */
+.dropdown .btn.btn-outline-light {
+    /* 修改背景颜色，这里使用深蓝色作为示例 */
+    background-color: #933290; 
+    /* 修改文字颜色为白色，与深色背景形成对比 */
+    color: white; 
+    /* 增加边框宽度和颜色 */
+    border: 2px solid #861165; 
+    /* 添加圆角 */
+    border-radius: 8px; 
+    /* 添加阴影效果，增强立体感 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    /* 鼠标悬停时的过渡效果 */
+    transition: all 0.3s ease; 
+}
+
+/* 鼠标悬停时的样式 */
+.dropdown .btn.btn-outline-light:hover {
+    /* 悬停时稍微加深背景颜色 */
+    background-color: #861165; 
+    /* 悬停时边框颜色也相应变化 */
+    border-color: #861165; 
+    /* 悬停时阴影加深 */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); 
+}
+
+/* 按钮激活或打开下拉菜单时的样式 */
+.dropdown .btn.btn-outline-light:active,
+.dropdown .btn.btn-outline-light.show {
+    background-color: #a564a1; 
+    border-color: #a564a1; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); 
+}
