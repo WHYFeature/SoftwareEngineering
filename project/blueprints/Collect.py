@@ -61,7 +61,11 @@ def addCollect():
     data = UserCollect.query.filter(
         UserCollect.uid == uid, UserCollect.bid == bid).first()
     if data is not None:
-        flash("请勿重复收藏", "warning")
+        data = UserCollect.query.filter(
+            UserCollect.uid == uid, UserCollect.bid == bid).first()
+        db.session.delete(data)
+        db.session.commit()
+        flash("取消收藏成功", "success")
         return redirect(url_for('Book.BookDetails', bid=bid))
 
     # 添加新收藏到数据库
