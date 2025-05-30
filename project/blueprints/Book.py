@@ -86,8 +86,8 @@ def BookDetails():
     if "uid" in session:        #检查是否处于登录状态，若处于登录状态则检查是否已收藏
         uid = session["uid"]
         #print(uid)
-        collect = UserCollect.query.filter(UserCollect.uid == uid).first()
+        collect = UserCollect.query.filter(UserCollect.uid == uid,UserCollect.bid == bid).first()
         if collect is not None:
             book["inCollect"] = 1 #已收藏
-
+    print(book)
     return render_template('book_detail.html', book=book)
