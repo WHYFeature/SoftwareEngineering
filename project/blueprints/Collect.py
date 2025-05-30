@@ -84,7 +84,7 @@ def deleteCollect():
 
     data = UserCollect.query.filter(
         UserCollect.uid == uid, UserCollect.bid == bid).first()
-
     db.session.delete(data)
     db.session.commit()
     flash("取消收藏成功", "success")
+    return redirect(url_for('Profile._profile'))

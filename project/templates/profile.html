@@ -43,42 +43,43 @@
                         <div class="row mb-3">
                             <label class="col-sm-3 col-form-label">用户名</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" name = "username"
-                                       value="{{ session.username }}" readonly>
+                                <input type="text" class="form-control" name="username" value="{{ session.username }}"
+                                    readonly>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-9 offset-sm-3">
                                 <button type="submit" class="btn btn-primary d-none" id="saveProfileBtn">保存更改</button>
-                                <button type="button" class="btn btn-outline-secondary d-none" id="cancelEditBtn">取消</button>
+                                <button type="button" class="btn btn-outline-secondary d-none"
+                                    id="cancelEditBtn">取消</button>
                             </div>
                         </div>
                     </form>
                 </div>
                 <script>
-                document.getElementById('editProfileBtn').addEventListener('click', function() {
-                    // 移除所有输入框的只读属性
-                    document.querySelectorAll('#profileForm input').forEach(input => {
-                        input.removeAttribute('readonly');
+                    document.getElementById('editProfileBtn').addEventListener('click', function () {
+                        // 移除所有输入框的只读属性
+                        document.querySelectorAll('#profileForm input').forEach(input => {
+                            input.removeAttribute('readonly');
+                        });
+                        // 显示保存和取消按钮
+                        document.getElementById('saveProfileBtn').classList.remove('d-none');
+                        document.getElementById('cancelEditBtn').classList.remove('d-none');
+                        // 隐藏编辑按钮
+                        this.classList.add('d-none');
                     });
-                    // 显示保存和取消按钮
-                    document.getElementById('saveProfileBtn').classList.remove('d-none');
-                    document.getElementById('cancelEditBtn').classList.remove('d-none');
-                    // 隐藏编辑按钮
-                    this.classList.add('d-none');
-                });
 
-                document.getElementById('cancelEditBtn').addEventListener('click', function() {
-                    // 恢复只读属性并重置值（如有需要可重新从服务器获取）
-                    document.querySelectorAll('#profileForm input').forEach(input => {
-                        input.setAttribute('readonly', true);
+                    document.getElementById('cancelEditBtn').addEventListener('click', function () {
+                        // 恢复只读属性并重置值（如有需要可重新从服务器获取）
+                        document.querySelectorAll('#profileForm input').forEach(input => {
+                            input.setAttribute('readonly', true);
+                        });
+                        // 隐藏保存和取消按钮
+                        document.getElementById('saveProfileBtn').classList.add('d-none');
+                        this.classList.add('d-none');
+                        // 显示编辑按钮
+                        document.getElementById('editProfileBtn').classList.remove('d-none');
                     });
-                    // 隐藏保存和取消按钮
-                    document.getElementById('saveProfileBtn').classList.add('d-none');
-                    this.classList.add('d-none');
-                    // 显示编辑按钮
-                    document.getElementById('editProfileBtn').classList.remove('d-none');
-                });
                 </script>
             </div>
 
@@ -92,7 +93,8 @@
                         <div>
                             <h6>登录密码</h6>
                         </div>
-                        <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                        <button class="btn btn-outline-primary" data-bs-toggle="modal"
+                            data-bs-target="#changePasswordModal">
                             修改密码
                         </button>
                     </div>
@@ -103,27 +105,37 @@
             <div class="card mb-4" id="address">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5>个人地址</h5>
-                    <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addAddressModal">
+                    <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                        data-bs-target="#addAddressModal">
                         添加地址
                     </button>
                 </div>
                 <div class="card-body">
                     {% if addresses %}
-                    <div class="list-group" >
+                    <div class="list-group">
                         {% for address in addresses %}
                         <div class="list-group-item">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-<!--                                    收货人-->
+                                    <!--                                    收货人-->
                                     <h6>{{ address.name }}</h6>
-<!--                                    收货人电话-->
+                                    <!--                                    收货人电话-->
                                     <p class="mb-0">{{ address.phone }}</p>
-<!--                                    详细地址-->
+                                    <!--                                    详细地址-->
                                     <p class="mb-0">{{ address.full_address }}</p>
                                 </div>
                                 <div>
-                                    <button class="btn btn-sm btn-outline-secondary">编辑</button>
-                                    <button class="btn btn-sm btn-outline-danger">删除</button>
+                                    <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal"
+                                        data-bs-target="#changeAddressModal" data-uaid="{{ address.uaid }}"
+                                        data-name="{{ address.name }}" data-phone="{{ address.phone }}"
+                                        data-address="{{ address.full_address }}">
+                                        编辑
+                                    </button>
+
+                                    <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
+                                        data-bs-target="#deleteAddressModal" data-uaid="{{ address.uaid }}">
+                                        删除
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -136,7 +148,6 @@
             </div>
 
             <!-- 收藏管理 -->
-
             <div class="card mb-4" id="favorites">
                 <div class="card-header">
                     <h5>我的收藏</h5>
@@ -151,6 +162,10 @@
                             <p><strong>收藏时间：</strong>{{ item.collect_time}}</p>
                             <p><strong>作者：</strong>{{ item.author }}</p>
                             <p><strong>出版商：</strong>{{ item.publisher }}</p>
+                            <div>
+                                <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
+                                    data-bs-target="#deleteCollect" data-bid="{{ item.bid }}">删除</button>
+                            </div>
                         </div>
                         {% endfor %}
                     </div>
@@ -197,7 +212,8 @@
     </div>
 </div>
 <!-- 修改密码模态框 -->
-<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <form method="POST" action="{{ url_for('Profile.change_password') }}">
@@ -210,42 +226,40 @@
                         <label class="form-label">旧密码</label>
                         <input type="password" name="old_password" class="form-control" required>
                     </div>
-                     <div class="mb-3">
-                <label class="form-label">新密码</label>
-                <input type="password" name="new_password" class="form-control" id="password"
-                       required minlength="8" maxlength="20"
-                       oninput="validatePassword()">
-                <div class="form-text">仅允许纯数字和英文字母，8-20个字符</div>
-            </div>
-             <!-- 确认密码 -->
-            <div class="mb-3">
-            <label class="form-label">确认密码</label>
-            <input type="password" name="confirm_password" id="confirm_password"
-                   class="form-control" required
-                   oninput="validatePassword()">
-            <div id="passwordError" class="text-danger form-text"></div>
-            </div>
-                      <script>
-            function validatePassword() {
-                const password = document.getElementById('new_password').value;
-                const confirmPassword = document.getElementById('confirm_password').value;
-                const errorElement = document.getElementById('passwordError');
-                if (password !== confirmPassword) {
-                    errorElement.textContent = "两次输入的密码不一致";
-                    return false;
-                } else {
-                errorElement.textContent = "";
-                return true;
-                }
-            }
+                    <div class="mb-3">
+                        <label class="form-label">新密码</label>
+                        <input type="password" name="new_password" class="form-control" id="password" required
+                            minlength="8" maxlength="20" oninput="validatePassword()">
+                        <div class="form-text">仅允许纯数字和英文字母，8-20个字符</div>
+                    </div>
+                    <!-- 确认密码 -->
+                    <div class="mb-3">
+                        <label class="form-label">确认密码</label>
+                        <input type="password" name="confirm_password" id="confirm_password" class="form-control"
+                            required oninput="validatePassword()">
+                        <div id="passwordError" class="text-danger form-text"></div>
+                    </div>
+                    <script>
+                        function validatePassword() {
+                            const password = document.getElementById('new_password').value;
+                            const confirmPassword = document.getElementById('confirm_password').value;
+                            const errorElement = document.getElementById('passwordError');
+                            if (password !== confirmPassword) {
+                                errorElement.textContent = "两次输入的密码不一致";
+                                return false;
+                            } else {
+                                errorElement.textContent = "";
+                                return true;
+                            }
+                        }
 
-            // 表单提交时最终检查
-            document.querySelector('form').addEventListener('submit', function(e) {
-                if (!validatePassword()) {
-                    e.preventDefault(); // 阻止表单提交
-                }
-            });
-            </script>
+                        // 表单提交时最终检查
+                        document.querySelector('form').addEventListener('submit', function (e) {
+                            if (!validatePassword()) {
+                                e.preventDefault(); // 阻止表单提交
+                            }
+                        });
+                    </script>
 
                 </div>
                 <div class="modal-footer">
@@ -256,6 +270,127 @@
         </div>
     </div>
 </div>
+<!-- 取消收藏模态框 -->
+<div class="modal fade" id="deleteCollect" tabindex="-1" aria-labelledby="deleteCollectModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form method="POST" action="{{ url_for('Collect.deleteCollect') }}">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteCollectModalLabel">确认取消收藏</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="关闭"></button>
+                </div>
+                <div class="modal-body">
+                    确定要取消该书籍的收藏吗？
+                    <input type="hidden" name="bid" id="collectBid">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-danger">确认删除</button>
+                </div>
+            </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    var deleteCollectModal = document.getElementById('deleteCollect');
+                    deleteCollectModal.addEventListener('show.bs.modal', function (event) {
+                        var button = event.relatedTarget;
+                        var bid = button.getAttribute('data-bid');
+                        var input = deleteCollectModal.querySelector('#collectBid');
+                        input.value = bid;
+                    });
+                });
+            </script>
+        </form>
+    </div>
+</div>
+<!-- 修改地址模态框 -->
+<!-- 修改地址模态框 -->
+<div class="modal fade" id="changeAddressModal" tabindex="-1" aria-labelledby="changeAddressModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form method="POST" action="{{ url_for('Profile.changeAddress') }}">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">编辑地址</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="关闭"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="uaid" id="editAddressId">
+                    <div class="mb-3">
+                        <label class="form-label">收货人姓名</label>
+                        <input type="text" class="form-control" name="name" id="editName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">联系电话</label>
+                        <input type="text" class="form-control" name="phone" id="editPhone" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">详细地址</label>
+                        <textarea class="form-control" name="full_address" id="editFullAddress" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-primary">保存修改</button>
+                </div>
+            </div>
+        </form>
+        <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const editModal = document.getElementById('changeAddressModal');
+            editModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
 
+            const uaid = button.getAttribute('data-uaid');
+            const name = button.getAttribute('data-name');
+            const phone = button.getAttribute('data-phone');
+            const address = button.getAttribute('data-address');
+
+            document.getElementById('editAddressId').value = uaid;
+            document.getElementById('editName').value = name;
+            document.getElementById('editPhone').value = phone;
+            document.getElementById('editFullAddress').value = address;
+            });
+        });
+    </script>
+    </div>
+</div>
+
+
+<!-- 删除地址模态框 -->
+<div class="modal fade" id="deleteAddressModal" tabindex="-1" aria-labelledby="deleteAddressModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <form method="POST" action="{{ url_for('Profile.deleteAddress') }}">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteAddressModalLabel">确认删除地址</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="关闭"></button>
+                </div>
+                <div class="modal-body">
+                    <p>是否确认删除该地址？</p>
+                    <input type="hidden" name="action" value="delete">
+                    <input type="hidden" name="uaid" id="deleteAddressId">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-danger">删除</button>
+                </div>
+            </div>
+            <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const deleteModal = document.getElementById('deleteAddressModal');
+                deleteModal.addEventListener('show.bs.modal', function (event) {
+                    const button = event.relatedTarget;
+                    const uaid = button.getAttribute('data-uaid');
+                    document.getElementById('deleteAddressId').value = uaid;
+                });
+            });
+            </script>
+        </form>
+
+    </div>
+</div>
+
+
+</div>
 <!-- JavaScript（保持原样） -->
 {% endblock %}

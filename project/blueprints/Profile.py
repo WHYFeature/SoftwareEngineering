@@ -137,7 +137,7 @@ changeAddress处理逻辑：
 
 @bp.route('/change_address', methods=["POST"])
 def changeAddress():
-    uaid = request.files['uaid']
+    uaid = request.form['uaid']
     phone = request.form['phone']
     receiver = request.form['name']
     address = request.form['full_address']
