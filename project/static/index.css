@@ -1,0 +1,70 @@
+/* 首页容器样式，与 base.html 中的布局协调 */
+#index-container {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 欢迎标题样式 */
+#index-container h2 {
+    color: #2c3e50;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 0.5rem;
+}
+
+/* 欢迎描述段落样式 */
+#index-container p {
+    font-size: 1.1rem;
+    color: #7f8c8d;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+}
+
+/* 热门图书区域样式 */
+#index-container .col-md-4 {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+/* 热门图书标题样式 */
+#index-container h4 {
+    color: #3498db;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+/* 图书列表样式 */
+#index-container .list-group {
+    list-style-type: none;
+    padding: 0;
+}
+
+/* 图书列表项样式 */
+#index-container .list-group-item {
+    background-color: white;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 1rem;
+    margin-bottom: 0.8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+/* 图书列表项悬停效果 */
+#index-container .list-group-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 图书价格样式 */
+#index-container .list-group-item span {
+    color: #e74c3c;
+    font-weight: bold;
+}
