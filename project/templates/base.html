@@ -5,6 +5,7 @@
     <title>网上书店 - {% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    {% block styles %}{% endblock %}
 </head>
 <body>
 <!--  未登录状态时的报错信息，显示时会出现空白未消失的问题？  -->

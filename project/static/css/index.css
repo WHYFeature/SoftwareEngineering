@@ -1,70 +1,85 @@
-/* 首页容器样式，与 base.html 中的布局协调 */
-#index-container {
-    background-color: white;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+/* 页面整体背景与文字配色 */
+body {
+    background-color: #f5f6fa; /* 更柔和的背景色 */
+    color: #4b4b4b; /* 更舒适的文字颜色 */
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* 更现代的字体 */
+    line-height: 1.7; /* 增加行高，提升可读性 */
+    -webkit-font-smoothing: antialiased; /* 优化字体渲染 */
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* 定义新的炫彩渐变动画 */
+@keyframes rainbow {
+    0% { color: #ff0000; }
+    16.66% { color: #ff7f00; }
+    33.33% { color: #00ff00; }
+    50% { color: #0000ff; }
+    66.66% { color: #4b0082; }
+    83.33% { color: #ff1493; /* 粉色 */ }
+    100% { color: #ff0000; }
 }
 
 /* 欢迎标题样式 */
-#index-container h2 {
-    color: #2c3e50;
-    font-size: 2.5rem;
-    margin-bottom: 1.5rem;
-    border-bottom: 2px solid #3498db;
-    padding-bottom: 0.5rem;
+h2 {
+    margin-bottom: 25px; /* 增加底部边距 */
+    font-size: 2.5rem; /* 增大字体大小 */
+    font-weight: 600; /* 增加字体粗细 */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1); /* 添加文字阴影 */
+    /* 增加动画时长，例如设置为 10s */
+    animation: rainbow 10s linear infinite; 
 }
 
-/* 欢迎描述段落样式 */
-#index-container p {
-    font-size: 1.1rem;
-    color: #7f8c8d;
-    line-height: 1.8;
-    margin-bottom: 2rem;
+/* 段落文字 */
+p {
+    font-size: 1.2rem; /* 增大字体大小 */
+    line-height: 1.8; /* 增加行高 */
+    text-align: justify; /* 两端对齐 */
+    /* 增加动画时长，例如设置为 10s */
+    animation: rainbow 10s linear infinite; 
 }
 
-/* 热门图书区域样式 */
-#index-container .col-md-4 {
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    padding: 1.5rem;
+/* 热门图书标题 */
+h4 {
+    color: #2980b9; /* 更鲜艳的标题颜色 */
+    margin-bottom: 20px; /* 增加底部边距 */
+    font-size: 1.8rem; /* 增大字体大小 */
+    border-bottom: 2px solid #2980b9; /* 添加底部边框 */
+    padding-bottom: 5px; /* 调整边框与文字的间距 */
 }
 
-/* 热门图书标题样式 */
-#index-container h4 {
-    color: #3498db;
-    font-size: 1.8rem;
-    margin-bottom: 1.5rem;
-    text-align: center;
+/* 热门图书列表样式 */
+.list-group-item {
+    background-color: #ffffff;
+    border: none; /* 移除原始边框 */
+    border-radius: 8px; /* 添加圆角 */
+    margin-bottom: 10px; /* 增加列表项之间的间距 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 添加阴影 */
+    transition: all 0.3s ease; /* 过渡效果 */
+    padding: 15px; /* 增加内边距 */
 }
 
-/* 图书列表样式 */
-#index-container .list-group {
-    list-style-type: none;
-    padding: 0;
+.list-group-item:hover {
+    background-color: #f8f9fa; /* 悬停时的背景色 */
+    transform: translateY(-3px); /* 悬停时向上移动 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* 悬停时的阴影 */
 }
 
-/* 图书列表项样式 */
-#index-container .list-group-item {
-    background-color: white;
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
-    padding: 1rem;
-    margin-bottom: 0.8rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: all 0.3s ease;
+/* 版面边距 */
+.row {
+    margin-top: 40px; /* 增加顶部边距 */
+    margin-bottom: 50px; /* 增加底部边距 */
 }
 
-/* 图书列表项悬停效果 */
-#index-container .list-group-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* 图书价格样式 */
-#index-container .list-group-item span {
-    color: #e74c3c;
-    font-weight: bold;
+/* 响应式支持微调 */
+@media (max-width: 768px) {
+    h2, h4 {
+        text-align: center;
+    }
+    .row {
+        flex-direction: column;
+    }
+    .list-group-item {
+        margin-left: 15px;
+        margin-right: 15px;
+    }
 }
