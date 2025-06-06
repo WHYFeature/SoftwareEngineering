@@ -1,0 +1,72 @@
+
+
+/* 全局样式 */
+body {
+    /* 假设图片名为 background.jpg，存放在 static/images 目录下 */
+    background-image: url('../images/sduocu.jpeg'); 
+    background-size: cover; /* 让背景图片覆盖整个元素 */
+    background-repeat: no-repeat; /* 防止背景图片重复 */
+    background-attachment: fixed; /* 固定背景图片，滚动页面时背景不动 */
+    background-position: center top; /* 将背景图片居中显示 */
+    color: #4b4b4b; /* 更舒适的文字颜色 */
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* 更现代的字体 */
+    line-height: 1.7; /* 增加行高，提升可读性 */
+    -webkit-font-smoothing: antialiased; /* 优化字体渲染 */
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* 登录框容器样式 */
+.col-md-6 {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(100px); 
+}
+
+/* 登录标题样式 */
+h2 {
+    text-align: center;
+    color: #007bff;
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+/* 表单标签样式 */
+.form-label {
+    font-weight: 500;
+    color: #333;
+}
+
+/* 输入框样式 */
+.form-control {
+    border-radius: 5px;
+    height: 45px;
+    border: 1px solid #ced4da;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* 登录按钮样式 */
+.btn-primary {
+    width: 100%;
+    height: 45px;
+    border-radius: 5px;
+    font-weight: 500;
+}
+
+/* 注册链接样式 */
+p.mt-3 a {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.15s ease-in-out;
+}
+
+p.mt-3 a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
