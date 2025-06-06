@@ -133,3 +133,7 @@ body {
     border-color: #a564a1; 
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); 
 }
+/* 不显示flash上面的空白 */
+#flash-container:empty {
+    display: none !important;
+  }
