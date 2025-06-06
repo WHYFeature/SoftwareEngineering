@@ -1,0 +1,30 @@
+/* 页面整体背景与文字配色 */
+body {
+    /* 假设图片名为 background.jpg，存放在 static/images 目录下 */
+    background-image: url('../images/chitanda.jpg'); 
+    background-size: cover; /* 让背景图片覆盖整个元素 */
+    background-repeat: no-repeat; /* 防止背景图片重复 */
+    background-attachment: fixed; /* 固定背景图片，滚动页面时背景不动 */
+    background-position: center top; /* 将背景图片居中显示 */
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* 更现代的字体 */
+    line-height: 1.7; /* 增加行高，提升可读性 */
+    -webkit-font-smoothing: antialiased; /* 优化字体渲染 */
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h2 {
+    color:rgb(167, 79, 250);
+    margin-bottom: 25px; /* 增加底部边距 */
+    font-size: 2.5rem; /* 增大字体大小 */
+    font-weight: 600; /* 增加字体粗细 */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1); /* 添加文字阴影 */
+}
+
+h5 {
+    color: #df5ec1d9; /* 更鲜艳的标题颜色 */
+    margin-bottom: 20px; /* 增加底部边距 */
+    font-size: 1.8rem; /* 增大字体大小 */
+    border-bottom: 2px solid #ec7abb; /* 添加底部边框 */
+    padding-bottom: 5px; /* 调整边框与文字的间距 */
+}
+
