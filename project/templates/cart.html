@@ -11,6 +11,7 @@
         <div class="table-responsive">
             <table class="table">
                 <thead>
+                    <th><input type="checkbox" id="select-all"></th>
                     <tr>
                         <th>图书名称</th>
                         <th>单价</th>
@@ -22,6 +23,8 @@
                 <tbody>
                     {% for book_id, item in cart.items() %}
                     <tr>
+                        <td><input type="checkbox" name="selected" value="{{ book_id }}" class="item-checkbox"
+           data-price="{{ item.price }}" data-quantity="{{ item.quantity }}"></td>
                         <td>{{ item.title }}</td>
                         <td>¥{{ "%.2f"|format(item.price) }}</td>
                         <td>
@@ -44,7 +47,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">订单总计</h5>
-                        <p class="fs-4">¥{{ "%.2f"|format(total) }}</p>
+                        <p class="fs-4">¥<span id="total-price">{{ "%.2f"|format(total) }}</span></p>
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary">更新购物车</button>
                             <a href="#" class="btn btn-success">立即结算</a>
@@ -54,6 +57,45 @@
             </div>
         </div>
     </form>
+        <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const checkboxes = document.querySelectorAll('.item-checkbox');
+        const totalPriceElem = document.getElementById('total-price');
+        const selectAll = document.getElementById('select-all');
+
+        function calculateTotal() {
+            let total = 0;
+            checkboxes.forEach(cb => {
+                if (cb.checked) {
+                    const price = parseFloat(cb.dataset.price);
+                    const quantityInput = document.querySelector(`input[name="quantity_${cb.value}"]`);
+                    const quantity = parseInt(quantityInput.value) || 1;
+                    total += price * quantity;
+                }
+            });
+            totalPriceElem.textContent = total.toFixed(2);
+        }
+
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', calculateTotal);
+        });
+
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+            input.addEventListener('input', calculateTotal);
+        });
+
+        if (selectAll) {
+            selectAll.addEventListener('change', function () {
+                checkboxes.forEach(cb => cb.checked = this.checked);
+                calculateTotal();
+            });
+        }
+
+        // 初始化总价
+        calculateTotal();
+    });
+    </script>
+
     {% else %}
     <div class="alert alert-info">
         购物车是空的，快去<a href="{{ url_for('Book.book_list') }}" class="alert-link">选购图书</a>吧！
