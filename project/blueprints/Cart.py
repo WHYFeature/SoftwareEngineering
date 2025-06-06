@@ -2,6 +2,7 @@ from flask import Blueprint, request, session, render_template, redirect, url_fo
 from sqlalchemy import func
 from datetime import datetime
 
+from blueprints.Profile import getAllAddress
 from models import db, User, UserAddress, Book, OrderForm, OrderDetails
 
 bp = Blueprint("Cart", __name__, url_prefix="/cart")
@@ -21,6 +22,7 @@ def view_cart():
         return redirect(url_for('Book.book_list'))
 
     uid = session['uid']
+    addresses = getAllAddress(uid)
     # 获取未完成订单
     order = OrderForm.query.filter_by(uid=uid, status=0).first()
     cart = {}
@@ -41,7 +43,7 @@ def view_cart():
             }
             total += subtotal
 
-    return render_template('cart.html', cart=cart, total=total)
+    return render_template('cart.html', cart=cart, total=total,addresses=addresses)
 
 @bp.route('/add', methods=["POST"])
 def add_to_cart():
@@ -118,6 +120,28 @@ def update_cart():
     if successNum:
         flash("购物车更新完成。", "success")
     return redirect(url_for('Cart.view_cart'))
+
+@bp.route('/pay', methods=["POST"])
+def pay():
+    uid = session['uid']
+    selected_items = request.form.get("selected_items", "")  # 逗号分隔的书籍 ID
+    address_id = request.form.get("address_id")
+
+    if not selected_items or not address_id:
+        flash("请选择商品和收货地址", "danger")
+        return redirect(url_for("Cart.view_cart"))
+
+    cart = session.get("cart", {})
+    selected_ids = selected_items.split(",")
+
+    # 修改订单状态
+
+
+    db.session.commit()
+    session["cart"] = cart
+    flash("订单支付成功！", "success")
+    return redirect(url_for("Order.view_orders"))
+
 
 @bp.route('/remove/<int:bid>', methods=["GET"])
 def remove_from_cart(bid):
