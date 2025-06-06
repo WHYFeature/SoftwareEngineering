@@ -70,6 +70,15 @@ h4 {
     margin-bottom: 50px; /* 增加底部边距 */
 }
 
+.bookstore-image {
+    width: 100%; /* 图片宽度占满父容器 */
+    max-width: 600px; /* 最大宽度 */
+    height: auto; /* 保持图片比例 */
+    margin-bottom: 20px; /* 底部边距 */
+    border-radius: 8px; /* 圆角 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 阴影 */
+}
+
 /* 响应式支持微调 */
 @media (max-width: 768px) {
     h2, h4 {
