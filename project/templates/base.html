@@ -10,7 +10,7 @@
 <!--  未登录状态时的报错信息，显示时会出现空白未消失的问题？  -->
 {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
-    <div id="flash-container" class="container mt-3">
+    <div id="flash-container" class="container mt-0">
       {% for category, message in messages %}
         <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
           {{ message }}
