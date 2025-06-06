@@ -1,6 +1,11 @@
 /* 页面整体背景与文字配色 */
 body {
-    background-color: #f5f6fa; /* 更柔和的背景色 */
+    /* 假设图片名为 background.jpg，存放在 static/images 目录下 */
+    background-image: url('../images/Roxy.jpg'); 
+    background-size: cover; /* 让背景图片覆盖整个元素 */
+    background-repeat: no-repeat; /* 防止背景图片重复 */
+    background-attachment: fixed; /* 固定背景图片，滚动页面时背景不动 */
+    background-position: center center; /* 将背景图片居中显示 */
     color: #4b4b4b; /* 更舒适的文字颜色 */
     font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* 更现代的字体 */
     line-height: 1.7; /* 增加行高，提升可读性 */
@@ -8,15 +13,13 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* 定义新的炫彩渐变动画 */
+/* 定义rainbow动画 */
 @keyframes rainbow {
-    0% { color: #ff0000; }
-    16.66% { color: #ff7f00; }
-    33.33% { color: #00ff00; }
-    50% { color: #0000ff; }
-    66.66% { color: #4b0082; }
-    83.33% { color: #ff1493; /* 粉色 */ }
-    100% { color: #ff0000; }
+    0% { color: #ff0000; } /* 红色 */
+    25% { color: #ff1493; } /* 粉色 */
+    50% { color: #ff7f00; } /* 橙色 */
+    75% { color: #00ff00; } /* 绿色 */
+    100% { color: #ffff00; } /* 黄色 */
 }
 
 /* 欢迎标题样式 */
@@ -40,10 +43,10 @@ p {
 
 /* 热门图书标题 */
 h4 {
-    color: #2980b9; /* 更鲜艳的标题颜色 */
+    color: #84da42; /* 更鲜艳的标题颜色 */
     margin-bottom: 20px; /* 增加底部边距 */
     font-size: 1.8rem; /* 增大字体大小 */
-    border-bottom: 2px solid #2980b9; /* 添加底部边框 */
+    border-bottom: 2px solid #35ae51; /* 添加底部边框 */
     padding-bottom: 5px; /* 调整边框与文字的间距 */
 }
 
