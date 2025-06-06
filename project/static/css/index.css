@@ -5,7 +5,7 @@ body {
     background-size: cover; /* 让背景图片覆盖整个元素 */
     background-repeat: no-repeat; /* 防止背景图片重复 */
     background-attachment: fixed; /* 固定背景图片，滚动页面时背景不动 */
-    background-position: center center; /* 将背景图片居中显示 */
+    background-position: center top; /* 将背景图片居中显示 */
     color: #4b4b4b; /* 更舒适的文字颜色 */
     font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* 更现代的字体 */
     line-height: 1.7; /* 增加行高，提升可读性 */
@@ -13,12 +13,10 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* 定义rainbow动画 */
+/* 定义rainbow动画，在红、橙、黄之间动态转换 */
 @keyframes rainbow {
     0% { color: #ff0000; } /* 红色 */
-    25% { color: #ff1493; } /* 粉色 */
-    50% { color: #ff7f00; } /* 橙色 */
-    75% { color: #00ff00; } /* 绿色 */
+    50% { color: #ffa500; } /* 橙色 */
     100% { color: #ffff00; } /* 黄色 */
 }
 
@@ -27,7 +25,8 @@ h2 {
     margin-bottom: 25px; /* 增加底部边距 */
     font-size: 2.5rem; /* 增大字体大小 */
     font-weight: 600; /* 增加字体粗细 */
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1); /* 添加文字阴影 */
+    /* 增加模糊半径和颜色不透明度，让阴影更明显 */
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3); 
     /* 增加动画时长，例如设置为 10s */
     animation: rainbow 10s linear infinite; 
 }
@@ -43,10 +42,10 @@ p {
 
 /* 热门图书标题 */
 h4 {
-    color: #84da42; /* 更鲜艳的标题颜色 */
+    color: #a9178c; /* 更鲜艳的标题颜色 */
     margin-bottom: 20px; /* 增加底部边距 */
     font-size: 1.8rem; /* 增大字体大小 */
-    border-bottom: 2px solid #35ae51; /* 添加底部边框 */
+    border-bottom: 2px solid #65075a; /* 添加底部边框 */
     padding-bottom: 5px; /* 调整边框与文字的间距 */
 }
 
@@ -56,7 +55,8 @@ h4 {
     border: none; /* 移除原始边框 */
     border-radius: 8px; /* 添加圆角 */
     margin-bottom: 10px; /* 增加列表项之间的间距 */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 添加阴影 */
+    /* 增加模糊半径和颜色不透明度，让阴影更明显 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
     transition: all 0.3s ease; /* 过渡效果 */
     padding: 15px; /* 增加内边距 */
 }
@@ -64,7 +64,8 @@ h4 {
 .list-group-item:hover {
     background-color: #f8f9fa; /* 悬停时的背景色 */
     transform: translateY(-3px); /* 悬停时向上移动 */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* 悬停时的阴影 */
+    /* 增加模糊半径和颜色不透明度，让悬停阴影更明显 */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); 
 }
 
 /* 版面边距 */
@@ -79,7 +80,8 @@ h4 {
     height: auto; /* 保持图片比例 */
     margin-bottom: 20px; /* 底部边距 */
     border-radius: 8px; /* 圆角 */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 阴影 */
+    /* 增加模糊半径和颜色不透明度，让图片阴影更明显 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
 }
 
 /* 响应式支持微调 */
