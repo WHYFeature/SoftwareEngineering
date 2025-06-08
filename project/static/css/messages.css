@@ -10,6 +10,11 @@ body {
     line-height: 1.7; /* 增加行高，提升可读性 */
     -webkit-font-smoothing: antialiased; /* 优化字体渲染 */
     -moz-osx-font-smoothing: grayscale;
+    transition: all 0.3s ease; /* 添加过渡效果 */
+}
+
+body:hover {
+    opacity: 0.9; /* 鼠标悬停时 body 透明度变化 */
 }
 
 h2 {
@@ -18,6 +23,7 @@ h2 {
     font-size: 2.5rem; /* 增大字体大小 */
     font-weight: 600; /* 增加字体粗细 */
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1); /* 添加文字阴影 */
+    transition: all 0.3s ease; /* 添加过渡效果 */
 }
 
 h5 {
@@ -26,5 +32,17 @@ h5 {
     font-size: 1.8rem; /* 增大字体大小 */
     border-bottom: 2px solid #ec7abb; /* 添加底部边框 */
     padding-bottom: 5px; /* 调整边框与文字的间距 */
+    transition: all 0.3s ease; /* 添加过渡效果 */
 }
 
+.card.mb-4 {
+    /* 使用 rgba 颜色模式设置背景色，前三个值是 RGB 值，最后一个值是透明度，范围 0 - 1 */
+    background-color: rgba(255, 255, 255, 0.7); 
+    transition: all 0.3s ease; /* 添加过渡效果 */
+}
+
+.card.mb-4:hover {
+    background-color: rgba(255, 255, 255, 0.9); /* 鼠标悬停时卡片背景透明度变化 */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* 鼠标悬停时添加阴影 */
+    transform: translateY(-2px); /* 鼠标悬停时卡片向上移动 2px */
+}

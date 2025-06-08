@@ -2,98 +2,106 @@
 
 {% block title %}购物车{% endblock %}
 
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cart.css') }}">
+{% endblock %}
+
 {% block content %}
 <div class="container">
     <h2 class="mb-4">我的购物车</h2>
     
     {% if cart %}
-    <form method="POST" action="{{ url_for('Cart.update_cart') }}">
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <th><input type="checkbox" id="select-all"></th>
-                    <tr>
-                        <th>图书名称</th>
-                        <th>单价</th>
-                        <th>数量</th>
-                        <th>小计</th>
-                        <th>操作</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for book_id, item in cart.items() %}
-                    <tr>
-                        <td><input type="checkbox" name="selected" value="{{ book_id }}" class="item-checkbox"
-           data-price="{{ item.price }}" data-quantity="{{ item.quantity }}"></td>
-                        <td class="book-title">{{ item.title }}</td>
-                        <td class="book-price">¥{{ "%.2f"|format(item.price) }}</td>
-                        <td>
-                            <input type="number" name="quantity_{{ book_id }}" 
-                                   value="{{ item.quantity }}" min="1" 
-                                   class="form-control" style="width: 80px;">
-                        </td>
-                        <td>¥{{ "%.2f"|format(item.price * item.quantity) }}</td>
-                        <td>
-                            <a href="{{ url_for('Cart.remove_from_cart', bid=book_id) }}" class="btn btn-danger btn-sm">移除</a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-
-        <div class="row">
-            <div class="col-md-4 offset-md-8">
-                <div class="card">
+    <!-- 外层卡片，包裹整个表单 -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="POST" action="{{ url_for('Cart.update_cart') }}">
+                <!-- 全选复选框区域 -->
+                <div class="mb-3">
+                    <input type="checkbox" id="select-all"> 全选
+                </div>
+                <!-- 遍历购物车中的每个商品，每个商品用卡片展示 -->
+                {% for book_id, item in cart.items() %}
+                <div class="card mb-3">
                     <div class="card-body">
-                        <h5 class="card-title">订单总计</h5>
-                        <p class="fs-4">¥<span id="total-price">{{ "%.2f"|format(total) }}</span></p>
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary">更新购物车</button>
-                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#checkoutModal" id="checkoutBtn">
-                                立即结算
-                            </button>
+                        <div class="row align-items-center">
+                            <div class="col-md-1">
+                                <input type="checkbox" name="selected" value="{{ book_id }}" class="item-checkbox"
+                                       data-price="{{ item.price }}" data-quantity="{{ item.quantity }}">
+                            </div>
+                            <div class="col-md-4">
+                                <h5 class="card-title book-title">{{ item.title }}</h5>
+                            </div>
+                            <div class="col-md-2">
+                                <p class="card-text book-price">¥{{ "%.2f"|format(item.price) }}</p>
+                            </div>
+                            <div class="col-md-2">
+                                <input type="number" name="quantity_{{ book_id }}" 
+                                       value="{{ item.quantity }}" min="1" 
+                                       class="form-control" style="width: 80px;">
+                            </div>
+                            <div class="col-md-2">
+                                <p class="card-text">¥{{ "%.2f"|format(item.price * item.quantity) }}</p>
+                            </div>
+                            <div class="col-md-1">
+                                <a href="{{ url_for('Cart.remove_from_cart', bid=book_id) }}" class="btn btn-danger btn-sm">移除</a>
+                            </div>
                         </div>
                     </div>
                 </div>
+                {% endfor %}
+            </form>
+        </div>
+    </div>
+
+    <!-- 订单总计部分，单独用卡片展示 -->
+    <div class="card1">
+        <div class="card-body">
+            <h5 class="card-title">订单总计</h5>
+            <p class="fs-4">¥<span id="total-price">{{ "%.2f"|format(total) }}</span></p>
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">更新购物车</button>
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#checkoutModal" id="checkoutBtn">
+                    立即结算
+                </button>
             </div>
         </div>
-    </form>
-     <!-- 确认订单模态框 -->
+    </div>
+    <!-- 确认订单模态框 -->
     <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-          <form method="POST" action="{{ url_for('Cart.pay') }}">
-            <div class="modal-header">
-              <h5 class="modal-title" id="checkoutModalLabel">确认订单</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <form method="POST" action="{{ url_for('Cart.pay') }}">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="checkoutModalLabel">确认订单</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <h5>商品明细</h5>
+                        <div id="orderItemsContainer" class="mb-3"></div>
+
+                        <h5>选择收货地址</h5>
+                        {% for addr in addresses %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="address_id" value="{{ addr.uaid }}" required>
+                            <label class="form-check-label">
+                                {{ addr.name }} - {{ addr.phone }} - {{ addr.full_address }}
+                            </label>
+                        </div>
+                        {% endfor %}
+
+                        <!-- 隐藏字段记录所选商品 -->
+                        <input type="hidden" name="selected_items" id="selectedItemsInput">
+                    </div>
+
+                    <div class="modal-footer">
+                        <span class="me-auto fw-bold">总价：¥<span id="totalPrice">0.00</span></span>
+                        <button type="submit" class="btn btn-primary">确认支付</button>
+                    </div>
+                </form>
             </div>
-
-            <div class="modal-body">
-              <h5>商品明细</h5>
-              <div id="orderItemsContainer" class="mb-3"></div>
-
-              <h5>选择收货地址</h5>
-              {% for addr in addresses %}
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="address_id" value="{{ addr.uaid }}" required>
-                <label class="form-check-label">
-                  {{ addr.name }} - {{ addr.phone }} - {{ addr.full_address }}
-                </label>
-              </div>
-              {% endfor %}
-
-              <!-- 隐藏字段记录所选商品 -->
-              <input type="hidden" name="selected_items" id="selectedItemsInput">
-            </div>
-
-            <div class="modal-footer">
-              <span class="me-auto fw-bold">总价：¥<span id="totalPrice">0.00</span></span>
-              <button type="submit" class="btn btn-primary">确认支付</button>
-            </div>
-          </form>
         </div>
-      </div>
     </div>
 
     <script>
@@ -142,10 +150,10 @@
             container.innerHTML = "";
 
             checked.forEach(cb => {
-                const row = cb.closest("tr");
-                const title = row.querySelector(".book-title").textContent.trim();
-                const price = parseFloat(row.querySelector(".book-price").textContent.replace("¥", ""));
-                const qtyInput = row.querySelector("input[type='number']");
+                const card = cb.closest('.card');
+                const title = card.querySelector(".book-title").textContent.trim();
+                const price = parseFloat(card.querySelector(".book-price").textContent.replace("¥", ""));
+                const qtyInput = card.querySelector("input[type='number']");
                 const qty = parseInt(qtyInput.value);
                 const subtotal = price * qty;
                 total += subtotal;

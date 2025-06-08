@@ -3,6 +3,10 @@
 
 {% block title %}图书列表{% endblock %}
 
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/books.css') }}">
+{% endblock %}
 {% block content %}
 <h2>图书列表</h2>
 

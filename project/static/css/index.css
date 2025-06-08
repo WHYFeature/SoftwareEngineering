@@ -16,8 +16,10 @@ body {
 /* 定义rainbow动画，在红、橙、黄之间动态转换 */
 @keyframes rainbow {
     0% { color: #ff0000; } /* 红色 */
-    50% { color: #ffa500; } /* 橙色 */
-    100% { color: #ffff00; } /* 黄色 */
+    25% { color: #ffa500; } /* 橙色 */
+    50% { color: #ffff00; } /* 黄色 */
+    75% { color: #ffa500; } /* 橙色 */
+    100% { color: #ff0000; } /* 红色 */
 }
 
 /* 欢迎标题样式 */
@@ -42,10 +44,10 @@ p {
 
 /* 热门图书标题 */
 h4 {
-    color: #a9178c; /* 更鲜艳的标题颜色 */
+    color: #df5ec1d9; /* 更鲜艳的标题颜色 */
     margin-bottom: 20px; /* 增加底部边距 */
     font-size: 1.8rem; /* 增大字体大小 */
-    border-bottom: 2px solid #65075a; /* 添加底部边框 */
+    border-bottom: 2px solid #df5ec1d9; /* 添加底部边框 */
     padding-bottom: 5px; /* 调整边框与文字的间距 */
 }
 

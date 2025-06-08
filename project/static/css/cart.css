@@ -1,0 +1,73 @@
+/* 页面整体背景与文字配色 */
+body {
+    /* 假设图片名为 background.jpg，存放在 static/images 目录下 */
+    background-image: url('../images/chitanda.jpg'); 
+    background-size: cover; /* 让背景图片覆盖整个元素 */
+    background-repeat: no-repeat; /* 防止背景图片重复 */
+    background-attachment: fixed; /* 固定背景图片，滚动页面时背景不动 */
+    background-position: center top; /* 将背景图片居中显示 */
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* 更现代的字体 */
+    line-height: 1.7; /* 增加行高，提升可读性 */
+    -webkit-font-smoothing: antialiased; /* 优化字体渲染 */
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h2 {
+    color:rgb(167, 79, 250);
+    margin-bottom: 25px; /* 增加底部边距 */
+    font-size: 2.5rem; /* 增大字体大小 */
+    font-weight: 600; /* 增加字体粗细 */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1); /* 添加文字阴影 */
+}
+
+h5 {
+    color: #df5ec1d9; /* 更鲜艳的标题颜色 */
+    margin-bottom: 20px; /* 增加底部边距 */
+    font-size: 1.8rem; /* 增大字体大小 */
+    border-bottom: 2px solid #ec7abb; /* 添加底部边框 */
+    padding-bottom: 5px; /* 调整边框与文字的间距 */
+}
+
+.card.mb-4 {
+    /* 使用 rgba 颜色模式设置背景色，前三个值是 RGB 值，最后一个值是透明度，范围 0 - 1 */
+    background-color: rgba(255, 255, 255, 0.7); 
+}
+
+/* 为 card1 类添加样式 */
+.card1 {
+    /* 使用固定宽度 */
+    width: 50%; 
+    /* 让卡片在父容器中水平居中 */
+    margin-left: auto;
+    margin-right: auto;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    /* 设置背景颜色并调整透明度，这里设置为白色背景，透明度 0.7 */
+    background-color: rgba(255, 255, 255, 0.7); 
+}
+
+.card1:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.card1 .card-body {
+    padding: 1.5rem;
+}
+
+/* 为 card 类添加样式 */
+.card {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease; /* 添加过渡效果，使变化更平滑 */
+    background-color: rgba(255, 255, 255, 0.7); /* 设置初始透明度 */
+}
+
+.card:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* 悬停时改变阴影 */
+    transform: translateY(-2px); /* 悬停时向上移动 2px */
+    background-color: rgba(255, 255, 255, 0.9); /* 悬停时改变透明度 */
+}
