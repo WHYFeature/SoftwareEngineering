@@ -3,12 +3,6 @@
 {% block title %}管理员后台{% endblock %}
 
 
-{% block styles %}
-{{ super() }}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/cart.css') }}">
-{% endblock %}
-
-
 {% block content %}
 <div class="container mt-4">
     <h2 class="mb-4">管理员后台</h2>
@@ -22,6 +16,25 @@
             <button class="nav-link {% if tab == 'user' %}active{% endif %}" id="user-tab" data-bs-toggle="tab" data-bs-target="#user" type="button" role="tab">用户管理</button>
         </li>
     </ul>
+    <style>
+        /* 默认状态下的按钮颜色 */
+        #adminTab .nav-link {
+            color: #ffffff; /* 文字颜色 */
+            background-color: #007bff; /* 背景颜色 */
+        }
+    
+        /* 悬停状态下的按钮颜色 */
+        #adminTab .nav-link:hover {
+            color: #ffffff; /* 文字颜色 */
+            background-color: #0056b3; /* 背景颜色 */
+        }
+    
+        /* 激活状态下的按钮颜色 */
+        #adminTab .nav-link.active {
+            color: #ffffff; /* 文字颜色 */
+            background-color: #dc3545; /* 背景颜色 */
+        }
+    </style>
 
     <!-- 内容区域 -->
     <div class="tab-content mt-3" id="adminTabContent">
