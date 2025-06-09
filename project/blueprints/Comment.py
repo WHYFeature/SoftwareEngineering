@@ -24,6 +24,14 @@ def showComment():
         book = Book.query.filter(Book.bid == c.book_id).first()
         bookname = book.bookname
         cdata["bookname"] = bookname
+        liked = 0
+        if "uid" in session:
+            uid = session["uid"]
+            lc = LikeComment.query.filter(
+                LikeComment.comment_id == c.comment_id, LikeComment.uid == uid).first()
+            if lc is not None:
+                liked = 1
+        cdata["liked"] = liked
         result.append(cdata)
     return render_template('messages.html', comments=result)
 
