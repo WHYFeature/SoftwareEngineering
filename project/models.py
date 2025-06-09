@@ -24,7 +24,7 @@ class User(db.Model):
 class UserAddress(db.Model):
     __tablename__ = "useraddress"
     uaid = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    uid = db.Column(db.Integer, db.ForeignKey("user.uid"))
+    uid = db.Column(db.Integer, db.ForeignKey("user.uid", ondelete='CASCADE'))
     address = db.Column(db.String(255), nullable=False)
     receiver = db.Column(db.String(50), nullable=False)
     phone = db.Column(db.String(20))
@@ -46,26 +46,29 @@ class Book(db.Model):
 class UserCollect(db.Model):
     __tablename__ = "usercollect"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    uid = db.Column(db.Integer, db.ForeignKey("user.uid"))
-    bid = db.Column(db.Integer, db.ForeignKey("book.bid"))
+    uid = db.Column(db.Integer, db.ForeignKey("user.uid", ondelete='CASCADE'))
+    bid = db.Column(db.Integer, db.ForeignKey("book.bid", ondelete='CASCADE'))
     collect_time = db.Column(db.TIMESTAMP, default=datetime.now)
 
 
 class OrderForm(db.Model):
     __tablename__ = "orderform"
     oid = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    uid = uid = db.Column(db.Integer, db.ForeignKey("user.uid"))
+    uid = uid = db.Column(db.Integer, db.ForeignKey(
+        "user.uid", ondelete='CASCADE'))
     status = db.Column(db.Integer, nullable=False)
     time = db.Column(db.TIMESTAMP, nullable=False, default=datetime.now)
-    uaid = db.Column(db.Integer, db.ForeignKey("useraddress.uaid"))
+    uaid = db.Column(db.Integer, db.ForeignKey(
+        "useraddress.uaid", ondelete='CASCADE'))
 
 
 class OrderDetails(db.Model):
     __tablename__ = "orderdetails"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     oid = db.Column(db.Integer, db.ForeignKey(
-        "orderform.oid"), nullable=False)
-    bid = db.Column(db.Integer, db.ForeignKey("book.bid"), nullable=False)
+        "orderform.oid", ondelete='CASCADE'), nullable=False)
+    bid = db.Column(db.Integer, db.ForeignKey(
+        "book.bid", ondelete='CASCADE'), nullable=False)
     number = db.Column(db.Integer, nullable=False, default=1)
     price = db.Column(db.Numeric(10, 2))
 
@@ -74,8 +77,10 @@ class Comment(db.Model):
     __tablename__ = 'comment'
     comment_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     content = db.Column(db.Text, nullable=False)
-    book_id = db.Column(db.Integer, db.ForeignKey('book.bid'), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.uid'), nullable=False)
+    book_id = db.Column(db.Integer, db.ForeignKey(
+        'book.bid', ondelete='CASCADE'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(
+        'user.uid', ondelete='CASCADE'), nullable=False)
     comment_time = db.Column(
         db.DateTime, nullable=False, default=datetime.now)
     like_count = db.Column(db.Integer, default=0)

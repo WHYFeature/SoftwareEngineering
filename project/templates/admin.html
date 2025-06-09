@@ -6,7 +6,13 @@
 {{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
 {% endblock %}
-
+<style>
+    .comment-cell {
+        max-width: 200px;
+        word-wrap: break-word;
+        word-break: break-all;
+    }
+</style>
 {% block content %}
 <div class="container mt-4">
     <h2 class="mb-4">管理员后台</h2>
@@ -151,7 +157,7 @@
                 <form method="GET" class="mb-3">
                     <div class="row g-2 align-items-center">
                         <div class="col-md-10">
-                            <input type="text" name="comment_search" class="form-control" placeholder="搜索留言或留言人" value="{{ comment_search }}">
+                            <input type="text" name="comment_search" class="form-control" placeholder="搜索留言内容" value="{{ comment_search }}">
                         </div>
                         <div class="col-md-2 text-end">
                             <button type="submit" class="btn btn-primary w-100">搜索</button>
@@ -184,10 +190,18 @@
                             <td>{{ msg.comment_id }}</td>
                             <td>{{ msg.username}}</td>
                             <td>{{ msg.bookname}}</td>
-                            <td>
-                                <span class="short-content">{{ msg.content[:20] }}...</span>
+                            <td style="max-width: 200px; word-wrap: break-word; word-break: break-all;">
+                                <span class="short-content">
+                                    {% if msg.content|length > 20 %}
+                                        {{ msg.content[:20] }}...
+                                    {% else %}
+                                        {{ msg.content }}
+                                    {% endif %}
+                                </span>
                                 <span class="full-content">{{ msg.content }}</span>
-                                <button onclick="toggleContent(this)">展开</button>
+                                {% if msg.content|length > 20 %}
+                                    <button onclick="toggleContent(this)">展开</button>
+                                {% endif %}
                             </td>
                             <td>{{ msg.comment_time }}</td>
                             <td>{{ msg.like_count }}</td>
