@@ -12,33 +12,7 @@
     <h2 class="mb-4">留言板</h2>
     <!-- 留言表单 -->
     {% if 'username' in session %}
-    <div class="card mb-4">
-    <div class="card-body">
-        <h5 class="card-title">发表留言</h5>
-        <form method="POST" action="{{ url_for('Comment.add_comment') }}">
-            <div class="mb-3">
-                <label for="bidInput" class="form-label">书籍编号 (bid)</label>
-                <input type="text" class="form-control" id="bidInput" name="bid" placeholder="请输入书籍编号">
-            </div>
-            <div class="mb-3">
-                <textarea name="content" class="form-control" rows="3"
-                          placeholder="请输入您的留言（至少5个字符）"
-                          required minlength="5"></textarea>
-            </div>
-            {% if error %}
-            <div class="alert alert-danger">{{ error }}</div>
-            {% endif %}
-            <button type="submit" class="btn btn-primary">提交留言</button>
-        </form>
-    </div>
-</div>
-
-    {% else %}
-    <div class="alert alert-info">
-        需要<a href="{{ url_for('User.login') }}" class="alert-link">登录</a>后才能留言
-    </div>
-    {% endif %}
-    <!-- 快速跳转按钮 -->
+      <!-- 快速跳转按钮 -->
     <div class="mb-3">
         <a href="{{ url_for('Comment.showComment') }}" class="btn btn-outline-info btn-sm">
             查看最新10条留言
@@ -62,5 +36,11 @@
         </div>
         {% endfor %}
     </div>
+    {% else %}
+    <div class="alert alert-info">
+        需要<a href="{{ url_for('User.login') }}" class="alert-link">登录</a>后才能留言
+    </div>
+    {% endif %}
+
 </div>
 {% endblock %}
