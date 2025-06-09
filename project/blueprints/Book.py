@@ -129,6 +129,11 @@ def BookDetails():
             if lc is not None:
                 liked = 1
         cdata["liked"] = liked
+        likenum = LikeComment.query.filter(LikeComment.comment_id == c.comment_id).count()
+        if cdata["like_count"] is not likenum:
+            c.like_count = likenum
+            cdata["like_count"] = likenum
+            db.session.commit()
         comments.append(cdata)
 
     book["comments"] = comments
