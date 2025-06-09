@@ -105,7 +105,7 @@ def add_address():
         db.session.commit()
         address = getAllAddress(uid)
         flash("地址添加成功", "success")
-        return redirect(url_for('Profile._profile'))
+        return redirect(request.referrer or url_for('Profile._profile'))
 
 
 """

@@ -57,7 +57,7 @@
             <p class="fs-4">¥<span id="total-price">{{ "%.2f"|format(total) }}</span></p>
             <div class="d-grid gap-2">
                 <button type="submit" class="btn btn-primary">更新购物车</button>
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#checkoutModal" id="checkoutBtn">
+                <button type="button" class="btn btn-success" id="checkoutBtn">
                     立即结算
                 </button>
             </div>
@@ -84,6 +84,9 @@
                         <div id="orderItemsContainer" class="mb-3"></div>
 
                         <h5>选择收货地址</h5>
+                        <div class="my-3">
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addAddressModal">添加地址</button>
+                        </div>
                         {% for addr in addresses %}
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="address_id" value="{{ addr.uaid }}" required>
@@ -146,6 +149,10 @@
         // 点击“立即结算”填充模态框内容
         document.getElementById("checkoutBtn").addEventListener("click", function () {
             const checked = document.querySelectorAll(".item-checkbox:checked");
+            if (checked.length === 0) {
+                alert("请先选择要结算的书籍！");
+                return;
+            }
             let selected = [];
             let total = 0.0;
             const container = document.getElementById("orderItemsContainer");
@@ -170,6 +177,9 @@
 
             document.getElementById("selectedItemsInput").value = selected.join(",");
             document.getElementById("totalPrice").textContent = total.toFixed(2);
+
+            const checkoutModal = new bootstrap.Modal(document.getElementById('checkoutModal'));
+            checkoutModal.show();
         });
     });
     </script>
@@ -180,4 +190,36 @@
     </div>
     {% endif %}
 </div>
+<!-- 添加地址模态框 -->
+<div class="modal fade" id="addAddressModal" tabindex="-1" aria-labelledby="addAddressModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" action="{{ url_for('Profile.add_address') }}">
+                <div class="modal-header">
+                    <h5 class="modal-title">添加收货地址</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">收货人</label>
+                        <input type="text" name="name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">联系电话</label>
+                        <input type="tel" name="phone" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">详细地址</label>
+                        <textarea name="full_address" class="form-control" rows="3" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-primary">保存地址</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
