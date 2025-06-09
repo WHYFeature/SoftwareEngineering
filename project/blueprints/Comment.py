@@ -18,7 +18,7 @@ def showComment():
             "comment_time": c.comment_time.strftime("%Y-%m-%d %H:%M:%S"),
             "like_count": c.like_count,
         }
-        user = User.query.filter(User.uid == c.uid).first()
+        user = User.query.filter(User.uid == c.user_id).first()
         username = user.username
         cdata["username"] = username
         book = Book.query.filter(Book.bid == c.book_id).first()
