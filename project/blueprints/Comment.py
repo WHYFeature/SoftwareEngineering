@@ -1,0 +1,32 @@
+from flask import Blueprint, request, session, redirect, url_for, flash
+from models import db, Book, User, Comment
+
+bp = Blueprint("Comment", __name__, url_prefix="/comment")
+
+@bp.route("/comment/add", methods=["POST"])
+def add_comment():
+    content = request.form.get("content")
+    bid = request.form.get("bid")
+
+    if "uid" not in session:
+        flash("请登录后操作", "warning")
+        return redirect(url_for('Book.BookDetails', bid=bid))
+
+    uid = session['uid']
+    theBook = Book.query.filter(Book.bid == bid).first()
+
+    if theBook is None:
+        flash("无该书籍", "danger")
+        return redirect(url_for('root.index'))
+
+    comment = Comment(
+        content=content,
+        book_id=bid,
+        user_id=uid,
+        like_count=0
+    )
+    db.session.add(comment)
+    db.session.commit()
+
+    flash("评论添加成功", "success")
+    return redirect(url_for('Book.BookDetails', bid=bid))

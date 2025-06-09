@@ -67,3 +67,16 @@ class OrderDetails(db.Model):
     bid = db.Column(db.Integer, db.ForeignKey("book.bid"), nullable=False)
     number = db.Column(db.Integer, nullable=False, default=1)
     price = db.Column(db.Numeric(10, 2))
+
+
+class Comment(db.Model):
+    __tablename__ = 'comment'
+    comment_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    content = db.Column(db.Text, nullable=False)
+    book_id = db.Column(db.Integer, db.ForeignKey('book.bid'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.uid'), nullable=False)
+    comment_time = db.Column(
+        db.DateTime, nullable=False, default=datetime.now)
+    like_count = db.Column(db.Integer, default=0)
+    user = db.relationship('User', backref=db.backref('comments', lazy=True))
+    book = db.relationship('Book', backref=db.backref('comments', lazy=True))
