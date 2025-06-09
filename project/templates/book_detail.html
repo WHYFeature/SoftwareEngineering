@@ -3,11 +3,6 @@
 
 {% block title %}{{ book.bookname }} - 书籍详情{% endblock %}
 
-{% block styles %}
-{{ super() }}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/books.css') }}">
-{% endblock %}
-
 {% block content %}
 <div class="container mt-4">
     <!-- 返回按钮 -->
@@ -16,124 +11,144 @@
     </a>
 
     <!-- 书籍主体信息 -->
+    <div class="row g-4">
+        <!-- 封面图片列 -->
 
-    <div class="card mb-3">
-        <div class="card-body">
-            <!-- 标题区 -->
-            <h1 class="card-title display-5">{{ book.bookname }}</h1>
-            <div class="d-flex align-items-center mb-4">
-                <span class="text-muted">库存: {{ book.number }}册</span>
-            </div>
+        <!-- 详细信息列 -->
+        <div class="col-md-8">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <!-- 标题区 -->
+                    <h1 class="card-title display-5">{{ book.bookname }}</h1>
+                    <div class="d-flex align-items-center mb-4">
+                        <span class="text-muted">库存: {{ book.number }}册</span>
+                    </div>
 
-            <!-- 元信息 -->
-            <dl class="row">
-                <dt class="col-sm-3">作者</dt>
-                <dd class="col-sm-9">{{book.author}}</dd>
+                    <!-- 元信息 -->
+                    <dl class="row">
+                        <dt class="col-sm-3">作者</dt>
+                        <dd class="col-sm-9">{{book.author}}</dd>
 
-                <dt class="col-sm-3">出版社</dt>
-                <dd class="col-sm-9">{{ book.publisher}}</dd>
-                <dt class="col-sm-3">价格：</dt>
-                <dd class="col-sm-9">{{ book.price}}￥</dd>
-            </dl>
+                        <dt class="col-sm-3">出版社</dt>
+                        <dd class="col-sm-9">{{ book.publisher}}</dd>
 
-            <!-- 操作表单 -->
-            <form action="{{ url_for('Cart.add_to_cart')}}" method="post" class="needs-validation" novalidate>
-                <input type="hidden" name="bid" value="{{ book.bid }}">
+                    </dl>
 
-                <!-- 数量输入框单独一行 -->
-                <div class="row g-3 mb-3">
-                    <div class="col-12">
-                        <label for="quantity" class="form-label">数量</label>
-                        <input type="number"
-                            id="quantity"
-                            class="form-control"
-                            name="quantity"
-                            min="1"
-                            max="{{ book.number }}"
-                            value="1"
-                            required
-                            step="1">
-                        <div class="invalid-feedback" id="quantityFeedback">
-                            请输入1至{{ book.number }}之间的有效数量。
+                    <!-- 价格区块 -->
+                    <div class="bg-light p-3 rounded-3 mb-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h3 class="text-danger mb-0">
+                                ¥{{ book.price}}
+                            </h3>
                         </div>
                     </div>
-                </div>
-                <!-- 加入购物车和加入收藏在同一行 -->
-                <div class="row g-3 mb-3">
-                    <div class="col-md-4 offset-md-4 d-grid">
-                        <button type="button"
-                                class="btn btn-primary"
-                                onclick="addToCartHandler()">
-                            <i class="bi bi-cart-plus"></i>
-                            加入购物车
-                        </button>
-                    </div>
-                </div>
-            </form>
 
-            <form action="{{ url_for('Collect.addCollect') }}" method="post"  class="needs-validation" novalidate>
-                <input type="hidden" name="bid" value="{{ book.bid }}">
-                <div class="row g-3 mb-3">
-                    <div class="col-md-4 offset-md-4 d-grid">
+                    <!-- 操作表单 -->
+                    <form action="{{ url_for('Cart.add_to_cart')}}" method="post" class="needs-validation" novalidate>
+                        <input type="hidden" name="bid" value="{{ book.bid }}">
+
+                        <div class="row g-3">
+                            <div class="col-12 col-md-3">
+                                <label for="quantity" class="form-label">数量</label>
+                                <input type="number"
+                                   class="form-control"
+                                   id="quantity"
+                                   name="quantity"
+                                   min="1"
+                                   max="{{ book.number }}"
+                                   value="1"
+                                   required
+                                   step="1">
+                                 <div class="invalid-feedback" id="quantityFeedback">
+                请输入1至{{ book.number }}之间的有效数量。
+                                </div>
+                            </div>
+
+                             <div class="col-12 col-md-9 d-grid">
+                                <button type="submit"
+                                        class="btn btn-primary btn-lg"
+                                        {% if book.number == 0 %}disabled{% endif %}>
+                                    <i class="bi bi-cart-plus"></i>
+                                    加入购物车
+                                </button>
+                            </div>
+
+                        </div>
+                    </form>
+
+                    <form action="{{ url_for('Collect.addCollect') }}" method="post" class="favorite-form">
+                        <input type="hidden" name="bid" value="{{ book.bid }}">
                         <button type="submit"
                                 class="btn btn-outline-danger {% if inCollect %}active{% endif %}"
-                                aria-pressed="{{ inCollect|lower }}">
+                                aria-pressed="{{ book.inCollect|lower }}">
                         <i class="bi {% if inCollect %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
-                            {% if inCollect %}已收藏{% else %}加入收藏{% endif %}
-                        </button>
-                    </div>
-                </div>
-            </form>
-
-            <style>
-                .favorite-form button {
-                    transition: all 0.3s ease;
-                    position: relative;
-                    overflow: hidden;
-                }
-                .favorite-form button:not(.active):hover {
-                    transform: scale(1.05);
-                    box-shadow: 0 0 15px rgba(255, 59, 48, 0.3);
-                }
-                .favorite-form button.active {
-                    background: #ff3b30;
-                    color: white !important;
-                }
-                .favorite-form button:active {
-                    transform: scale(0.95);
-                }
-            </style>
-            <script>
-                document.querySelectorAll('.favorite-form').forEach(form => {
-                    form.addEventListener('submit', function(e) {
-                        const btn = this.querySelector('button');
-                        btn.innerHTML = `<div class="spinner-border spinner-border-sm" role="status">
-                                            <span class="visually-hidden">Loading...</span></div> 处理中...`;
-                        btn.disabled = true;
-                    });
-                });
-
-                function addToCartHandler() {
-                    const bookNumber = {{ book.number }};
-                    if (bookNumber === 0) {
-                        alert('剩余书数目为 0');
-                        return;
-                    }
-                    document.querySelector('form[action="{{ url_for('Cart.add_to_cart') }}"]').submit();
-                }
-            </script>
-            </div>
-        </div>
-
-        <!-- 书籍描述 -->
-        <div class="card shadow-sm mt-4">
-            <div class="card-body">
-                <h5 class="card-subtitle mb-3">内容简介</h5>
-                <div class="text-muted lh-base">
-                    {{ book.content}}
+                        <span class="ms-2">
+                            {% if book.inCollect %}已收藏{% else %}加入收藏{% endif %}
+                        </span>
+                    </button>
+                    </form>
+                    <style>
+                        .favorite-form button {
+                            transition: all 0.3s ease;
+                            position: relative;
+                            overflow: hidden;
+                        }
+                        .favorite-form button:not(.active):hover {
+                            transform: scale(1.05);
+                            box-shadow: 0 0 15px rgba(255, 59, 48, 0.3);
+                        }
+                        .favorite-form button.active {
+                            background: #ff3b30;
+                            color: white !important;
+                        }
+                        .favorite-form button:active {
+                            transform: scale(0.95);
+                        }
+                    </style>
+                    <script>
+                        document.querySelectorAll('.favorite-form').forEach(form => {
+                            form.addEventListener('submit', function(e) {
+                                const btn = this.querySelector('button');
+                                btn.innerHTML = `<div class="spinner-border spinner-border-sm" role="status">
+                                                 <span class="visually-hidden">Loading...</span></div> 处理中...`;
+                                btn.disabled = true;
+                            });
+                        });
+                    </script>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- 书籍描述 -->
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+            <h5 class="card-subtitle mb-3">内容简介</h5>
+            <div class="text-muted lh-base">
+                {{ book.content}}
+            </div>
+        </div>
+    </div>
+    <div class="card shadow-sm mt-4">
+    <div class="card-body">
+        <h5 class="card-subtitle mb-3">评论</h5>
+        {% for comment in book.comments %}
+        <div class="mb-3 border-bottom pb-2">
+            <div class="d-flex justify-content-between">
+                <strong>{{ comment.username }}</strong>
+                <small class="text-muted">{{ comment.comment_time }}</small>
+            </div>
+            <p class="mb-1 mt-1 lh-base">{{ comment.content }}</p>
+            <div class="text-end text-muted">
+                👍 {{ comment.like_count }}
+            </div>
+        </div>
+        {% else %}
+        <p class="text-muted">暂无评论。</p>
+        {% endfor %}
+    </div>
+</div>
+
+
 </div>
 {% endblock %}

@@ -4,3 +4,5 @@
 /project/config.py
 /project/__pycache__/
 /project/blueprints/__pycache__
+project/.idea/misc.xml
+project/.idea/
