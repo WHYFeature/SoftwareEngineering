@@ -80,3 +80,19 @@ class Comment(db.Model):
     like_count = db.Column(db.Integer, default=0)
     user = db.relationship('User', backref=db.backref('comments', lazy=True))
     book = db.relationship('Book', backref=db.backref('comments', lazy=True))
+
+
+class LikeComment(db.Model):
+    __tablename__ = "likecomment"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    comment_id = db.Column(db.Integer, db.ForeignKey(
+        'comment.comment_id', ondelete='CASCADE'), nullable=False)
+    uid = db.Column(db.Integer, db.ForeignKey(
+        'user.uid', ondelete='CASCADE'), nullable=False)
+    like_time = db.Column(db.DateTime, default=datetime.now)
+
+    # 联合唯一约束，防止一个用户对同一条评论重复点赞
+    __table_args__ = (
+        db.UniqueConstraint('comment_id', 'uid', name='uix_comment_uid'),
+    )
