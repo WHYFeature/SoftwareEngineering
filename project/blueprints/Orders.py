@@ -6,8 +6,8 @@ bp = Blueprint("Orders", __name__, url_prefix="/orders")
 @bp.route('/', methods=["GET"])
 def view_orders():
     if 'uid' not in session:
-        flash("请先登录。", "warning")
-        return redirect(url_for('Auth.login'))  # 请根据你的实际登录路由调整
+        flash("请先登录再查看订单。", "warning")
+        return redirect(url_for('Book.book_list'))  # 请根据你的实际登录路由调整
 
     uid = session['uid']
     orders = OrderForm.query.filter_by(uid=uid, status=1).order_by(OrderForm.time.desc()).all()
