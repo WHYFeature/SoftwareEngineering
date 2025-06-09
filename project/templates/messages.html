@@ -11,7 +11,7 @@
 <div class="container">
     <h2 class="mb-4">留言板</h2>
     <!-- 留言表单 -->
-    {% if 'username' in session %}
+
     <!-- 留言列表 -->
     <div class="list-group">
         {% for msg in comments %}
@@ -30,7 +30,11 @@
                                 <form method="post" action="{{ url_for('Comment.touch_like') }}">
                                     <input type="hidden" name="comment_id" value="{{ msg.comment_id }}">
                                     <button type="submit" class="btn btn-sm btn-outline-primary">
-                                        👍 {{ msg.like_count }}
+                                        {% if msg.liked %}
+                                        💖 {{ msg.like_count }}
+                                        {% else %}
+                                        🖤  {{ msg.like_count }}
+                                        {% endif %}
                                     </button>
                                 </form>
                             </div>
@@ -39,11 +43,5 @@
         </div>
         {% endfor %}
     </div>
-    {% else %}
-    <div class="alert alert-info">
-        需要<a href="{{ url_for('User.login') }}" class="alert-link">登录</a>后才能留言
-    </div>
-    {% endif %}
-
 </div>
 {% endblock %}
