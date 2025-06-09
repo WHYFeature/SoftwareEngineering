@@ -59,7 +59,7 @@
                 <form method="GET" class="mb-3">
                     <div class="row g-2 align-items-center">
                         <div class="col-md-10">
-                            <input type="text" name="book_search" class="form-control" placeholder="搜索书名或作者" value="{{ book_search }}">
+                            <input type="text"  name="book_search" class="form-control" placeholder="搜索书名或作者" value="{{ book_search }}">
                         </div>
                         <div class="col-md-2 text-end">
                             <button type="submit" class="btn btn-primary w-100">搜索</button>
@@ -75,29 +75,29 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>书名</th>
-                            <th>作者</th>
-                            <th>类型</th>
-                            <th>版本</th>
-                            <th>数量</th>
-                            <th>价格</th>
-                            <th>出版社</th>
-                            <th>操作</th>
+                            <th style="text-align: center;">ID</th>
+                            <th style="text-align: center;">书名</th>
+                            <th style="text-align: center;">作者</th>
+                            <th style="text-align: center;">类型</th>
+                            <th style="text-align: center;">版本</th>
+                            <th style="text-align: center;">数量</th>
+                            <th style="text-align: center;">价格</th>
+                            <th style="text-align: center;">出版社</th>
+                            <th style="text-align: center;">操作</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for book in books %}
                         <tr>
-                            <td>{{ book.bid }}</td>
-                            <td>{{ book.bookname }}</td>
-                            <td>{{ book.author }}</td>
-                            <td>{{ book.type_ }}</td>
-                            <td>{{ book.version }}</td>
-                            <td>{{ book.number }}</td>
-                            <td>{{ book.price }}</td>
-                            <td>{{ book.publisher }}</td>
-                            <td>
+                            <td style="text-align: center;">{{ book.bid }}</td>
+                            <td style="text-align: center;">{{ book.bookname }}</td>
+                            <td style="text-align: center;">{{ book.author }}</td>
+                            <td style="text-align: center;">{{ book.type_ }}</td>
+                            <td style="text-align: center;">{{ book.version }}</td>
+                            <td style="text-align: center;">{{ book.number }}</td>
+                            <td style="text-align: center;">{{ book.price }}</td>
+                            <td style="text-align: center;">{{ book.publisher }}</td>
+                            <td style="text-align: center;">
                                 <a href="{{ url_for('Admin.edit_book', bid=book.bid) }}" class="btn btn-sm btn-warning">修改</a>
                                 <a href="{{ url_for('Admin.delete_book', bid=book.bid) }}" class="btn btn-sm btn-danger" onclick="return confirm('确认删除该书籍吗？可能会导致意料之外的结果！！！');">删除</a>
                             </td>
@@ -124,21 +124,21 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th style="width: 10%;">ID</th>
-                            <th style="width: 30%;">用户名</th>
-                            <th style="width: 15%;">性别</th>
-                            <th style="width: 15%;">等级</th>
-                            <th style="width: 30%;">操作</th>
+                            <th style="text-align: center; width: 10%;">ID</th>
+                            <th style="text-align: center; width: 30%;">用户名</th>
+                            <th style="text-align: center; width: 15%;">性别</th>
+                            <th style="text-align: center; width: 15%;">等级</th>
+                            <th style="text-align: center; width: 30%;">操作</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for user in users %}
                         <tr>
-                            <td>{{ user.uid }}</td>
-                            <td>{{ user.username }}</td>
-                            <td>{{ '男' if user.sex == 1 else '女' }}</td>
-                            <td>{{ user.level }}</td>
-                            <td>
+                            <td style="text-align: center;">{{ user.uid }}</td>
+                            <td style="text-align: center;">{{ user.username }}</td>
+                            <td style="text-align: center;">{{ '男' if user.sex == 1 else '女' }}</td>
+                            <td style="text-align: center;">{{ user.level }}</td>
+                            <td style="text-align: center;">
                                 {% if user.level == 0 %}
                                 <form method="POST" action="{{ url_for('Admin.delete_user', uid=user.uid) }}" style="display:inline;">
                                     <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('确认注销该用户吗？');">注销</button>
@@ -175,21 +175,21 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>用户名</th>
-                            <th>评论书籍</th>
-                            <th>评论内容</th>
-                            <th>评论时间</th>
-                            <th>点赞数</th>
-                            <th>删除</th>
+                            <th style="text-align: center;">ID</th>
+                            <th style="text-align: center;">用户名</th>
+                            <th style="text-align: center;">评论书籍</th>
+                            <th style="text-align: center;">评论内容</th>
+                            <th style="text-align: center;">评论时间</th>
+                            <th style="text-align: center;">点赞数</th>
+                            <th style="text-align: center;">删除</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for msg in comments %}
                         <tr>
-                            <td>{{ msg.comment_id }}</td>
-                            <td>{{ msg.username}}</td>
-                            <td>{{ msg.bookname}}</td>
+                            <td style="text-align: center;">{{ msg.comment_id }}</td>
+                            <td style="text-align: center;">{{ msg.username}}</td>
+                            <td style="text-align: center;">{{ msg.bookname}}</td>
                             <td style="max-width: 200px; word-wrap: break-word; word-break: break-all;">
                                 <span class="short-content">
                                     {% if msg.content|length > 20 %}
@@ -200,11 +200,11 @@
                                 </span>
                                 <span class="full-content">{{ msg.content }}</span>
                                 {% if msg.content|length > 20 %}
-                                    <button onclick="toggleContent(this)">展开</button>
+                                <a href="javascript:void(0);" onclick="toggleContent(this); return false;" style="text-decoration: none;">展开</a>
                                 {% endif %}
                             </td>
-                            <td>{{ msg.comment_time }}</td>
-                            <td>{{ msg.like_count }}</td>
+                            <td style="text-align: center;">{{ msg.comment_time }}</td>
+                            <td style="text-align: center;">{{ msg.like_count }}</td>
                             <td>
                                 <a href="{{ url_for('Admin.delete_comment',comment_id = msg.comment_id) }}" class="btn btn-sm btn-danger" onclick="return confirm('确认删除本评论吗？可能会导致意料之外的结果！！！');">删除</a>
                             </td>
