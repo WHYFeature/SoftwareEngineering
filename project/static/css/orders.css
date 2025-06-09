@@ -27,7 +27,6 @@ h5 {
     border-bottom: 2px solid #ec7abb; /* 添加底部边框 */
     padding-bottom: 5px; /* 调整边框与文字的间距 */
 }
-/* 为 card 类添加样式 */
 .card {
     border: none;
     border-radius: 8px;
