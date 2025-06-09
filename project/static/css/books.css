@@ -56,7 +56,7 @@ form.mb-4 {
 
 .card {
     /* 使用固定宽度 */
-    width: 80%; 
+    width: 70%; 
     /* 让卡片在父容器中水平居中 */
     margin-left: auto;
     margin-right: auto;

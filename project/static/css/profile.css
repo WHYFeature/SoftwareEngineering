@@ -1,10 +1,10 @@
 /* 继承页面整体背景与文字配色 */
 body {
-    background-image: url('../images/preview.jpg'); 
+    background-image: url('../images/sp.jpg'); 
     background-size: cover; 
     background-repeat: no-repeat; 
     background-attachment: fixed; 
-    background-position: center top; 
+    background-position: right top; 
     color: #4b4b4b; 
     font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
     line-height: 1.7; 
