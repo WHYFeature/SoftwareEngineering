@@ -22,14 +22,14 @@
     {% for book in books %}
     <div class="col">
         <div class="card h-100">
+          <a href="{{ url_for('Book.BookDetails', bid=book.bid) }}" class="text-decoration-none text-dark">
             <div class="card-body">
                 <h5 class="card-title">
-                  <a href="{{ url_for('Book.BookDetails', bid=book.bid) }}" class="text-decoration-none text-dark">
                     {{ book.title }}
-                  </a>
                 </h5>
                 <p class="card-text">价格：¥{{ book.price }}</p>
             </div>
+          </a>
         </div>
     </div>
     {% else %}

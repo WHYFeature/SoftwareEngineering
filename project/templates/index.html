@@ -19,9 +19,11 @@
         <h4>热门图书</h4>
         <ul class="list-group">
             {% for book in books[:3] %}
-            <li class="list-group-item">
-                {{ book.title }} - ¥{{ book.price }}
-            </li>
+            <a href="{{ url_for('Book.BookDetails', bid=book.id) }}" class="text-decoration-none text-dark">
+                <li class="list-group-item">
+                    {{ book.title }} - ¥{{ book.price }}
+                </li>
+            </a>
             {% endfor %}
         </ul>
     </div>
