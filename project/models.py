@@ -90,8 +90,6 @@ class LikeComment(db.Model):
         'comment.comment_id', ondelete='CASCADE'), nullable=False)
     uid = db.Column(db.Integer, db.ForeignKey(
         'user.uid', ondelete='CASCADE'), nullable=False)
-    like_time = db.Column(db.DateTime, default=datetime.now)
-
     # 联合唯一约束，防止一个用户对同一条评论重复点赞
     __table_args__ = (
         db.UniqueConstraint('comment_id', 'uid', name='uix_comment_uid'),

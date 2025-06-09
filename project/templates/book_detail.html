@@ -124,7 +124,16 @@
                                 <small class="text-muted">{{ comment.comment_time }}</small>
                             </div>
                             <p class="mt-1 mb-1">{{ comment.content }}</p>
-                            <div class="text-end text-muted">👍 {{ comment.like_count }}</div>
+                             <div class="text-end">
+                                <form method="post" action="{{ url_for('Comment.touch_like') }}">
+
+
+                                    <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                                    <button type="submit" class="btn btn-sm btn-outline-primary">
+                                        👍 {{ comment.like_count }}
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                         {% endfor %}
                     {% else %}

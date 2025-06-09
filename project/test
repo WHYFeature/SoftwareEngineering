@@ -1,0 +1,9 @@
+CREATE TABLE LikeComment (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    comment_id INT NOT NULL,
+    uid INT NOT NULL,
+
+    CONSTRAINT fk_like_comment FOREIGN KEY (comment_id) REFERENCES comment(comment_id) ON DELETE CASCADE,
+    CONSTRAINT fk_like_user FOREIGN KEY (uid) REFERENCES user(uid) ON DELETE CASCADE,
+    UNIQUE (comment_id, uid)  -- 防止同一用户重复点赞同一评论
+);
