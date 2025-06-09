@@ -1,171 +1,161 @@
-<!-- templates/book_detail.html -->
 {% extends "base.html" %}
 
 {% block title %}{{ book.bookname }} - 书籍详情{% endblock %}
 
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/books.css') }}">
+{% endblock %}
+
 {% block content %}
 <div class="container mt-4">
+
     <!-- 返回按钮 -->
-    <a href="{{ url_for('Book.book_list')}}" class="btn btn-outline-secondary mb-4">
+    <a href="{{ url_for('Book.book_list') }}" class="btn btn-outline-secondary mb-4">
         &larr; 返回书单
     </a>
 
-    <!-- 书籍主体信息 -->
+    <!-- 主内容 -->
     <div class="row g-4">
-        <!-- 封面图片列 -->
-
-        <!-- 详细信息列 -->
-        <div class="col-md-8">
-            <div class="card shadow-sm h-100">
+        <div class="col-md-10 mx-auto">
+            <div class="card shadow-sm">
                 <div class="card-body">
-                    <!-- 标题区 -->
-                    <h1 class="card-title display-5">{{ book.bookname }}</h1>
-                    <div class="d-flex align-items-center mb-4">
-                        <span class="text-muted">库存: {{ book.number }}册</span>
-                    </div>
 
-                    <!-- 元信息 -->
+                    <!-- 标题与库存 -->
+                    <h1 class="card-title display-6">{{ book.bookname }}</h1>
+                    <p class="text-muted">库存：{{ book.number }} 册</p>
+
+                    <!-- 基本信息 -->
                     <dl class="row">
                         <dt class="col-sm-3">作者</dt>
-                        <dd class="col-sm-9">{{book.author}}</dd>
-
+                        <dd class="col-sm-9">{{ book.author }}</dd>
                         <dt class="col-sm-3">出版社</dt>
-                        <dd class="col-sm-9">{{ book.publisher}}</dd>
-
+                        <dd class="col-sm-9">{{ book.publisher }}</dd>
                     </dl>
 
                     <!-- 价格区块 -->
                     <div class="bg-light p-3 rounded-3 mb-4">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h3 class="text-danger mb-0">
-                                ¥{{ book.price}}
-                            </h3>
-                        </div>
+                        <h3 class="text-danger mb-0">¥{{ book.price }}</h3>
                     </div>
 
-                    <!-- 操作表单 -->
-                    <form action="{{ url_for('Cart.add_to_cart')}}" method="post" class="needs-validation" novalidate>
+                    <!-- 加入购物车表单 -->
+                    <form action="{{ url_for('Cart.add_to_cart') }}" method="post" class="needs-validation mb-3" novalidate>
                         <input type="hidden" name="bid" value="{{ book.bid }}">
-
-                        <div class="row g-3">
-                            <div class="col-12 col-md-3">
+                        <div class="row g-3 align-items-end">
+                            <!-- 数量输入框 -->
+                            <div class="col-md-5">
                                 <label for="quantity" class="form-label">数量</label>
-                                <input type="number"
-                                   class="form-control"
-                                   id="quantity"
-                                   name="quantity"
-                                   min="1"
-                                   max="{{ book.number }}"
-                                   value="1"
-                                   required
-                                   step="1">
-                                 <div class="invalid-feedback" id="quantityFeedback">
-                请输入1至{{ book.number }}之间的有效数量。
-                                </div>
+                                <input type="number" class="form-control form-control-lg h-100"
+                                       id="quantity" name="quantity"
+                                       min="1" max="{{ book.number }}" value="1" required>
+                                <div class="invalid-feedback">请输入1至{{ book.number }}之间的数量。</div>
                             </div>
-
-                             <div class="col-12 col-md-9 d-grid">
-                                <button type="submit"
-                                        class="btn btn-primary btn-lg"
+                    
+                            <!-- 按钮 -->
+                            <div class="col-md-6 offset-md-1 d-grid">
+                                <label class="form-label invisible">操作</label> <!-- 占位标签保持对齐 -->
+                                <button type="submit" class="btn btn-primary btn-lg"
                                         {% if book.number == 0 %}disabled{% endif %}>
-                                    <i class="bi bi-cart-plus"></i>
-                                    加入购物车
+                                    <i class="bi bi-cart-plus"></i> 加入购物车
                                 </button>
                             </div>
-
+                        </div>
+                    </form>
+                    <!-- 收藏按钮表单 -->
+                    <form action="{{ url_for('Collect.addCollect') }}" method="post" class="favorite-form">
+                        <input type="hidden" name="bid" value="{{ book.bid }}">
+                        <div class="d-grid d-md-inline">
+                            <button type="submit"
+                                    class="btn btn-outline-danger {% if inCollect %}active{% endif %}"
+                                    aria-pressed="{{ inCollect|lower }}">
+                                <i class="bi {% if inCollect %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
+                                <span class="ms-2">{% if inCollect %}已收藏{% else %}加入收藏{% endif %}</span>
+                            </button>
                         </div>
                     </form>
 
-                    <form action="{{ url_for('Collect.addCollect') }}" method="post" class="favorite-form">
-                        <input type="hidden" name="bid" value="{{ book.bid }}">
-                        <button type="submit"
-                                class="btn btn-outline-danger {% if inCollect %}active{% endif %}"
-                                aria-pressed="{{ book.inCollect|lower }}">
-                        <i class="bi {% if inCollect %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
-                        <span class="ms-2">
-                            {% if book.inCollect %}已收藏{% else %}加入收藏{% endif %}
-                        </span>
-                    </button>
-                    </form>
+                    <!-- 样式 -->
                     <style>
                         .favorite-form button {
                             transition: all 0.3s ease;
                             position: relative;
-                            overflow: hidden;
                         }
                         .favorite-form button:not(.active):hover {
                             transform: scale(1.05);
-                            box-shadow: 0 0 15px rgba(255, 59, 48, 0.3);
+                            box-shadow: 0 0 12px rgba(255, 0, 0, 0.2);
                         }
                         .favorite-form button.active {
-                            background: #ff3b30;
-                            color: white !important;
-                        }
-                        .favorite-form button:active {
-                            transform: scale(0.95);
+                            background-color: #ff3b30;
+                            color: #fff !important;
                         }
                     </style>
+
+                    <!-- 收藏按钮加载提示 -->
                     <script>
                         document.querySelectorAll('.favorite-form').forEach(form => {
                             form.addEventListener('submit', function(e) {
                                 const btn = this.querySelector('button');
-                                btn.innerHTML = `<div class="spinner-border spinner-border-sm" role="status">
-                                                 <span class="visually-hidden">Loading...</span></div> 处理中...`;
+                                btn.innerHTML = `<div class="spinner-border spinner-border-sm" role="status"></div> 处理中...`;
                                 btn.disabled = true;
                             });
                         });
                     </script>
+
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- 书籍描述 -->
-    <div class="card shadow-sm mt-4">
-        <div class="card-body">
-            <h5 class="card-subtitle mb-3">内容简介</h5>
-            <div class="text-muted lh-base">
-                {{ book.content}}
+            <!-- 内容简介 -->
+            <div class="card shadow-sm mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">内容简介</h5>
+                    <p class="text-muted lh-base">{{ book.content }}</p>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="card shadow-sm mt-4">
-    <div class="card-body">
-        <h5 class="card-subtitle mb-3">评论</h5>
-        {% for comment in book.comments %}
-        <div class="mb-3 border-bottom pb-2">
-            <div class="d-flex justify-content-between">
-                <strong>{{ comment.username }}</strong>
-                <small class="text-muted">{{ comment.comment_time }}</small>
-            </div>
-            <p class="mb-1 mt-1 lh-base">{{ comment.content }}</p>
-            <div class="text-end text-muted">
-                👍 {{ comment.like_count }}
-            </div>
-        </div>
-        {% else %}
-        <p class="text-muted">暂无评论。</p>
-        {% endfor %}
-    </div>
-    </div>
-        <div class="card mb-4">
-    <div class="card-body">
-        <h5 class="card-title">发表留言</h5>
-        <form method="POST" action="{{ url_for('Comment.add_comment') }}">
-            <input type="hidden" name="bid" value="{{ book.bid }}">
-            <div class="mb-3">
-                <textarea name="content" class="form-control" rows="3"
-                          placeholder="请输入您的留言（至少5个字符）"
-                          required minlength="5"></textarea>
-            </div>
-            {% if error %}
-            <div class="alert alert-danger">{{ error }}</div>
-            {% endif %}
-            <button type="submit" class="btn btn-primary">提交留言</button>
-        </form>
-    </div>
-    </div>
 
+            <!-- 评论区块 -->
+            <div class="card shadow-sm mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">评论</h5>
+                    {% if book.comments %}
+                        {% for comment in book.comments %}
+                        <div class="border-bottom pb-2 mb-3">
+                            <div class="d-flex justify-content-between">
+                                <strong>{{ comment.username }}</strong>
+                                <small class="text-muted">{{ comment.comment_time }}</small>
+                            </div>
+                            <p class="mt-1 mb-1">{{ comment.content }}</p>
+                            <div class="text-end text-muted">👍 {{ comment.like_count }}</div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted">暂无评论。</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- 留言表单 -->
+            <div class="card shadow-sm mt-4 mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">发表留言</h5>
+                    <form method="POST" action="{{ url_for('Comment.add_comment') }}">
+                        <input type="hidden" name="bid" value="{{ book.bid }}">
+                        <div class="mb-3">
+                            <textarea name="content"
+                                      class="form-control"
+                                      rows="3"
+                                      placeholder="请输入您的留言（至少5个字符）"
+                                      required minlength="5"></textarea>
+                        </div>
+                        {% if error %}
+                        <div class="alert alert-danger">{{ error }}</div>
+                        {% endif %}
+                        <button type="submit" class="btn btn-primary">提交留言</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 </div>
 {% endblock %}

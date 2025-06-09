@@ -1,95 +1,127 @@
-/* 继承页面整体背景与文字配色 */
+/* 背景与基础文字样式 */
 body {
-    background-image: url('../images/book1.jpg'); 
-    background-size: cover; 
-    background-repeat: no-repeat; 
-    background-attachment: fixed; 
-    background-position: center top; 
-    color: #4b4b4b; 
-    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
-    line-height: 1.7; 
-    -webkit-font-smoothing: antialiased; 
+    background-image: url('../images/preview.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center top;
+    color: #333;
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-/* 欢迎标题样式 */
+
+/* 欢迎或标题样式 */
+h1, h2, h5 {
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+    font-weight: 600;
+}
+
+/* 标题颜色示例 */
 h2 {
-    margin-bottom: 25px; 
-    font-size: 2.5rem; 
-    font-weight: 600; 
-    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3); 
-    /* 移除动画 */
-    /* animation: rainbow 10s linear infinite; */ 
-    color: rgb(167, 79, 250); /* 设置固定颜色 */
+    font-size: 2.5rem;
+    color: rgb(167, 79, 250);
+    margin-bottom: 1.5rem;
 }
 
-/* 搜索表单样式 */
-form.mb-4 {
-    margin-bottom: 2rem;
+/* 表单通用间距 */
+form.mb-4,
+form.needs-validation,
+.favorite-form {
+    margin-bottom: 1.5rem;
 }
 
-.input-group {
-    max-width: 500px;
-    margin: 0 auto;
+/* 数量输入表单 */
+#quantity {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
-.input-group input[type="text"] {
-    border-radius: 4px 0 0 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.input-group button {
-    border-radius: 0 4px 4px 0;
-    background-color: #007bff;
-    color: white;
-    border: 1px solid #007bff;
-}
-
-.input-group button:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
-}
-
-/* 图书卡片布局样式 */
-.row.row-cols-1.row-cols-md-3.g-4 {
-    margin-top: 2rem;
-}
-
-.card {
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+/* 收藏按钮样式强化 */
+.favorite-form button {
     transition: all 0.3s ease;
-    background-color: rgba(255, 255, 255, 0.75); /* 使用 rgba 设置背景颜色并添加透明度，这里表示白色背景，80% 不透明 */
+    border-radius: 0.375rem;
+    position: relative;
+    overflow: hidden;
 }
 
-.card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-    background-color: rgba(255, 255, 255, 1); /* 鼠标悬停时背景恢复完全不透明 */
+.favorite-form button:not(.active):hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(255, 59, 48, 0.2);
 }
 
+.favorite-form button.active {
+    background-color: #ff3b30;
+    color: #fff !important;
+    border-color: #ff3b30;
+}
+
+/* 卡片样式优化 */
 .card-body {
-    padding: 1.5rem;
+    border: none;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    background-color: rgba(255, 255, 255, 0.85)
+    !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.card-body:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+/* 卡片标题链接 */
 .card-title a {
-    color: #4b4b4b;
-    transition: color 0.3s ease;
+    color: #333;
+    text-decoration: none;
 }
 
 .card-title a:hover {
     color: #007bff;
 }
 
-.card-text {
-    font-size: 1.1rem;
-    color: #666;
+/* 价格块样式 */
+.bg-light.p-3.rounded-3 {
+    background-color: rgba(255, 255, 255, 0.6) !important;
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-/* 未找到书籍提示样式 */
-p:empty + p {
+/* 评论列表样式 */
+.card-body > .border-bottom {
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+/* 留言框优化 */
+textarea.form-control {
+    resize: vertical;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* 无评论提示 */
+p.text-muted:only-child {
     text-align: center;
-    font-size: 1.2rem;
-    color: #888;
-    margin-top: 2rem;
+    font-style: italic;
+    color: #777;
+}
+
+/* 按钮通用 hover */
+button.btn:hover {
+    opacity: 0.9;
+    transition: all 0.2s ease;
+}
+
+/* 响应式卡片间距 */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1rem;
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+    }
+
+    .bg-light h3 {
+        font-size: 1.75rem;
+    }
 }
