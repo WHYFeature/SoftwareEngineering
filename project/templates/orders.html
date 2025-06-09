@@ -12,31 +12,32 @@
     <h2 class="mb-4">我的订单</h2>
 
     <!-- Tab切换按钮 -->
-    <ul class="nav nav-tabs" id="orderTabs" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link {% if active_tab == 'paid' %}active{% endif %}" id="paid-tab" data-bs-toggle="tab" data-bs-target="#paid" type="button" role="tab">已支付订单</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link {% if active_tab == 'completed' %}active{% endif %}" id="completed-tab" data-bs-toggle="tab" data-bs-target="#completed" type="button" role="tab">已完成订单</button>
-        </li>
-    </ul>
+    <div class="card mb-4 shadow-sm" style="background-color: transparent; box-shadow: none; border: none;">
+        <ul class="nav nav-tabs" id="orderTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link {% if active_tab == 'paid' %}active{% endif %}" id="paid-tab" data-bs-toggle="tab" data-bs-target="#paid" type="button" role="tab">已支付订单</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link {% if active_tab == 'completed' %}active{% endif %}" id="completed-tab" data-bs-toggle="tab" data-bs-target="#completed" type="button" role="tab">已完成订单</button>
+            </li>
+        </ul>
+    </div>
     <style>
-        /* 默认状态下的按钮颜色 */
         #orderTabs .nav-link {
-            color: #ffffff; /* 文字颜色 */
-            background-color: #007bff; /* 背景颜色 */
+            color:rgb(0, 0, 0); /* 文字颜色 */
+            background-color: rgba(135, 179, 245, 0.6);
         }
 
         /* 悬停状态下的按钮颜色 */
         #orderTabs .nav-link:hover {
-            color: #ffffff; /* 文字颜色 */
-            background-color: #0056b3; /* 背景颜色 */
+            color:rgb(0, 0, 0); /* 文字颜色 */
+            background-color: rgb(48, 111, 237, 0.8);
         }
 
         /* 激活状态下的按钮颜色 */
         #orderTabs .nav-link.active {
-            color: #ffffff; /* 文字颜色 */
-            background-color: #dc3545; /* 背景颜色 */
+            color:rgb(0, 0, 0); /* 文字颜色 */
+            background-color: rgb(22, 21, 125, 0.9);
         }
     </style>
 
