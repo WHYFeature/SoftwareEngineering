@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}修改书籍{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h3 class="mb-4">修改书籍信息</h3>
+    <form method="POST">
+        <div class="mb-3">
+            <label class="form-label">书名</label>
+            <input type="text" name="bookname" class="form-control" value="{{ book.bookname }}" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">作者</label>
+            <input type="text" name="author" class="form-control" value="{{ book.author }}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">类型</label>
+            <input type="text" name="type_" class="form-control" value="{{ book.type_ }}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">版本</label>
+            <input type="text" name="version" class="form-control" value="{{ book.version }}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">库存数量</label>
+            <input type="number" name="number" class="form-control" value="{{ book.number }}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">价格</label>
+            <input type="number" name="price" class="form-control" value="{{ book.price }}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">出版社</label>
+            <input type="text" name="publisher" class="form-control" value="{{ book.publisher }}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">内容简介</label>
+            <textarea name="content" class="form-control">{{ book.content }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">提交修改</button>
+        <a href="{{ url_for('Admin.admin_page') }}" class="btn btn-secondary">返回</a>
+    </form>
+</div>
+{% endblock %}
