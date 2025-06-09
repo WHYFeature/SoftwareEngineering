@@ -13,7 +13,7 @@ from models import User
 from models import UserAddress
 from models import db
 from models import Comment
-from models import LikeComment
+from models import Book
 from sqlalchemy import func
 
 from blueprints import User as _User
@@ -49,6 +49,9 @@ def getUidComment(uid):
             "comment_time": c.comment_time.strftime("%Y-%m-%d %H:%M:%S"),
             "like_count": c.like_count,
         }
+        book = Book.query.filter(Book.bid == c.book_id).first()
+        bookname = book.bookname
+        cdata["bookname"] = bookname
         comments.append(cdata)
     return comments
 
