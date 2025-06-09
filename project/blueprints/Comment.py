@@ -5,7 +5,7 @@ from sqlalchemy import desc
 bp = Blueprint("Comment", __name__, url_prefix="/comment")
 
 
-@bp.route("/", method=["GET"])
+@bp.route("/", methods=["GET"])
 def showComment():
     comments = Comment.query.order_by(
         desc(Comment.like_count), desc(Comment.comment_time)).all()
