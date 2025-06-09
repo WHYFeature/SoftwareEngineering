@@ -191,6 +191,7 @@
                         <div class="list-group-item py-3">
                             <p><strong>评论对象：</strong>{{ item.bookname }}</p>
                             <p><strong>评论时间：</strong>{{ item.comment_time}}</p>
+                             <p><strong>评论内容：</strong>{{ item.content}}</p>
                             <p><strong>点赞数：</strong>{{ item.like_count }}</p>
                              <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
                                 data-bs-target="#deleteComment" data-cid="{{ item.comment_id }}">删除
