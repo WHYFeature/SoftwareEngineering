@@ -128,7 +128,7 @@
                                 <form method="post" action="{{ url_for('Comment.touch_like') }}">
 
 
-                                    <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                                    <input type="hidden" name="comment_id" value="{{ comment.comment_id }}">
                                     <button type="submit" class="btn btn-sm btn-outline-primary">
                                         👍 {{ comment.like_count }}
                                     </button>
