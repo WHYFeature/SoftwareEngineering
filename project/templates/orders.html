@@ -13,38 +13,37 @@
 
     {% if orders %}
         {% for order in orders %}
-        <div class="card mb-4">
-            <div class="card-header">
-                <strong>订单号：</strong> {{ order.oid }}
-                &nbsp;&nbsp;&nbsp;
-                <strong>下单时间：</strong> {{ order.time }}
-                <br>
-                <strong>收货信息：</strong> {{ order.address }}
-            </div>
+        <div class="card mb-4 shadow-sm">
             <div class="card-body">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>书名</th>
-                            <th>作者</th>
-                            <th>单价</th>
-                            <th>数量</th>
-                            <th>小计</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for item in order.orders_items %}
-                        <tr>
-                            <td>{{ item.bookname }}</td>
-                            <td>{{ item.author }}</td>
-                            <td>¥{{ "%.2f"|format(item.price) }}</td>
-                            <td>{{ item.quantity }}</td>
-                            <td>¥{{ "%.2f"|format(item.subtotal) }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                <div class="text-end fw-bold">
+                <div class="card-body">
+                    <h5 class="card-title">订单信息：</h5>
+                </div>
+                <div class="card-header bg-light">
+                    <div><strong>订单号：</strong> {{ order.oid }}</div>
+                    <div><strong>下单时间：</strong> {{ order.time }}</div>
+                    <div><strong>收货信息：</strong> {{ order.address }}</div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">订购书目：</h5>
+                </div>
+                <div class="row row-cols-1 row-cols-md-2 g-3">
+                    {% for item in order.orders_items %}
+                    <div class="col">
+                        <div class="card-header bg-light">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ item.bookname }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">{{ item.author }}</h6>
+                                <p class="card-text">
+                                    单价：¥{{ "%.2f"|format(item.price) }}<br>
+                                    数量：{{ item.quantity }}<br>
+                                    小计：<strong>¥{{ "%.2f"|format(item.subtotal) }}</strong>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="text-end fw-bold mt-3">
                     总计：¥{{ "%.2f"|format(order.total) }}
                 </div>
             </div>
@@ -54,4 +53,5 @@
         <div class="alert alert-info">你还没有已支付的订单。</div>
     {% endif %}
 </div>
+
 {% endblock %}
