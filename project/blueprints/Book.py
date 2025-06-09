@@ -12,6 +12,7 @@ from models import LikeComment
 from sqlalchemy import func
 from sqlalchemy import desc
 
+from blueprints import UseImage
 """
 GetHotBook获取了热度前十的书目录
 返回各书的详细信息的列表
@@ -93,6 +94,8 @@ def BookDetails():
     book["price"] = data.price
     book["content"] = data.content
     book["publisher"] = data.publisher
+    book["img_path"] = UseImage.get_bookimage(bid)
+    print(book["img_path"])
 
     book["inCollect"] = 0
     if "uid" in session:  # 检查是否处于登录状态，若处于登录状态则检查是否已收藏

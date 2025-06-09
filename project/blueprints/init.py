@@ -8,3 +8,4 @@ import Profile
 import Cart
 import Collect
 import Comment
+import UseImage
