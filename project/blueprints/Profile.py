@@ -12,6 +12,8 @@ from werkzeug.security import check_password_hash
 from models import User
 from models import UserAddress
 from models import db
+from models import Comment
+from models import LikeComment
 from sqlalchemy import func
 
 from blueprints import User as _User
@@ -36,6 +38,20 @@ def getAllAddress(uid):
         addresses.append(address)
     return addresses
 
+def getUidComment(uid):
+    commentsdata = Comment.query.filter(Comment.user_id == uid).all()
+
+    comments = []
+    for c in commentsdata:
+        cdata = {
+            "comment_id": c.comment_id,
+            "content": c.content,
+            "comment_time": c.comment_time.strftime("%Y-%m-%d %H:%M:%S"),
+            "like_count": c.like_count,
+        }
+        comments.append(cdata)
+    return comments
+
 
 """
 url = /profile
@@ -55,7 +71,10 @@ def _profile():
     collects = _Collect.getAllCollect(uid)
     # print(collects)
 
-    return render_template('profile.html', addresses=addresses, collects=collects)
+    comments = []
+    comments = getUidComment(uid)
+
+    return render_template('profile.html', addresses=addresses, collects=collects,comments = comments)
 
 
 """
