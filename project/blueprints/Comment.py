@@ -1,9 +1,31 @@
-from flask import Blueprint, request, session, redirect, url_for, flash
+from flask import Blueprint, request, session, redirect, url_for, flash,render_template
 from models import db, Book, User, Comment
+from sqlalchemy import desc
 
 bp = Blueprint("Comment", __name__, url_prefix="/comment")
 
-@bp.route("/comment/add", methods=["POST"])
+
+@bp.route("/", method=["GET"])
+def showComment():
+    comments = Comment.query.order_by(
+        desc(Comment.like_count), desc(Comment.comment_time)).all()
+    result = []
+    for c in comments:
+        cdata = {
+            "comment_id": c.comment_id,
+            "content": c.content,
+            "book_id": c.book_id,
+            "comment_time": c.comment_time.strftime("%Y-%m-%d %H:%M:%S"),
+            "like_count": c.like_count,
+        }
+        user = User.query.filter(User.uid == c.uid).first()
+        username = user.username
+        cdata["username"] = username
+        result.append(cdata)
+    return render_template('messages.html', comments = result)
+
+
+@bp.route("/add", methods=["POST"])
 def add_comment():
     content = request.form.get("content")
     bid = request.form.get("bid")

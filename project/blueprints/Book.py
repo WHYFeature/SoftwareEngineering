@@ -114,7 +114,7 @@ def BookDetails():
             "comment_time": c.comment_time.strftime("%Y-%m-%d %H:%M:%S"),
             "like_count": c.like_count,
         }
-        user = User.query.filter(User.uid == uid).first()
+        user = User.query.filter(User.uid == c.uid).first()
         username = user.username
         cdata["username"]= username
         comments.append(cdata)
