@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
-from models import db, Book, User, UserCollect, UserAddress
+from models import db, Book, User, UserCollect, UserAddress, OrderDetails, OrderForm
 from sqlalchemy import or_
 from datetime import datetime
 
@@ -51,20 +51,34 @@ def admin_page():
 
 @bp.route('/delete_book')
 def delete_book():
-    if session.get('level') != 1:
-        flash("没有权限操作", "danger")
+    bid = request.args.get("bid")
+    if not bid:
+        flash("未指定书籍ID", "warning")
         return redirect(url_for("Admin.admin_page"))
 
-    bid = request.args.get("bid")
     book = Book.query.get(bid)
-
-    if book:
-        db.session.delete(book)
-        db.session.commit()
-        flash("书籍删除成功", "success")
-    else:
+    if not book:
         flash("书籍不存在", "warning")
+        return redirect(url_for("Admin.admin_page"))
 
+    # 查询该书是否存在订单详情，且对应订单状态为 1（已支付未完成）
+    paid_unfinished_orders = (
+        db.session.query(OrderDetails)
+        .join(OrderForm, OrderDetails.oid == OrderForm.oid)
+        .filter(OrderDetails.bid == bid, OrderForm.status == 1)
+        .first()
+    )
+    if paid_unfinished_orders:
+        flash("该书有未完成的已支付订单，无法删除", "danger")
+        return redirect(url_for("Admin.admin_page"))
+
+    # 如果无未完成订单，先删除相关收藏和订单详情
+    UserCollect.query.filter_by(bid=bid).delete()
+    OrderDetails.query.filter_by(bid=bid).delete()
+    # 删除书籍
+    db.session.delete(book)
+    db.session.commit()
+    flash("书籍删除成功", "success")
     return redirect(url_for("Admin.admin_page"))
 
 

@@ -62,7 +62,7 @@
                         <td>{{ book.publisher }}</td>
                         <td>
                             <a href="{{ url_for('Admin.edit_book', bid=book.bid) }}" class="btn btn-sm btn-warning">修改</a>
-                            <a href="{{ url_for('Admin.delete_book', bid=book.bid) }}" class="btn btn-sm btn-danger" onclick="return confirm('确认删除该书籍吗？');">删除</a>
+                            <a href="{{ url_for('Admin.delete_book', bid=book.bid) }}" class="btn btn-sm btn-danger" onclick="return confirm('确认删除该书籍吗？可能会导致意料之外的结果！！！');">删除</a>
                         </td>
                     </tr>
                     {% endfor %}
