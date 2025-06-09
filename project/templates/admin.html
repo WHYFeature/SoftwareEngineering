@@ -2,6 +2,10 @@
 
 {% block title %}管理员后台{% endblock %}
 
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+{% endblock %}
 
 {% block content %}
 <div class="container mt-4">

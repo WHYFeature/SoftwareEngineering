@@ -4,54 +4,140 @@
 
 {% block styles %}
 {{ super() }}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/cart.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/orders.css') }}">
 {% endblock %}
 
 {% block content %}
 <div class="container mt-4">
-    <h2 class="mb-4">已支付订单</h2>
+    <h2 class="mb-4">我的订单</h2>
 
-    {% if orders %}
-        {% for order in orders %}
-        <div class="card mb-4 shadow-sm">
-            <div class="card-body">
-                <div class="card-body">
-                    <h5 class="card-title">订单信息：</h5>
-                </div>
-                <div class="card-header bg-light">
-                    <div><strong>订单号：</strong> {{ order.oid }}</div>
-                    <div><strong>下单时间：</strong> {{ order.time }}</div>
-                    <div><strong>收货信息：</strong> {{ order.address }}</div>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">订购书目：</h5>
-                </div>
-                <div class="row row-cols-1 row-cols-md-2 g-3">
-                    {% for item in order.orders_items %}
-                    <div class="col">
-                        <div class="card-header bg-light">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ item.bookname }}</h5>
-                                <h6 class="card-subtitle mb-2 text-muted">{{ item.author }}</h6>
-                                <p class="card-text">
-                                    单价：¥{{ "%.2f"|format(item.price) }}<br>
-                                    数量：{{ item.quantity }}<br>
-                                    小计：<strong>¥{{ "%.2f"|format(item.subtotal) }}</strong>
-                                </p>
+    <!-- Tab切换按钮 -->
+    <ul class="nav nav-tabs" id="orderTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link {% if active_tab == 'paid' %}active{% endif %}" id="paid-tab" data-bs-toggle="tab" data-bs-target="#paid" type="button" role="tab">已支付订单</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link {% if active_tab == 'completed' %}active{% endif %}" id="completed-tab" data-bs-toggle="tab" data-bs-target="#completed" type="button" role="tab">已完成订单</button>
+        </li>
+    </ul>
+    <style>
+        /* 默认状态下的按钮颜色 */
+        #orderTabs .nav-link {
+            color: #ffffff; /* 文字颜色 */
+            background-color: #007bff; /* 背景颜色 */
+        }
+
+        /* 悬停状态下的按钮颜色 */
+        #orderTabs .nav-link:hover {
+            color: #ffffff; /* 文字颜色 */
+            background-color: #0056b3; /* 背景颜色 */
+        }
+
+        /* 激活状态下的按钮颜色 */
+        #orderTabs .nav-link.active {
+            color: #ffffff; /* 文字颜色 */
+            background-color: #dc3545; /* 背景颜色 */
+        }
+    </style>
+
+    <!-- Tab内容区域 -->
+    <div class="tab-content mt-3">
+        <!-- 已支付订单 -->
+        <div class="tab-pane fade {% if active_tab == 'paid' %}show active{% endif %}" id="paid">
+            {% if paid_orders %}
+                {% for order in paid_orders %}
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">订单信息：</h5>
+                    </div>
+                    <div class="card-header bg-light">
+                        <div><strong>订单号：</strong> {{ order.oid }}</div>
+                        <div><strong>下单时间：</strong> {{ order.time }}</div>
+                        <div><strong>收货信息：</strong> {{ order.address }}</div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">订购书目：</h5>
+                    </div>
+                    <div class="row row-cols-1 row-cols-md-2 g-3">
+                        {% for item in order.orders_items %}
+                        <div class="col">
+                            <div class="card-header bg-light">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ item.bookname }}</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">{{ item.author }}</h6>
+                                    <p class="card-text">
+                                        单价：¥{{ "%.2f"|format(item.price) }}<br>
+                                        数量：{{ item.quantity }}<br>
+                                        小计：<strong>¥{{ "%.2f"|format(item.subtotal) }}</strong>
+                                    </p>
+                                </div>
                             </div>
                         </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
+                    <div class="text-end fw-bold mt-3">
+                        总计：¥{{ "%.2f"|format(order.total) }}
+                    </div>
+                    <!-- 确认收货按钮 -->
+                    <form method="POST" action="{{ url_for('Orders.confirm_receipt', oid=order.oid) }}">
+                        <button type="submit" class="btn btn-success" onclick="return confirm('确认收到该书籍吗？')"
+                        {% if order.status == 2 %} disabled {% endif %}>
+                        {% if order.status == 2 %}
+                        已确认收货
+                        {% else %}
+                        确认收货
+                        {% endif %}
+                        </button>
+                    </form>
                 </div>
-                <div class="text-end fw-bold mt-3">
-                    总计：¥{{ "%.2f"|format(order.total) }}
-                </div>
-            </div>
+                {% endfor %}
+            {% else %}
+                <div class="alert alert-info">你还没有已支付的订单。</div>
+            {% endif %}
         </div>
-        {% endfor %}
-    {% else %}
-        <div class="alert alert-info">你还没有已支付的订单。</div>
-    {% endif %}
-</div>
 
+        <!-- 已完成订单 -->
+        <div class="tab-pane fade {% if active_tab == 'completed' %}show active{% endif %}" id="completed">
+            {% if completed_orders %}
+                {% for order in completed_orders %}
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">订单信息：</h5>
+                    </div>
+                    <div class="card-header bg-light">
+                        <div><strong>订单号：</strong> {{ order.oid }}</div>
+                        <div><strong>下单时间：</strong> {{ order.time }}</div>
+                        <div><strong>收货信息：</strong> {{ order.address }}</div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">订购书目：</h5>
+                    </div>
+                    <div class="row row-cols-1 row-cols-md-2 g-3">
+                        {% for item in order.orders_items %}
+                        <div class="col">
+                            <div class="card-header bg-light">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ item.bookname }}</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">{{ item.author }}</h6>
+                                    <p class="card-text">
+                                        单价：¥{{ "%.2f"|format(item.price) }}<br>
+                                        数量：{{ item.quantity }}<br>
+                                        小计：<strong>¥{{ "%.2f"|format(item.subtotal) }}</strong>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="text-end fw-bold mt-3">
+                        总计：¥{{ "%.2f"|format(order.total) }}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="alert alert-info">你还没有已完成的订单。</div>
+            {% endif %}
+        </div>
+    </div>
+</div>
 {% endblock %}
