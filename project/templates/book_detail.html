@@ -159,11 +159,27 @@
                         <input type="hidden" name="bid" value="{{ book.bid }}">
                         <div class="mb-3">
                             <textarea name="content"
+                                      id="messageContent"
                                       class="form-control"
                                       rows="3"
-                                      placeholder="请输入您的留言（至少5个字符）"
-                                      required minlength="5"></textarea>
+                                      placeholder="请输入您的留言（5-800个字符）"
+                                      maxlength="800"
+                                      required minlength="5"
+                                      oninput="autoResize(this)"></textarea>
                         </div>
+                        <script>
+                        function autoResize(textarea) {
+                            textarea.style.height = 'auto'; // 重设高度
+                            textarea.style.height = textarea.scrollHeight + 'px'; // 设置为内容高度
+                        }
+                        </script>
+
+                        <style>
+                        textarea {
+                            overflow-y: hidden; /* 禁用竖向滚动条 */
+                            resize: none;       /* 禁止用户手动拖动改变大小（可选） */
+                        }
+                        </style>
                         {% if error %}
                         <div class="alert alert-danger">{{ error }}</div>
                         {% endif %}
