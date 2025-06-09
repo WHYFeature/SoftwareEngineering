@@ -30,6 +30,9 @@
                     <li class="list-group-item">
                         <a href="#favorites" class="text-decoration-none">我的收藏</a>
                     </li>
+                     <li class="list-group-item">
+                        <a href="#comments" class="text-decoration-none">我的评论</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -176,6 +179,32 @@
                 </div>
             </div>
 
+             <!-- 收藏管理 -->
+            <div class="card mb-4" id="comments">
+                <div class="card-header">
+                    <h5>我的评论</h5>
+                </div>
+                <div class="card-body">
+                    {% if comments %}
+                    <div class="list-group">
+                        {% for item in comments %}
+                        <div class="list-group-item py-3">
+                            <p><strong>评论对象：</strong>{{ item.bookname }}</p>
+                            <p><strong>评论时间：</strong>{{ item.comment_time}}</p>
+                             <p><strong>评论内容：</strong>{{ item.content}}</p>
+                            <p><strong>点赞数：</strong>{{ item.like_count }}</p>
+                             <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
+                                data-bs-target="#deleteComment" data-cid="{{ item.comment_id }}">删除
+                            </button>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="text-muted text-center">暂无评论</p>
+                    {% endif %}
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
@@ -297,6 +326,37 @@
                         var bid = button.getAttribute('data-bid');
                         var input = deleteCollectModal.querySelector('#collectBid');
                         input.value = bid;
+                    });
+                });
+            </script>
+        </form>
+    </div>
+</div>
+<div class="modal fade" id="deleteComment" tabindex="-1" aria-labelledby="deleteCommentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form method="POST" action="{{ url_for('Comment.delete_comment') }}">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteCommentModalLabel">确认取消收藏</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="关闭"></button>
+                </div>
+                <div class="modal-body">
+                    确定要取消该评论吗？
+                    <input type="hidden" name="comment_id" id="commentBid">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-danger">确认删除</button>
+                </div>
+            </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    var deleteCommentModal = document.getElementById('deleteComment');
+                    deleteCommentModal.addEventListener('show.bs.modal', function (event) {
+                        var button = event.relatedTarget;
+                        var comment_bid = button.getAttribute('data-cid');
+                        var input = deleteCommentModal.querySelector('#commentBid');
+                        input.value = comment_bid;
                     });
                 });
             </script>

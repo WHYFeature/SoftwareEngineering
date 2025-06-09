@@ -9,6 +9,7 @@
 
 from exts import db
 from datetime import datetime
+from enum import IntEnum
 
 
 class User(db.Model):
@@ -93,4 +94,24 @@ class LikeComment(db.Model):
     # 联合唯一约束，防止一个用户对同一条评论重复点赞
     __table_args__ = (
         db.UniqueConstraint('comment_id', 'uid', name='uix_comment_uid'),
+    )
+
+
+class ImageUsage(IntEnum):
+    AVATAR = 1    # 头像
+    BOOK = 2      # 图书封面
+    COMMENT = 3   # 评论配图
+    OTHER = 4     # 其他
+
+
+class Image(db.Model):
+    __tablename__ = 'images'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    xusage = db.Column(db.Integer, nullable=False)
+    xid = db.Column(db.Integer, nullable=False)
+    img_path = db.Column(db.String(255), nullable=False)
+
+    __table_args__ = (
+        db.UniqueConstraint('xusage', 'xid', name='uix_usage_xid'),
     )
