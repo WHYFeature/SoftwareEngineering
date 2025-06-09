@@ -21,6 +21,9 @@ def showComment():
         user = User.query.filter(User.uid == c.uid).first()
         username = user.username
         cdata["username"] = username
+        book = Book.query.filter(Book.bid == c.book_id).first()
+        bookname = book.bookname
+        cdata["bookname"] = bookname
         result.append(cdata)
     return render_template('messages.html', comments = result)
 
@@ -52,3 +55,12 @@ def add_comment():
 
     flash("评论添加成功", "success")
     return redirect(url_for('Book.BookDetails', bid=bid))
+
+@bp.route("/delete", methods=["POST"])
+def delete_comment():
+    comment_id = request.form.get("comment_id")
+    comment = Comment.query.get(comment_id)
+    db.session.delete(comment)
+    db.session.commit()
+    flash("评论已删除", "success")
+    return redirect(url_for('Profile._profile'))
