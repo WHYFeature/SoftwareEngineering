@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
-from models import db, Book, User, UserCollect, UserAddress, OrderDetails, OrderForm
+from models import Comment, db, Book, User, UserCollect, UserAddress, OrderDetails, OrderForm
 from sqlalchemy import or_
 from datetime import datetime
+from blueprints import Comment as _Comment
 
 bp = Blueprint("Admin", __name__, url_prefix="/admin")
 
@@ -25,6 +26,7 @@ def admin_page():
     # 从请求参数获取搜索关键词
     book_search = request.args.get("book_search", "").strip()
     user_search = request.args.get("user_search", "").strip()
+    comment_search = request.args.get("comment_search", "").strip()  # 新增评论搜索项
 
     # 书籍查询，支持模糊匹配书名和作者
     if book_search:
@@ -44,9 +46,25 @@ def admin_page():
         ).all()
     else:
         user_list = User.query.all()
+        
+    if comment_search:  # 处理评论搜索
+        comments = Comment.query.filter(
+                Comment.content.like(f"%{comment_search}%")  # 新增评论内容搜索
+        ).all()
+    else:
+        comments = Comment.query.all()
 
-    return render_template("admin.html", books=book_list, users=user_list,
-                           book_search=book_search, user_search=user_search,tab=tab)
+    # 为每个评论对象添加用户名和书籍名
+    for comment in comments:
+        user = User.query.filter(User.uid == comment.user_id).first()
+        book = Book.query.filter(Book.bid == comment.book_id).first()
+        if user:
+            comment.username = user.username
+        if book:
+            comment.bookname = book.bookname
+
+    return render_template("admin.html", books=book_list, users=user_list, comments=comments,
+                           book_search=book_search, user_search=user_search,comment_search=comment_search,tab = tab)
 
 
 @bp.route('/delete_book')
@@ -155,3 +173,16 @@ def delete_user(uid):
     db.session.delete(user)
     db.session.commit()
     return redirect(url_for("Admin.admin_page"))
+
+@bp.route("/message/delete/<int:comment_id>", methods=["GET", "POST"])
+@admin_required
+def delete_comment(comment_id):
+    # 函数逻辑
+    comment = Comment.query.get(comment_id)
+    if comment:
+        db.session.delete(comment)
+        db.session.commit()
+        flash("评论已删除", "success")
+    else:
+        flash("评论不存在", "warning")
+    return redirect(url_for('Admin.admin_page'))

@@ -21,6 +21,9 @@
                 <li class="nav-item" role="presentation">
                     <button class="nav-link {% if tab == 'user' %}active{% endif %}" id="user-tab" data-bs-toggle="tab" data-bs-target="#user" type="button" role="tab">用户管理</button>
                 </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link {% if tab == 'message' %}active{% endif %}" id="message-tab" data-bs-toggle="tab" data-bs-target="#message" type="button" role="tab">留言管理</button>
+                </li>
             </ul>
         </div>
 
@@ -142,6 +145,76 @@
                         {% endfor %}
                     </tbody>
                 </table>                
+            </div>
+            <!-- 留言管理 -->
+            <div class="tab-pane fade {% if tab == 'message' %}show active{% endif %}" id="message">
+                <form method="GET" class="mb-3">
+                    <div class="row g-2 align-items-center">
+                        <div class="col-md-10">
+                            <input type="text" name="comment_search" class="form-control" placeholder="搜索留言或留言人" value="{{ comment_search }}">
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <button type="submit" class="btn btn-primary w-100">搜索</button>
+                        </div>
+                    </div>
+                </form>
+                <style>
+                    .short-content {
+                        display: inline;
+                    }
+                    .full-content {
+                        display: none;
+                    }
+                </style>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>用户名</th>
+                            <th>评论书籍</th>
+                            <th>评论内容</th>
+                            <th>评论时间</th>
+                            <th>点赞数</th>
+                            <th>删除</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for msg in comments %}
+                        <tr>
+                            <td>{{ msg.comment_id }}</td>
+                            <td>{{ msg.username}}</td>
+                            <td>{{ msg.bookname}}</td>
+                            <td>
+                                <span class="short-content">{{ msg.content[:20] }}...</span>
+                                <span class="full-content">{{ msg.content }}</span>
+                                <button onclick="toggleContent(this)">展开</button>
+                            </td>
+                            <td>{{ msg.comment_time }}</td>
+                            <td>{{ msg.like_count }}</td>
+                            <td>
+                                <a href="{{ url_for('Admin.delete_comment',comment_id = msg.comment_id) }}" class="btn btn-sm btn-danger" onclick="return confirm('确认删除本评论吗？可能会导致意料之外的结果！！！');">删除</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>   
+                <script>
+                    function toggleContent(button) {
+                        const parent = button.parentNode;
+                        const shortContent = parent.querySelector('.short-content');
+                        const fullContent = parent.querySelector('.full-content');
+
+                        if (shortContent.style.display === 'none') {
+                            shortContent.style.display = 'inline';
+                            fullContent.style.display = 'none';
+                            button.textContent = '展开';
+                        } else {
+                            shortContent.style.display = 'none';
+                            fullContent.style.display = 'inline';
+                            button.textContent = '收起';
+                        }
+                    }
+                </script>         
             </div>
         </div>
     </div>
