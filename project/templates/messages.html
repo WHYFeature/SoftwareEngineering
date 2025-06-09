@@ -12,12 +12,6 @@
     <h2 class="mb-4">留言板</h2>
     <!-- 留言表单 -->
     {% if 'username' in session %}
-      <!-- 快速跳转按钮 -->
-    <div class="mb-3">
-        <a href="{{ url_for('Comment.showComment') }}" class="btn btn-outline-info btn-sm">
-            查看最新10条留言
-        </a>
-    </div>
     <!-- 留言列表 -->
     <div class="list-group">
         {% for msg in comments %}
@@ -26,13 +20,22 @@
 
                 <div>
                     <strong>{{ msg.username }}</strong>
-                    <small class="text-muted ms-2">{{ msg.comment_time }}</small>
-                    <small class="text-muted ms-2">{{ msg.bookname }}</small>
-                    <small class="text-muted ms-2">{{ msg.content }}</small>
-                    <small class="text-muted ms-2">{{ msg.like_count }}</small>
+                          <div class="d-flex justify-content-between">
+
+                                <small class="text-muted">{{ msg.comment_time }}</small>
+                                <small class="text-muted ms-2">{{ msg.bookname }}</small>
+                            </div>
+                            <p class="mt-1 mb-1">{{ msg.content }}</p>
+                              <div class="text-end">
+                                <form method="post" action="{{ url_for('Comment.touch_like') }}">
+                                    <input type="hidden" name="comment_id" value="{{ msg.comment_id }}">
+                                    <button type="submit" class="btn btn-sm btn-outline-primary">
+                                        👍 {{ msg.like_count }}
+                                    </button>
+                                </form>
+                            </div>
                 </div>
             </div>
-            <p class="mb-1">{{ msg.content }}</p>
         </div>
         {% endfor %}
     </div>

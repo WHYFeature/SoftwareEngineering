@@ -7,6 +7,7 @@ from models import db
 from models import UserCollect
 from models import Comment
 from models import User
+from models import LikeComment
 
 from sqlalchemy import func
 from sqlalchemy import desc
@@ -116,7 +117,15 @@ def BookDetails():
         }
         user = User.query.filter(User.uid == c.user_id).first()
         username = user.username
-        cdata["username"]= username
+        cdata["username"] = username
+        liked = 0
+        if "uid" in session:
+            uid = session["uid"]
+            lc = LikeComment.query.filter(
+                LikeComment.comment_id == c.comment_id, LikeComment.uid == uid).first()
+            if lc is not None:
+                liked = 1
+        cdata["liked"] = liked
         comments.append(cdata)
 
     book["comments"] = comments
