@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}管理员后台{% endblock %}
+
+
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cart.css') }}">
+{% endblock %}
+
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">管理员后台</h2>
+
+    <!-- 选项卡导航 -->
+    <ul class="nav nav-tabs" id="adminTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link {% if tab == 'book' %}active{% endif %}" id="book-tab" data-bs-toggle="tab" data-bs-target="#book" type="button" role="tab">书籍管理</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link {% if tab == 'user' %}active{% endif %}" id="user-tab" data-bs-toggle="tab" data-bs-target="#user" type="button" role="tab">用户管理</button>
+        </li>
+    </ul>
+
+    <!-- 内容区域 -->
+    <div class="tab-content mt-3" id="adminTabContent">
+        <!-- 书籍管理 -->
+        <div class="tab-pane fade {% if tab == 'book' %}show active{% endif %}" id="book">
+             <form method="GET" class="mb-3 d-flex">
+                <input type="text" name="book_search" class="form-control me-2" placeholder="搜索书名或作者" value="{{ book_search }}">
+                <button type="submit" class="btn btn-primary">搜索</button>
+            </form>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3>书籍列表</h3>
+                <a href="{{ url_for('Admin.add_book') }}" class="btn btn-success">新增书籍</a>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>书名</th>
+                        <th>作者</th>
+                        <th>类型</th>
+                        <th>版本</th>
+                        <th>数量</th>
+                        <th>价格</th>
+                        <th>出版社</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for book in books %}
+                    <tr>
+                        <td>{{ book.bid }}</td>
+                        <td>{{ book.bookname }}</td>
+                        <td>{{ book.author }}</td>
+                        <td>{{ book.type_ }}</td>
+                        <td>{{ book.version }}</td>
+                        <td>{{ book.number }}</td>
+                        <td>{{ book.price }}</td>
+                        <td>{{ book.publisher }}</td>
+                        <td>
+                            <a href="{{ url_for('Admin.edit_book', bid=book.bid) }}" class="btn btn-sm btn-warning">修改</a>
+                            <a href="{{ url_for('Admin.delete_book', bid=book.bid) }}" class="btn btn-sm btn-danger" onclick="return confirm('确认删除该书籍吗？');">删除</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 用户管理 -->
+        <div class="tab-pane fade {% if tab == 'user' %}show active{% endif %}" id="user">
+            <form method="GET" action="{{ url_for('Admin.admin_page') }}">
+                <input type="hidden" name="tab" value="user">
+                <input type="text" name="user_search" placeholder="搜索用户名..." class="form-control d-inline w-auto" value="{{ request.args.get('user_search', '') }}">
+                <button type="submit" class="btn btn-outline-primary">搜索</button>
+            </form>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>用户名</th>
+                        <th>性别</th>
+                        <th>等级</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.uid }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ '男' if user.sex == 1 else '女' }}</td>
+                        <td>{{ user.level }}</td>
+                        <td>
+                            {% if user.level == 0 %}
+                            <form method="POST" action="{{ url_for('Admin.delete_user', uid=user.uid) }}" style="display:inline;">
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('确认注销该用户吗？');">注销</button>
+                            </form>
+                            {% else %}
+                            <span class="text-muted">管理员不可注销</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

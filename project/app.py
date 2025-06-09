@@ -11,6 +11,7 @@ from blueprints import Cart
 from blueprints import Collect
 from blueprints import Orders
 from blueprints import Comment
+from blueprints import Admin
 
 app = Flask(__name__)  #初始化Flask应用
 app.secret_key = 'your_secret_key_here'  # 用于session加密
@@ -26,6 +27,7 @@ app.register_blueprint(Cart.bp)
 app.register_blueprint(Collect.bp)
 app.register_blueprint(Orders.bp)
 app.register_blueprint(Comment.bp)
+app.register_blueprint(Admin.bp)
 
 @app.route('/message', methods=['GET', 'POST']) #定义一个路由/message，支持get和post请求
 def message_board():
