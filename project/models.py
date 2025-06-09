@@ -52,7 +52,7 @@ class UserCollect(db.Model):
 
 class OrderForm(db.Model):
     __tablename__ = "orderform"
-    oid = db.Column(db.Integer, primary_key=True)
+    oid = db.Column(db.Integer, primary_key=True, autoincrement=True)
     uid = uid = db.Column(db.Integer, db.ForeignKey("user.uid"))
     status = db.Column(db.Integer, nullable=False)
     time = db.Column(db.TIMESTAMP, nullable=False, default=datetime.now)

@@ -34,7 +34,7 @@ def view_orders():
             'oid': order.oid,
             'time': order.time.strftime('%Y-%m-%d %H:%M:%S'),
             'address': f"{address.receiver} {address.phone} - {address.address}" if address else "地址信息缺失",
-            'items': items,
+            'orders_items': items,
             'total': total
         })
 

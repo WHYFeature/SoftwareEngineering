@@ -123,24 +123,87 @@ def update_cart():
 
 @bp.route('/pay', methods=["POST"])
 def pay():
-    uid = session['uid']
-    selected_items = request.form.get("selected_items", "")  # 逗号分隔的书籍 ID
+    uid = session.get('uid')
+    if not uid:
+        flash("请先登录", "danger")
+        return redirect(url_for("user.login"))
+
+    selected_items = request.form.get("selected_items", "")  # 逗号分隔的 book_id
     address_id = request.form.get("address_id")
 
     if not selected_items or not address_id:
         flash("请选择商品和收货地址", "danger")
         return redirect(url_for("Cart.view_cart"))
 
-    cart = session.get("cart", {})
-    selected_ids = selected_items.split(",")
+    selected_bids = [int(bid) for bid in selected_items.split(",") if bid]
+    if not selected_bids:
+        flash("未选择商品", "warning")
+        return redirect(url_for("Cart.view_cart"))
 
-    # 修改订单状态
+    # 找出该用户所有未支付订单（理论上只有一个）
+    original_order = OrderForm.query.filter_by(uid=uid, status=0).first()
+    if not original_order:
+        flash("没有找到未支付订单", "warning")
+        return redirect(url_for("Cart.view_cart"))
 
+    # 获取所有订单明细
+    details = OrderDetails.query.filter_by(oid=original_order.oid).all()
+
+    # 分离：选中商品 vs 未选中商品
+    selected_details = []
+    unselected_details = []
+    for d in details:
+        if d.bid in selected_bids:
+            selected_details.append(d)
+        else:
+            unselected_details.append(d)
+
+    if not selected_details:
+        flash("没有选择支付的商品", "warning")
+        return redirect(url_for("Cart.view_cart"))
+
+    #  原订单：只保留选中的商品
+    for d in unselected_details:
+        db.session.delete(d)
+
+    original_order.status = 1
+    original_order.uaid = address_id
+    original_order.time = datetime.now()
+
+    #  如有未选择商品：创建新订单保存它们
+    if unselected_details:
+        max_oid = db.session.query(db.func.max(OrderForm.oid)).scalar() or 0
+        new_oid = max_oid + 1
+
+        new_order = OrderForm(
+            oid=new_oid,
+            uid=uid,
+            status=0,
+            time=datetime.now(),  # 未支付也记时间
+            uaid=None  # 地址未选
+        )
+        db.session.add(new_order)
+        db.session.flush()
+
+        for old_detail in unselected_details:
+            new_detail = OrderDetails(
+                oid=new_oid,
+                bid=old_detail.bid,
+                number=old_detail.number,
+                price=old_detail.price
+            )
+            db.session.add(new_detail)
 
     db.session.commit()
+
+    # 更新购物车中已支付的商品
+    cart = session.get("cart", {})
+    for bid in selected_bids:
+        cart.pop(str(bid), None)
     session["cart"] = cart
+
     flash("订单支付成功！", "success")
-    return redirect(url_for("Order.view_orders"))
+    return redirect(url_for("Orders.view_orders"))
 
 
 @bp.route('/remove/<int:bid>', methods=["GET"])
