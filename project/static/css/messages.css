@@ -29,20 +29,42 @@ h2 {
 h5 {
     color: #df5ec1d9; /* 更鲜艳的标题颜色 */
     margin-bottom: 20px; /* 增加底部边距 */
-    font-size: 1.8rem; /* 增大字体大小 */
-    border-bottom: 2px solid #ec7abb; /* 添加底部边框 */
+    font-size: 1.4rem; /* 增大字体大小 */
     padding-bottom: 5px; /* 调整边框与文字的间距 */
     transition: all 0.3s ease; /* 添加过渡效果 */
 }
 
-.card.mb-4 {
+.comment-card.mb-3 {
     /* 使用 rgba 颜色模式设置背景色，前三个值是 RGB 值，最后一个值是透明度，范围 0 - 1 */
     background-color: rgba(255, 255, 255, 0.7); 
     transition: all 0.3s ease; /* 添加过渡效果 */
 }
 
-.card.mb-4:hover {
+.comment-card.mb-3:hover {
     background-color: rgba(255, 255, 255, 0.9); /* 鼠标悬停时卡片背景透明度变化 */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* 鼠标悬停时添加阴影 */
     transform: translateY(-2px); /* 鼠标悬停时卡片向上移动 2px */
+    background-color: rgba(255, 255, 255, 0.9);
+}
+.comment-card {
+    background-color: #f8f9fa; /* 淡灰背景 */
+    border-radius: 10px;
+    padding: 1rem;
+    word-break: break-word; /* 处理长词或网址 */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.comment-meta {
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+.comment-content {
+    margin-top: 0.5rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.6;
+}
+
+.comment-like-form button {
+    min-width: 80px;
 }
