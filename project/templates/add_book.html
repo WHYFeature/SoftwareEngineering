@@ -11,23 +11,24 @@
         </div>
         <div class="mb-3">
             <label class="form-label">书名</label>
-            <input type="text" name="bookname" class="form-control" required>
+            <input type="text" name="bookname" class="form-control"  maxlength="50" required>
         </div>
         <div class="mb-3">
             <label class="form-label">作者</label>
-            <input type="text" name="author" class="form-control">
+            <input type="text" name="author" class="form-control" maxlength="50">
         </div>
         <div class="mb-3">
             <label class="form-label">类型</label>
-            <input type="text" name="type_" class="form-control">
+            <input type="text" name="type_" class="form-control" maxlength="50">
         </div>
         <div class="mb-3">
             <label class="form-label">版本</label>
-            <input type="text" name="version" class="form-control">
+            <input type="text" name="version" class="form-control" maxlength="50">
         </div>
         <div class="mb-3">
             <label class="form-label">库存数量</label>
             <input type="number" name="number" class="form-control">
+
         </div>
         <div class="mb-3">
             <label class="form-label">价格</label>
@@ -35,11 +36,11 @@
         </div>
         <div class="mb-3">
             <label class="form-label">出版社</label>
-            <input type="text" name="publisher" class="form-control">
+            <input type="text" name="publisher" class="form-control" maxlength="50">
         </div>
         <div class="mb-3">
             <label class="form-label">内容简介</label>
-            <textarea name="content" class="form-control"></textarea>
+            <textarea name="content" class="form-control" maxlength="255"></textarea>
         </div>
         <button type="submit" class="btn btn-primary">添加</button>
         <a href="{{ url_for('Admin.admin_page') }}" class="btn btn-secondary">返回</a>
