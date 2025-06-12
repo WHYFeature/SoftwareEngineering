@@ -19,94 +19,99 @@
     <div class="row g-4">
         <div class="col-md-10 mx-auto">
             <div class="card shadow-sm">
-                <div class="col-md-4 text-center">
-                    <img src="{{ book.img_path }}"
-                         alt="封面图：{{ book.bookname }}"
-                         class="img-fluid rounded shadow-sm"
-                         style="max-height: 320px; object-fit: contain;">
-                </div>
-                <div class="card-body">
+                <!-- 使用 row 让图片区域和卡片内容区域并列 -->
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card-body">
 
-                    <!-- 标题与库存 -->
-                    <h1 class="card-title display-6">{{ book.bookname }}</h1>
-                    <p class="text-muted">库存：{{ book.number }} 册</p>
+                            <!-- 标题与库存 -->
+                            <h1 class="card-title display-6">{{ book.bookname }}</h1>
+                            <p class="text-muted">库存：{{ book.number }} 册</p>
 
-                    <!-- 基本信息 -->
-                    <dl class="row">
-                        <dt class="col-sm-3">作者</dt>
-                        <dd class="col-sm-9">{{ book.author }}</dd>
-                        <dt class="col-sm-3">出版社</dt>
-                        <dd class="col-sm-9">{{ book.publisher }}</dd>
-                    </dl>
+                            <!-- 基本信息 -->
+                            <dl class="row">
+                                <dt class="col-sm-3">作者</dt>
+                                <dd class="col-sm-9">{{ book.author }}</dd>
+                                <dt class="col-sm-3">出版社</dt>
+                                <dd class="col-sm-9">{{ book.publisher }}</dd>
+                            </dl>
 
-                    <!-- 价格区块 -->
-                    <div class="bg-light p-3 rounded-3 mb-4">
-                        <h3 class="text-danger mb-0">¥{{ book.price }}</h3>
+                            <!-- 价格区块 -->
+                            <div class="bg-light p-3 rounded-3 mb-4">
+                                <h3 class="text-danger mb-0">¥{{ book.price }}</h3>
+                            </div>
+
+                            <!-- 加入购物车表单 -->
+                            <form action="{{ url_for('Cart.add_to_cart') }}" method="post" class="needs-validation mb-3" novalidate>
+                                <input type="hidden" name="bid" value="{{ book.bid }}">
+                                <div class="row g-3 align-items-end">
+                                    <!-- 数量输入框 -->
+                                    <div class="col-md-5">
+                                        <label for="quantity" class="form-label">数量</label>
+                                        <input type="number" class="form-control form-control-lg h-100"
+                                               id="quantity" name="quantity"
+                                               min="1" max="{{ book.number }}" value="1" required>
+                                        <div class="invalid-feedback">请输入1至{{ book.number }}之间的数量。</div>
+                                    </div>
+                            
+                                    <!-- 按钮 -->
+                                    <div class="col-md-6 offset-md-1 d-grid">
+                                        <label class="form-label invisible">操作</label> <!-- 占位标签保持对齐 -->
+                                        <button type="submit" class="btn btn-primary btn-lg"
+                                                {% if book.number == 0 %}disabled{% endif %}>
+                                            <i class="bi bi-cart-plus"></i> 加入购物车
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                            <!-- 收藏按钮表单 -->
+                            <form action="{{ url_for('Collect.addCollect') }}" method="post" class="favorite-form">
+                                <input type="hidden" name="bid" value="{{ book.bid }}">
+                                <div class="d-grid d-md-inline">
+                                    <button type="submit"
+                                            class="btn btn-outline-danger {% if inCollect %}active{% endif %}"
+                                            aria-pressed="{{ inCollect|lower }}">
+                                        <i class="bi {% if inCollect %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
+                                        <span class="ms-2">{% if inCollect %}已收藏{% else %}加入收藏{% endif %}</span>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <!-- 样式 -->
+                            <style>
+                                .favorite-form button {
+                                    transition: all 0.3s ease;
+                                    position: relative;
+                                }
+                                .favorite-form button:not(.active):hover {
+                                    transform: scale(1.05);
+                                    box-shadow: 0 0 12px rgba(255, 0, 0, 0.2);
+                                }
+                                .favorite-form button.active {
+                                    background-color: #ff3b30;
+                                    color: #fff !important;
+                                }
+                            </style>
+
+                            <!-- 收藏按钮加载提示 -->
+                            <script>
+                                document.querySelectorAll('.favorite-form').forEach(form => {
+                                    form.addEventListener('submit', function(e) {
+                                        const btn = this.querySelector('button');
+                                        btn.innerHTML = `<div class="spinner-border spinner-border-sm" role="status"></div> 处理中...`;
+                                        btn.disabled = true;
+                                    });
+                                });
+                            </script>
+
+                        </div>
                     </div>
-
-                    <!-- 加入购物车表单 -->
-                    <form action="{{ url_for('Cart.add_to_cart') }}" method="post" class="needs-validation mb-3" novalidate>
-                        <input type="hidden" name="bid" value="{{ book.bid }}">
-                        <div class="row g-3 align-items-end">
-                            <!-- 数量输入框 -->
-                            <div class="col-md-5">
-                                <label for="quantity" class="form-label">数量</label>
-                                <input type="number" class="form-control form-control-lg h-100"
-                                       id="quantity" name="quantity"
-                                       min="1" max="{{ book.number }}" value="1" required>
-                                <div class="invalid-feedback">请输入1至{{ book.number }}之间的数量。</div>
-                            </div>
-                    
-                            <!-- 按钮 -->
-                            <div class="col-md-6 offset-md-1 d-grid">
-                                <label class="form-label invisible">操作</label> <!-- 占位标签保持对齐 -->
-                                <button type="submit" class="btn btn-primary btn-lg"
-                                        {% if book.number == 0 %}disabled{% endif %}>
-                                    <i class="bi bi-cart-plus"></i> 加入购物车
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                    <!-- 收藏按钮表单 -->
-                    <form action="{{ url_for('Collect.addCollect') }}" method="post" class="favorite-form">
-                        <input type="hidden" name="bid" value="{{ book.bid }}">
-                        <div class="d-grid d-md-inline">
-                            <button type="submit"
-                                    class="btn btn-outline-danger {% if inCollect %}active{% endif %}"
-                                    aria-pressed="{{ inCollect|lower }}">
-                                <i class="bi {% if inCollect %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
-                                <span class="ms-2">{% if inCollect %}已收藏{% else %}加入收藏{% endif %}</span>
-                            </button>
-                        </div>
-                    </form>
-
-                    <!-- 样式 -->
-                    <style>
-                        .favorite-form button {
-                            transition: all 0.3s ease;
-                            position: relative;
-                        }
-                        .favorite-form button:not(.active):hover {
-                            transform: scale(1.05);
-                            box-shadow: 0 0 12px rgba(255, 0, 0, 0.2);
-                        }
-                        .favorite-form button.active {
-                            background-color: #ff3b30;
-                            color: #fff !important;
-                        }
-                    </style>
-
-                    <!-- 收藏按钮加载提示 -->
-                    <script>
-                        document.querySelectorAll('.favorite-form').forEach(form => {
-                            form.addEventListener('submit', function(e) {
-                                const btn = this.querySelector('button');
-                                btn.innerHTML = `<div class="spinner-border spinner-border-sm" role="status"></div> 处理中...`;
-                                btn.disabled = true;
-                            });
-                        });
-                    </script>
-
+                    <div class="col-md-3 text-center">
+                        <img src="{{ book.img_path }}"
+                             alt="封面图：{{ book.bookname }}"
+                             class="img-fluid rounded shadow-sm"
+                             style="max-height: 3900px; object-fit: contain;">
+                    </div>
                 </div>
             </div>
 
