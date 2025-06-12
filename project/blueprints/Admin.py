@@ -91,6 +91,7 @@ def delete_book():
         return redirect(url_for("Admin.admin_page"))
 
     # 如果无未完成订单，先删除相关收藏和订单详情
+    Comment.query.filter_by(book_id=bid).delete()
     UserCollect.query.filter_by(bid=bid).delete()
     OrderDetails.query.filter_by(bid=bid).delete()
     # 删除书籍
