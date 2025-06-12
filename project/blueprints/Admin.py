@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
-from models import Comment, db, Book, User, UserCollect, UserAddress, OrderDetails, OrderForm
+from models import Comment, db, Book, User, UserCollect, UserAddress, OrderDetails, OrderForm, LikeComment
 from sqlalchemy import or_
 from datetime import datetime
 from blueprints import Comment as _Comment
@@ -171,6 +171,8 @@ def add_book():
 @admin_required
 def delete_user(uid):
     user = User.query.get(uid)
+    LikeComment.query.filter_by(uid=uid).delete()
+    Comment.query.filter_by(user_id=uid).delete()
     db.session.delete(user)
     db.session.commit()
     return redirect(url_for("Admin.admin_page"))
